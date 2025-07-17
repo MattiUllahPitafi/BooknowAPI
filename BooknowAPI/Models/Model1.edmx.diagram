@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fcaed0c3f58a49aabc33d833dc29c596" Name="Diagram1">
+        <EntityTypeShape EntityType="newRestdbModel.Admin" Width="1.5" PointX="3" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.BookingDecore" Width="1.5" PointX="5.25" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Booking" Width="1.5" PointX="3" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.ChefDishSpeciality" Width="1.5" PointX="6" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Chef" Width="1.5" PointX="6" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.CoinCategory" Width="1.5" PointX="6" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.CustomerCoin" Width="1.5" PointX="6" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Customer" Width="1.5" PointX="3" PointY="34.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.DecoreOption" Width="1.5" PointX="3" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Dish" Width="1.5" PointX="3.75" PointY="29.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.DishRecipe" Width="1.5" PointX="11" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Ingredient" Width="1.5" PointX="0.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Jukebox" Width="1.5" PointX="8.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.MenuCategory" Width="1.5" PointX="1.5" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Music" Width="1.5" PointX="6" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.MusicGenre" Width="1.5" PointX="3.75" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.OrderChefAssignment" Width="1.5" PointX="11.5" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.OrderItem" Width="1.5" PointX="10.5" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Order" Width="1.5" PointX="8.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Rating" Width="1.5" PointX="8.25" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Restaurant" Width="1.5" PointX="3.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.StockConsumption" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Table" Width="1.5" PointX="0.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.User" Width="1.5" PointX="0.75" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.WaiterAssignment" Width="1.5" PointX="11.25" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="newRestdbModel.Waiter" Width="1.5" PointX="9" PointY="20.25" IsExpanded="true" />
+        <AssociationConnector Association="newRestdbModel.FK__Admins__UserId__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__BookingDe__Booki__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__BookingDe__Decor__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Bookings__Restau__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Bookings__UserId__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Jukebox__Booking__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Orders__BookingI__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Ratings__Booking__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__WaiterAss__Booki__123EB7A3" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK_Bookings_Tables" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__ChefDishS__DishI__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__ChefDishS__UserI__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Chefs__Restauran__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Chefs__UserId__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__CustomerC__CoinC__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Jukebox__CoinCat__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__CustomerC__UserI__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Customers__UserI__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Dishes__MenuCate__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Dishes__Restaura__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__DishRecip__DishI__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__OrderChef__DishI__0D7A0286" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__OrderItem__DishI__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__DishRecip__Ingre__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__StockCons__Ingre__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Jukebox__MusicId__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Jukebox__UserId__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Music__GenreId__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__OrderChef__ChefU__0E6E26BF" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__OrderChef__Order__0C85DE4D" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__OrderItem__Order__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Orders__UserId__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Ratings__UserId__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Tables__Restaura__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Waiters__Restaur__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__StockCons__UserI__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__WaiterAss__Waite__1332DBDC" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK__Waiters__UserId__52593CB8" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
