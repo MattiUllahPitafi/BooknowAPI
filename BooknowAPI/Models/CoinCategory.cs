@@ -17,6 +17,7 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CoinCategory()
         {
+            this.Bookings = new HashSet<Booking>();
             this.CustomerCoins = new HashSet<CustomerCoin>();
             this.Jukeboxes = new HashSet<Jukebox>();
         }
@@ -24,6 +25,8 @@ namespace BooknowAPI.Models
         public int CoinCategoryId { get; set; }
         public string Name { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerCoin> CustomerCoins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

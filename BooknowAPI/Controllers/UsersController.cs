@@ -9,7 +9,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
-        private newRestdbEntities db = new newRestdbEntities();
+        private newRestdbEntities2 db = new newRestdbEntities2();
 
         // GET: api/Users/GetAll
         [HttpGet]

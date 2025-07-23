@@ -17,6 +17,7 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Music()
         {
+            this.Bookings = new HashSet<Booking>();
             this.Jukeboxes = new HashSet<Jukebox>();
         }
     
@@ -26,6 +27,8 @@ namespace BooknowAPI.Models
         public Nullable<int> GenreId { get; set; }
         public Nullable<int> DurationInSeconds { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Jukebox> Jukeboxes { get; set; }
         public virtual MusicGenre MusicGenre { get; set; }

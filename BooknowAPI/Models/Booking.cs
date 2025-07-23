@@ -31,6 +31,8 @@ namespace BooknowAPI.Models
         public string SpecialRequest { get; set; }
         public string Status { get; set; }
         public Nullable<int> TableId { get; set; }
+        public Nullable<int> music_id { get; set; }
+        public Nullable<int> CoinCategoryIdUsedForMusic { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingDecore> BookingDecores { get; set; }
@@ -44,6 +46,8 @@ namespace BooknowAPI.Models
         public virtual ICollection<Rating> Ratings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WaiterAssignment> WaiterAssignments { get; set; }
+        public virtual CoinCategory CoinCategory { get; set; }
+        public virtual Music Music { get; set; }
         public virtual Table Table { get; set; }
     }
 }

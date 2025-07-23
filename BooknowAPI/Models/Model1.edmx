@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admins">
           <Key>
             <PropertyRef Name="UserId" />
@@ -30,6 +30,8 @@
           <Property Name="SpecialRequest" Type="nvarchar" MaxLength="255" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="TableId" Type="int" />
+          <Property Name="music_id" Type="int" />
+          <Property Name="CoinCategoryIdUsedForMusic" Type="int" />
         </EntityType>
         <EntityType Name="ChefDishSpecialities">
           <Key>
@@ -692,6 +694,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Bookings_CoinCategories">
+          <End Role="CoinCategories" Type="Self.CoinCategories" Multiplicity="0..1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CoinCategories">
+              <PropertyRef Name="CoinCategoryId" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="CoinCategoryIdUsedForMusic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="0..1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="MusicId" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="music_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bookings_Tables">
           <End Role="Tables" Type="Self.Tables" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
@@ -879,12 +905,21 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bookings_CoinCategories" Association="Self.FK_Bookings_CoinCategories">
+            <End Role="CoinCategories" EntitySet="CoinCategories" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Music" Association="Self.FK_Bookings_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bookings_Tables" Association="Self.FK_Bookings_Tables">
             <End Role="Tables" EntitySet="Tables" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="newRestdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -916,6 +951,8 @@
           <Property Name="SpecialRequest" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TableId" Type="Int32" />
+          <Property Name="music_id" Type="Int32" />
+          <Property Name="CoinCategoryIdUsedForMusic" Type="Int32" />
           <NavigationProperty Name="BookingDecores" Relationship="Self.FK__BookingDe__Booki__778AC167" FromRole="Bookings" ToRole="BookingDecore" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK__Bookings__Restau__5DCAEF64" FromRole="Bookings" ToRole="Restaurants" />
           <NavigationProperty Name="User" Relationship="Self.FK__Bookings__UserId__5CD6CB2B" FromRole="Bookings" ToRole="Users" />
@@ -923,6 +960,8 @@
           <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__BookingI__628FA481" FromRole="Bookings" ToRole="Orders" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__Booking__04E4BC85" FromRole="Bookings" ToRole="Ratings" />
           <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Booki__123EB7A3" FromRole="Bookings" ToRole="WaiterAssignments" />
+          <NavigationProperty Name="CoinCategory" Relationship="Self.FK_Bookings_CoinCategories" FromRole="Bookings" ToRole="CoinCategories" />
+          <NavigationProperty Name="Music" Relationship="Self.FK_Bookings_Music" FromRole="Bookings" ToRole="Music" />
           <NavigationProperty Name="Table" Relationship="Self.FK_Bookings_Tables" FromRole="Bookings" ToRole="Tables" />
         </EntityType>
         <EntityType Name="ChefDishSpeciality">
@@ -950,6 +989,7 @@
           </Key>
           <Property Name="CoinCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_CoinCategories" FromRole="CoinCategories" ToRole="Bookings" />
           <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__CoinC__4BAC3F29" FromRole="CoinCategories" ToRole="CustomerCoins" />
           <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__CoinCat__7F2BE32F" FromRole="CoinCategories" ToRole="Jukebox" />
         </EntityType>
@@ -993,14 +1033,14 @@
           <Property Name="PrepTimeMinutes" Type="Int32" />
           <Property Name="RestaurantId" Type="Int32" />
           <Property Name="MenuCategoryId" Type="Int32" />
+          <Property Name="BaseQuantity" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__DishI__72C60C4A" FromRole="Dishes" ToRole="ChefDishSpecialities" />
           <NavigationProperty Name="MenuCategory" Relationship="Self.FK__Dishes__MenuCate__59FA5E80" FromRole="Dishes" ToRole="MenuCategories" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Dishes" ToRole="Restaurants" />
           <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__DishI__693CA210" FromRole="Dishes" ToRole="DishRecipes" />
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__DishI__0D7A0286" FromRole="Dishes" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="Dishes" ToRole="OrderItems" />
-          <Property Name="BaseQuantity" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
-          <Property Name="Unit" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DishRecipe">
           <Key>
@@ -1058,6 +1098,7 @@
           <Property Name="Artist" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GenreId" Type="Int32" />
           <Property Name="DurationInSeconds" Type="Int32" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_Music" FromRole="Music" ToRole="Bookings" />
           <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__MusicId__7E37BEF6" FromRole="Music" ToRole="Jukebox" />
           <NavigationProperty Name="MusicGenre" Relationship="Self.FK__Music__GenreId__4316F928" FromRole="Music" ToRole="MusicGenres" />
         </EntityType>
@@ -1090,10 +1131,10 @@
           <Property Name="OrderId" Type="Int32" />
           <Property Name="DishId" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
+          <Property Name="QuantityOrdered" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <NavigationProperty Name="Dish" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="OrderItems" ToRole="Dishes" />
           <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="OrderItems" ToRole="Orders" />
-          <Property Name="QuantityOrdered" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
-          <Property Name="UnitPrice" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1312,6 +1353,30 @@
             </Principal>
             <Dependent Role="WaiterAssignments">
               <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_CoinCategories">
+          <End Role="CoinCategories" Type="Self.CoinCategory" Multiplicity="0..1" />
+          <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CoinCategories">
+              <PropertyRef Name="CoinCategoryId" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="CoinCategoryIdUsedForMusic" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="0..1" />
+          <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="MusicId" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="music_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1663,7 +1728,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="newRestdbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="newRestdbEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="BookingDecores" EntityType="Self.BookingDecore" />
           <EntitySet Name="Bookings" EntityType="Self.Booking" />
@@ -1725,6 +1790,14 @@
           <AssociationSet Name="FK__WaiterAss__Booki__123EB7A3" Association="Self.FK__WaiterAss__Booki__123EB7A3">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="WaiterAssignments" EntitySet="WaiterAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_CoinCategories" Association="Self.FK_Bookings_CoinCategories">
+            <End Role="CoinCategories" EntitySet="CoinCategories" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Music" Association="Self.FK_Bookings_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
           <AssociationSet Name="FK_Bookings_Tables" Association="Self.FK_Bookings_Tables">
             <End Role="Tables" EntitySet="Tables" />
@@ -1848,7 +1921,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities">
+        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities2">
           <EntitySetMapping Name="Admins">
             <EntityTypeMapping TypeName="newRestdbModel.Admin">
               <MappingFragment StoreEntitySet="Admins">
@@ -1875,6 +1948,8 @@
                 <ScalarProperty Name="SpecialRequest" ColumnName="SpecialRequest" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="TableId" ColumnName="TableId" />
+                <ScalarProperty Name="music_id" ColumnName="music_id" />
+                <ScalarProperty Name="CoinCategoryIdUsedForMusic" ColumnName="CoinCategoryIdUsedForMusic" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1935,14 +2010,14 @@
           <EntitySetMapping Name="Dishes">
             <EntityTypeMapping TypeName="newRestdbModel.Dish">
               <MappingFragment StoreEntitySet="Dishes">
-                <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PrepTimeMinutes" ColumnName="PrepTimeMinutes" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
                 <ScalarProperty Name="MenuCategoryId" ColumnName="MenuCategoryId" />
+                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2021,12 +2096,12 @@
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="newRestdbModel.OrderItem">
               <MappingFragment StoreEntitySet="OrderItems">
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-                <ScalarProperty Name="QuantityOrdered" ColumnName="QuantityOrdered" />
                 <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="QuantityOrdered" ColumnName="QuantityOrdered" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
