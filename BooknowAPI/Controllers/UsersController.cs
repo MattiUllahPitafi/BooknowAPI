@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
 using BooknowAPI.Models;
+using Newtonsoft.Json.Linq;
 
 namespace BooknowAPI.Controllers
 {
@@ -69,20 +71,107 @@ namespace BooknowAPI.Controllers
 
         // POST: api/Users/CreateStaff (For Admin to add Chefs or Waiters)
         [HttpPost]
-        [Route("CreateStaff")]
-        public IHttpActionResult CreateStaff([FromBody] User user)
+        [Route("CreateChef")]
+        public IHttpActionResult CreateChef([FromBody] JObject data)
         {
-            if (user == null || (user.Role != "Chef" && user.Role != "Waiter"))
-                return BadRequest("Only 'Chef' or 'Waiter' can be created.");
+            if (data == null)
+                return BadRequest("Invalid data.");
+
+            var userJson = data["user"];
+            var restaurantId = data["restaurantId"]?.ToObject<int>() ?? 0;
+            var dishIds = data["dishIds"]?.ToObject<List<int>>();
+
+            if (userJson == null || restaurantId == 0 || dishIds == null || !dishIds.Any())
+                return BadRequest("Missing required fields.");
+
+            var user = userJson.ToObject<User>();
+
+            if (user.Role != "Chef")
+                return BadRequest("Only 'Chef' role is allowed.");
 
             if (string.IsNullOrEmpty(user.PasswordHash))
                 return BadRequest("Password is required.");
 
+            // Add user to Users table
             db.Users.Add(user);
             db.SaveChanges();
 
-            return Ok(new { Message = "Staff created successfully", user.UserId });
+            // Add chef to Chefs table
+            var chef = new Chef
+            {
+                UserId = user.UserId,
+                RestaurantId = restaurantId
+            };
+            db.Chefs.Add(chef);
+            db.SaveChanges();
+
+            // Add specialities to ChefDishSpecialities table
+            foreach (var dishId in dishIds)
+            {
+                var speciality = new ChefDishSpeciality
+                {
+                    UserId = user.UserId,
+                    DishId = dishId
+                };
+                db.ChefDishSpecialities.Add(speciality);
+            }
+            db.SaveChanges();
+
+            return Ok(new
+            {
+                Message = "Chef created with specialities.",
+                ChefId = user.UserId,
+                RestaurantId = restaurantId,
+                Specialities = dishIds
+            });
         }
+        // POST: api/Users/CreateWaiter
+        [HttpPost]
+        [Route("CreateWaiter")]
+        public IHttpActionResult CreateWaiter([FromBody] JObject data)
+        {
+            if (data == null)
+                return BadRequest("Invalid data.");
+
+            var userJson = data["user"];
+            var restaurantId = data["restaurantId"]?.ToObject<int>() ?? 0;
+
+            if (userJson == null || restaurantId == 0)
+                return BadRequest("Missing required fields.");
+
+            var user = userJson.ToObject<User>();
+
+            if (user.Role != "Waiter")
+                return BadRequest("Role must be 'Waiter'.");
+
+            if (string.IsNullOrEmpty(user.PasswordHash))
+                return BadRequest("Password is required.");
+
+            // Check for duplicate email
+            if (db.Users.Any(u => u.Email == user.Email))
+                return BadRequest("Email already exists.");
+
+            // Add user to Users table
+            db.Users.Add(user);
+            db.SaveChanges();
+
+            // Add waiter to Waiters table
+            var waiter = new Waiter
+            {
+                UserId = user.UserId,
+                RestaurantId = restaurantId
+            };
+            db.Waiters.Add(waiter);
+            db.SaveChanges();
+
+            return Ok(new
+            {
+                Message = "Waiter created successfully.",
+                WaiterId = user.UserId,
+                RestaurantId = restaurantId
+            });
+        }
+
 
         // POST: api/Users/Login
         [HttpPost]
