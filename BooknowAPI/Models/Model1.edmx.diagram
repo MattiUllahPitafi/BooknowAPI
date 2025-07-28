@@ -71,6 +71,9 @@
         <AssociationConnector Association="newRestdbModel.FK__StockCons__UserI__6E01572D" ManuallyRouted="false" />
         <AssociationConnector Association="newRestdbModel.FK__WaiterAss__Waite__1332DBDC" ManuallyRouted="false" />
         <AssociationConnector Association="newRestdbModel.FK__Waiters__UserId__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="newRestdbModel.FK_Ingredients_Restaurant" />
+        <AssociationConnector Association="newRestdbModel.FK_StockConsumptions_Orders" />
+        <AssociationConnector Association="newRestdbModel.FK_StockConsumptions_Restaurant" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

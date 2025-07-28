@@ -25,10 +25,12 @@ namespace BooknowAPI.Models
         public string Name { get; set; }
         public string Unit { get; set; }
         public Nullable<decimal> QuantityInStock { get; set; }
+        public Nullable<int> restaurant_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DishRecipe> DishRecipes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockConsumption> StockConsumptions { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admins">
           <Key>
             <PropertyRef Name="UserId" />
@@ -111,6 +111,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="Unit" Type="nvarchar" MaxLength="20" />
           <Property Name="QuantityInStock" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="restaurant_id" Type="int" />
         </EntityType>
         <EntityType Name="Jukebox">
           <Key>
@@ -211,6 +212,8 @@
           <Property Name="IngredientId" Type="int" />
           <Property Name="QuantityUsed" Type="decimal" Precision="10" Scale="2" />
           <Property Name="UsedAt" Type="datetime" />
+          <Property Name="order_id" Type="int" />
+          <Property Name="restaurant_id" Type="int" />
         </EntityType>
         <EntityType Name="Tables">
           <Key>
@@ -730,6 +733,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Ingredients_Restaurant">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="Ingredients" Type="Self.Ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="Ingredients">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockConsumptions_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockConsumptions" Type="Self.StockConsumptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="StockConsumptions">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockConsumptions_Restaurant">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockConsumptions" Type="Self.StockConsumptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="StockConsumptions">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="newRestdbModelStoreContainer">
           <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookingDecore" EntityType="Self.BookingDecore" Schema="dbo" store:Type="Tables" />
@@ -917,9 +960,20 @@
             <End Role="Tables" EntitySet="Tables" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
+          <AssociationSet Name="FK_Ingredients_Restaurant" Association="Self.FK_Ingredients_Restaurant">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Ingredients" EntitySet="Ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Orders" Association="Self.FK_StockConsumptions_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="StockConsumptions" EntitySet="StockConsumptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Restaurant" Association="Self.FK_StockConsumptions_Restaurant">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="StockConsumptions" EntitySet="StockConsumptions" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="newRestdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1063,6 +1117,8 @@
           <Property Name="QuantityInStock" Type="Decimal" Precision="10" Scale="2" />
           <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__Ingre__6A30C649" FromRole="Ingredients" ToRole="DishRecipes" />
           <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="Ingredients" ToRole="StockConsumptions" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <NavigationProperty Name="Restaurant" Relationship="newRestdbModel.FK_Ingredients_Restaurant" FromRole="Ingredient" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="Jukebox">
           <Key>
@@ -1151,6 +1207,7 @@
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__Order__0C85DE4D" FromRole="Orders" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="Orders" ToRole="OrderItems" />
           <NavigationProperty Name="User" Relationship="Self.FK__Orders__UserId__619B8048" FromRole="Orders" ToRole="Users" />
+          <NavigationProperty Name="StockConsumptions" Relationship="newRestdbModel.FK_StockConsumptions_Orders" FromRole="Order" ToRole="StockConsumption" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -1178,6 +1235,8 @@
           <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Restaurants" ToRole="Dishes" />
           <NavigationProperty Name="Tables" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Restaurants" ToRole="Tables" />
           <NavigationProperty Name="Waiters" Relationship="Self.FK__Waiters__Restaur__534D60F1" FromRole="Restaurants" ToRole="Waiters" />
+          <NavigationProperty Name="Ingredients" Relationship="newRestdbModel.FK_Ingredients_Restaurant" FromRole="Restaurant" ToRole="Ingredient" />
+          <NavigationProperty Name="StockConsumptions" Relationship="newRestdbModel.FK_StockConsumptions_Restaurant" FromRole="Restaurant" ToRole="StockConsumption" />
         </EntityType>
         <EntityType Name="StockConsumption">
           <Key>
@@ -1190,6 +1249,10 @@
           <Property Name="UsedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Ingredient" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="StockConsumptions" ToRole="Ingredients" />
           <NavigationProperty Name="User" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="StockConsumptions" ToRole="Users" />
+          <Property Name="order_id" Type="Int32" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="newRestdbModel.FK_StockConsumptions_Orders" FromRole="StockConsumption" ToRole="Order" />
+          <NavigationProperty Name="Restaurant" Relationship="newRestdbModel.FK_StockConsumptions_Restaurant" FromRole="StockConsumption" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -1915,7 +1978,59 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
+          <AssociationSet Name="FK_Ingredients_Restaurant" Association="newRestdbModel.FK_Ingredients_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="Ingredient" EntitySet="Ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Orders" Association="newRestdbModel.FK_StockConsumptions_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="StockConsumption" EntitySet="StockConsumptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Restaurant" Association="newRestdbModel.FK_StockConsumptions_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="StockConsumption" EntitySet="StockConsumptions" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Ingredients_Restaurant">
+          <End Type="newRestdbModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
+          <End Type="newRestdbModel.Ingredient" Role="Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockConsumptions_Orders">
+          <End Type="newRestdbModel.Order" Role="Order" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="newRestdbModel.StockConsumption" Role="StockConsumption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="StockConsumption">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockConsumptions_Restaurant">
+          <End Type="newRestdbModel.Restaurant" Role="Restaurant" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="newRestdbModel.StockConsumption" Role="StockConsumption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="StockConsumption">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2034,6 +2149,7 @@
           <EntitySetMapping Name="Ingredients">
             <EntityTypeMapping TypeName="newRestdbModel.Ingredient">
               <MappingFragment StoreEntitySet="Ingredients">
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
                 <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
@@ -2143,6 +2259,8 @@
           <EntitySetMapping Name="StockConsumptions">
             <EntityTypeMapping TypeName="newRestdbModel.StockConsumption">
               <MappingFragment StoreEntitySet="StockConsumptions">
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
                 <ScalarProperty Name="ConsumptionId" ColumnName="ConsumptionId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />

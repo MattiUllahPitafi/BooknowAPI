@@ -19,8 +19,12 @@ namespace BooknowAPI.Models
         public Nullable<int> IngredientId { get; set; }
         public Nullable<decimal> QuantityUsed { get; set; }
         public Nullable<System.DateTime> UsedAt { get; set; }
+        public Nullable<int> order_id { get; set; }
+        public Nullable<int> restaurant_id { get; set; }
     
         public virtual Ingredient Ingredient { get; set; }
         public virtual User User { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
     }
 }
