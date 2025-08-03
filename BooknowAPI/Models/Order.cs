@@ -19,6 +19,7 @@ namespace BooknowAPI.Models
         {
             this.OrderChefAssignments = new HashSet<OrderChefAssignment>();
             this.OrderItems = new HashSet<OrderItem>();
+            this.StockConsumptions = new HashSet<StockConsumption>();
         }
     
         public int OrderId { get; set; }
@@ -35,5 +36,7 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockConsumption> StockConsumptions { get; set; }
     }
 }

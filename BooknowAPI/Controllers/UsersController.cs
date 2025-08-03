@@ -34,19 +34,54 @@ namespace BooknowAPI.Controllers
         [Route("Get/{id}")]
         public IHttpActionResult Get(int id)
         {
-            var user = db.Users.Where(u => u.UserId == id).Select(u => new
-            {
-                u.UserId,
-                u.Name,
-                u.Email,
-                u.Role
-            }).FirstOrDefault();
+            var user = db.Users.FirstOrDefault(u => u.UserId == id);
 
             if (user == null)
                 return NotFound();
 
-            return Ok(user);
+            object response;
+
+            if (user.Role == "Customer")
+            {
+                var allCategories = db.CoinCategories.ToList();
+
+                var userCoins = db.CustomerCoins
+                                  .Where(c => c.UserId == id)
+                                  .ToList();
+
+                var coinsWithCategories = allCategories.Select(cat => new
+                {
+                    CategoryId = cat.CoinCategoryId,
+                    CategoryName = cat.Name,
+                    Balance = userCoins
+                                .Where(uc => uc.CoinCategoryId == cat.CoinCategoryId)
+                                .Select(uc => uc.Balance)
+                                .FirstOrDefault() // Will be 0 if no match
+                }).ToList();
+
+                response = new
+                {
+                    user.UserId,
+                    user.Name,
+                    user.Email,
+                    user.Role,
+                    Coins = coinsWithCategories
+                };
+            }
+            else
+            {
+                response = new
+                {
+                    user.UserId,
+                    user.Name,
+                    user.Email,
+                    user.Role
+                };
+            }
+
+            return Ok(response);
         }
+
 
         // POST: api/Users/Register (Only for customers)
         [HttpPost]

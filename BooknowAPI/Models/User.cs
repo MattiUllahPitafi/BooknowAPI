@@ -26,6 +26,7 @@ namespace BooknowAPI.Models
             this.Ratings = new HashSet<Rating>();
             this.StockConsumptions = new HashSet<StockConsumption>();
             this.WaiterAssignments = new HashSet<WaiterAssignment>();
+            this.Notifications = new HashSet<Notification>();
         }
     
         public int UserId { get; set; }
@@ -56,5 +57,17 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual Waiter Waiter { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
+        public class Notification
+        {
+            public int NotificationId { get; set; }
+            public int UserId { get; set; }
+            public string Message { get; set; }
+            public DateTime CreatedAt { get; set; }
+
+            public virtual User User { get; set; }
+        }
+
     }
 }

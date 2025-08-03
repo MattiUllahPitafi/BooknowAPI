@@ -74,6 +74,8 @@
         <AssociationConnector Association="newRestdbModel.FK_Ingredients_Restaurant" />
         <AssociationConnector Association="newRestdbModel.FK_StockConsumptions_Orders" />
         <AssociationConnector Association="newRestdbModel.FK_StockConsumptions_Restaurant" />
+        <EntityTypeShape EntityType="newRestdbModel.Notification" Width="1.5" PointX="3" PointY="5.375" />
+        <AssociationConnector Association="newRestdbModel.FK__Notificat__UserI__45BE5BA9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -22,12 +22,15 @@ namespace BooknowAPI.Models
             this.Dishes = new HashSet<Dish>();
             this.Tables = new HashSet<Table>();
             this.Waiters = new HashSet<Waiter>();
+            this.Ingredients = new HashSet<Ingredient>();
+            this.StockConsumptions = new HashSet<StockConsumption>();
         }
     
         public int RestaurantId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string Category { get; set; }
+        public string ImageUrl { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Bookings { get; set; }
@@ -39,5 +42,9 @@ namespace BooknowAPI.Models
         public virtual ICollection<Table> Tables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Waiter> Waiters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockConsumption> StockConsumptions { get; set; }
     }
 }
