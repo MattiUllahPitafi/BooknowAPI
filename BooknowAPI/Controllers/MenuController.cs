@@ -23,8 +23,30 @@ namespace BooknowAPI.Controllers
                 d.Price,
                 d.PrepTimeMinutes,
                 d.RestaurantId,
-                d.MenuCategoryId
+                d.MenuCategoryId,
+                d.DishImageUrl
             }).ToList();
+
+            return Ok(dishes);
+        }
+        // GET: api/menu/restaurant/{restaurantId}
+        [HttpGet]
+        [Route("restaurant/{restaurantId:int}")]
+        public IHttpActionResult GetDishesByRestaurant(int restaurantId)
+        {
+            var dishes = db.Dishes
+                .Where(d => d.RestaurantId == restaurantId)
+                .Select(d => new
+                {
+                    d.DishId,
+                    d.Name,
+                    d.Price,
+                    d.PrepTimeMinutes,
+                    d.RestaurantId,
+                    d.MenuCategoryId,
+                    d.DishImageUrl
+                })
+                .ToList();
 
             return Ok(dishes);
         }
@@ -52,7 +74,8 @@ namespace BooknowAPI.Controllers
                 d.Price,
                 d.PrepTimeMinutes,
                 d.RestaurantId,
-                d.MenuCategoryId
+                d.MenuCategoryId,
+                d.DishImageUrl
             }).ToList();
 
             return Ok(result);
@@ -70,7 +93,8 @@ namespace BooknowAPI.Controllers
                 d.Price,
                 d.PrepTimeMinutes,
                 d.RestaurantId,
-                d.MenuCategoryId
+                d.MenuCategoryId,
+                d.DishImageUrl,
             }).FirstOrDefault();
 
             if (dish == null)
@@ -89,7 +113,6 @@ namespace BooknowAPI.Controllers
 
             db.Dishes.Add(dish);
             db.SaveChanges();
-
             return Ok(new
             {
                 dish.DishId,
@@ -97,7 +120,10 @@ namespace BooknowAPI.Controllers
                 dish.Price,
                 dish.PrepTimeMinutes,
                 dish.RestaurantId,
-                dish.MenuCategoryId
+                dish.MenuCategoryId,
+                dish.BaseQuantity,
+                dish.Unit,
+                dish.DishImageUrl
             });
         }
 
@@ -115,6 +141,7 @@ namespace BooknowAPI.Controllers
             dish.PrepTimeMinutes = updatedDish.PrepTimeMinutes;
             dish.RestaurantId = updatedDish.RestaurantId;
             dish.MenuCategoryId = updatedDish.MenuCategoryId;
+            dish.DishImageUrl = updatedDish.DishImageUrl;
 
             db.SaveChanges();
 
@@ -125,7 +152,8 @@ namespace BooknowAPI.Controllers
                 dish.Price,
                 dish.PrepTimeMinutes,
                 dish.RestaurantId,
-                dish.MenuCategoryId
+                dish.MenuCategoryId,
+                dish.DishImageUrl
             });
         }
 

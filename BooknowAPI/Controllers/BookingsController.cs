@@ -26,9 +26,23 @@ namespace RestWAdvBook.Controllers
         [Route("byuserid/{userId}")]
         public IHttpActionResult GetByUserId(int userId)
         {
-            var bookings = db.Bookings.Where(b => b.UserId == userId).ToList();
+            var bookings = db.Bookings
+                .Where(b => b.UserId == userId)
+                .Select(b => new
+                {
+                    RestaurantName = b.Restaurant != null ? b.Restaurant.Name : null,
+                    b.BookingId,
+                    b.BookingDateTime,
+                    b.SpecialRequest,
+                    b.Status,
+                    b.TableId,
+                    b.music_id
+                })
+                .ToList();
+
             return Ok(bookings);
         }
+
 
         // GET: api/bookings/bytableid/{tableId}
         [HttpGet]
@@ -168,6 +182,7 @@ namespace RestWAdvBook.Controllers
 
             return Ok(new
             {
+                booking.BookingId,
                 Message = "Booking created, music saved, and waiter assigned successfully."
             });
         }

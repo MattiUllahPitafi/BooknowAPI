@@ -23,6 +23,7 @@ namespace BooknowAPI.Controllers
                 r.Location,
                 r.Category,
                 r.ImageUrl,
+                r.RestaurantId
             });
             return Ok(restaurants);
         }
@@ -41,7 +42,8 @@ namespace BooknowAPI.Controllers
                 restaurant.Name,
                 restaurant.Location,
                 restaurant.Category,
-                restaurant.ImageUrl
+                restaurant.ImageUrl,
+                restaurant.RestaurantId
             });
 
         }
