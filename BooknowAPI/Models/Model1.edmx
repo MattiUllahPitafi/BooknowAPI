@@ -238,6 +238,7 @@
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Location" Type="nvarchar" MaxLength="50" />
+          <Property Name="Capacity" Type="int" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1298,6 +1299,7 @@
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_Tables" FromRole="Tables" ToRole="Bookings" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Tables" ToRole="Restaurants" />
+          <Property Name="Capacity" Type="Int32" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2334,6 +2336,7 @@
           <EntitySetMapping Name="Tables">
             <EntityTypeMapping TypeName="newRestdbModel.Table">
               <MappingFragment StoreEntitySet="Tables">
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="TableId" ColumnName="TableId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />

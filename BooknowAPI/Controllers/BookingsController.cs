@@ -79,7 +79,6 @@ namespace RestWAdvBook.Controllers
             var bookings = db.Bookings.Where(b => b.Status.ToLower() == status.ToLower()).ToList();
             return Ok(bookings);
         }
-
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create(Booking booking)
@@ -109,24 +108,29 @@ namespace RestWAdvBook.Controllers
                 userCoin.Balance -= 10;
             }
 
-            // Check recent booking conflict
-            if (table.Status == "Booked")
-            {
-                var recentBooking = db.Bookings
-                    .Where(b => b.TableId == table.TableId)
-                    .OrderByDescending(b => b.BookingDateTime)
-                    .FirstOrDefault();
+            // === Check booking conflicts with a fixed 2-hour duration ===
+            var requestedStart = booking.BookingDateTime ?? DateTime.MinValue;
+            var requestedEnd = requestedStart.AddHours(2);
 
-                if (recentBooking != null &&
-                    booking.BookingDateTime < (recentBooking.BookingDateTime ?? DateTime.MinValue).AddMinutes(100))
-                {
-                    return BadRequest("This table is already booked during the selected time.");
-                }
+            // Pull only relevant bookings, then check overlaps in memory
+            var bookingsForTable = db.Bookings
+                .Where(b => b.TableId == table.TableId && b.Status == "Booked")
+                .ToList();
+
+            var overlappingBooking = bookingsForTable
+                .FirstOrDefault(b =>
+                    requestedStart < b.BookingDateTime.Value.AddHours(2) &&
+                    requestedEnd > b.BookingDateTime.Value);
+
+            if (overlappingBooking != null)
+            {
+                return BadRequest("This table is already booked during the selected time. " +
+                                  $"Available after {overlappingBooking.BookingDateTime.Value.AddHours(2):hh:mm tt}.");
             }
 
             // Final booking prep
             booking.Status = "Booked";
-            table.Status = "Booked";
+            table.Status = "Booked"; // NOTE: consider per-timeslot availability instead of global "Booked"
 
             try
             {
@@ -186,6 +190,113 @@ namespace RestWAdvBook.Controllers
                 Message = "Booking created, music saved, and waiter assigned successfully."
             });
         }
+
+        //[HttpPost]
+        //[Route("create")]
+        //public IHttpActionResult Create(Booking booking)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    // Validate Table
+        //    var table = db.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
+        //    if (table == null)
+        //        return BadRequest("Invalid table.");
+
+        //    // Validate User
+        //    var user = db.Users.FirstOrDefault(u => u.UserId == booking.UserId);
+        //    if (user == null)
+        //        return BadRequest("Invalid user.");
+
+        //    // Optional Music Coin Handling
+        //    if (booking.music_id != null && booking.CoinCategoryIdUsedForMusic != null)
+        //    {
+        //        var userCoin = db.CustomerCoins.FirstOrDefault(c =>
+        //            c.UserId == booking.UserId && c.CoinCategoryId == booking.CoinCategoryIdUsedForMusic);
+
+        //        if (userCoin == null || userCoin.Balance < 10)
+        //            return BadRequest("Insufficient coins of selected category for music.");
+
+        //        userCoin.Balance -= 10;
+        //    }
+
+        //    // Check recent booking conflict
+        //    if (table.Status == "Booked")
+        //    {
+        //        var recentBooking = db.Bookings
+        //            .Where(b => b.TableId == table.TableId)
+        //            .OrderByDescending(b => b.BookingDateTime)
+        //            .FirstOrDefault();
+
+        //        if (recentBooking != null &&
+        //            booking.BookingDateTime < (recentBooking.BookingDateTime ?? DateTime.MinValue).AddMinutes(100))
+        //        {
+        //            return BadRequest("This table is already booked during the selected time.");
+        //        }
+        //    }
+
+        //    // Final booking prep
+        //    booking.Status = "Booked";
+        //    table.Status = "Booked";
+
+        //    try
+        //    {
+        //        db.Bookings.Add(booking);
+        //        db.SaveChanges(); // BookingId generated here
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest("Error saving booking: " + ex.Message +
+        //                          (ex.InnerException != null ? " | Inner: " + ex.InnerException.Message : ""));
+        //    }
+
+        //    // === Save to Jukebox if music is selected ===
+        //    if (booking.music_id != null && booking.CoinCategoryIdUsedForMusic != null)
+        //    {
+        //        var jukebox = new Jukebox
+        //        {
+        //            UserId = booking.UserId,
+        //            BookingId = booking.BookingId,
+        //            MusicId = booking.music_id.Value,
+        //            CoinCategoryId = booking.CoinCategoryIdUsedForMusic,
+        //            CoinsSpent = 10,
+        //            DedicationNote = booking.SpecialRequest,
+        //            RequestedAt = DateTime.Now
+        //        };
+
+        //        db.Jukeboxes.Add(jukebox);
+        //        db.SaveChanges();
+        //    }
+
+        //    // === WAITER ASSIGNMENT ===
+        //    var restaurantId = table.RestaurantId;
+
+        //    var availableWaiters = db.Users
+        //        .Where(u => u.Role == "Waiter" && u.Waiter.RestaurantId == restaurantId)
+        //        .ToList();
+
+        //    if (!availableWaiters.Any())
+        //        return BadRequest("No waiters available for this restaurant.");
+
+        //    var random = new Random();
+        //    var selectedWaiter = availableWaiters[random.Next(availableWaiters.Count)];
+
+        //    var waiterAssignment = new WaiterAssignment
+        //    {
+        //        BookingId = booking.BookingId,
+        //        WaiterUserId = selectedWaiter.UserId,
+        //        AssignedAt = DateTime.Now
+        //    };
+
+        //    db.WaiterAssignments.Add(waiterAssignment);
+        //    db.SaveChanges();
+
+        //    return Ok(new
+        //    {
+        //        booking.BookingId,
+        //        Message = "Booking created, music saved, and waiter assigned successfully."
+        //    });
+        //}
 
 
         // PUT: api/bookings/cancel/{id}

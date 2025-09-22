@@ -51,5 +51,6 @@ namespace BooknowAPI.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual DbSet<Waiter> Waiters { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
     }
 }

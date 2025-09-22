@@ -42,8 +42,6 @@ namespace BooknowAPI.Controllers
                     d.Name,
                     d.Price,
                     d.PrepTimeMinutes,
-                    d.RestaurantId,
-                    d.MenuCategoryId,
                     d.DishImageUrl
                 })
                 .ToList();

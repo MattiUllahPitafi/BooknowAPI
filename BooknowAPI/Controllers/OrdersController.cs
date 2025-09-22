@@ -89,7 +89,8 @@ namespace BooknowAPI.Controllers
                     {
                         OrderId = order.OrderId,
                         DishId = dish.DishId,
-                        ChefUserId = chef.UserId
+                        ChefUserId = chef.UserId,
+                        AssignedAt=DateTime.Now,
                     });
                 }
             }
@@ -204,7 +205,13 @@ namespace BooknowAPI.Controllers
             order.Status = status;
             db.SaveChanges();
 
-            return Ok(new { message = "Status updated." });
+            return Ok(new
+            {
+                orderId = order.OrderId,
+                status = order.Status,
+                message = "Order status updated successfully"
+            });
+
         }
     }
 }

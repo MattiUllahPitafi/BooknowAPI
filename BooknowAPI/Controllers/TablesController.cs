@@ -64,6 +64,7 @@ namespace BooknowAPI.Controllers
                                t.Floor,
                                t.Price,
                                t.Status,
+                               t.Capacity,
                                t.RestaurantId
                            })
                            .ToList();
@@ -96,6 +97,7 @@ namespace BooknowAPI.Controllers
                     t.Floor,
                     t.Price,
                     Status = bookedTableIds.Contains(t.TableId) ? "Booked" : "Available",
+                    t.Capacity,
                     t.RestaurantId
                 })
                 .ToList();

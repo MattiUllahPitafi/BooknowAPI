@@ -27,6 +27,7 @@ namespace BooknowAPI.Models
         public string Status { get; set; }
         public Nullable<decimal> Price { get; set; }
         public string Location { get; set; }
+        public Nullable<int> Capacity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Bookings { get; set; }
