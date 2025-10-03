@@ -23,8 +23,8 @@ namespace BooknowAPI.Models
         public Nullable<int> restaurant_id { get; set; }
     
         public virtual Ingredient Ingredient { get; set; }
-        public virtual User User { get; set; }
         public virtual Order Order { get; set; }
         public virtual Restaurant Restaurant { get; set; }
+        public virtual User User { get; set; }
     }
 }

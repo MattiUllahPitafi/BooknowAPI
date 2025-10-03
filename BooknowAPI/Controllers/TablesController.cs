@@ -13,7 +13,7 @@ namespace BooknowAPI.Controllers
 
     public class TablesController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
         // GET: api/tables
         [HttpGet]
@@ -77,7 +77,35 @@ namespace BooknowAPI.Controllers
         // GET: api/tables/available/{restaurantId}?datetime=2025-08-04T22:00:00
         [HttpGet]
         [Route("available/{restaurantId:int}")]
-        public IHttpActionResult GetAvailableTablesByRestaurantAndTime(int restaurantId, DateTime datetime)
+        //public IHttpActionResult GetAvailableTablesByRestaurantAndTime(int restaurantId, DateTime datetime)
+        //{
+        //    var bookedTableIds = db.Bookings
+        //        .Where(b => b.Table.RestaurantId == restaurantId &&
+        //                    b.Status == "Booked" &&
+        //                    datetime >= DbFunctions.AddMinutes(b.BookingDateTime, -100) &&
+        //                    datetime <= DbFunctions.AddMinutes(b.BookingDateTime, 100))
+        //        .Select(b => b.TableId)
+        //        .ToList();
+
+        //    var tables = db.Tables
+        //        .Where(t => t.RestaurantId == restaurantId)
+        //        .Select(t => new
+        //        {
+        //            t.TableId,
+        //            t.Name,
+        //            t.Location,
+        //            t.Floor,
+        //            t.Price,
+        //            Status = bookedTableIds.Contains(t.TableId) ? "Booked" : "Available",
+        //            t.Capacity,
+        //            t.RestaurantId
+        //        })
+        //        .ToList();
+
+        //    return Ok(tables);
+        //}
+
+        public IHttpActionResult GetAvailableTablesByRestaurantAndTime(int restaurantId, DateTime datetime, int? floor = null)
         {
             var bookedTableIds = db.Bookings
                 .Where(b => b.Table.RestaurantId == restaurantId &&
@@ -87,8 +115,15 @@ namespace BooknowAPI.Controllers
                 .Select(b => b.TableId)
                 .ToList();
 
-            var tables = db.Tables
-                .Where(t => t.RestaurantId == restaurantId)
+            var query = db.Tables
+                .Where(t => t.RestaurantId == restaurantId);
+
+            if (floor.HasValue)
+            {
+                query = query.Where(t => t.Floor == floor.Value);
+            }
+
+            var tables = query
                 .Select(t => new
                 {
                     t.TableId,

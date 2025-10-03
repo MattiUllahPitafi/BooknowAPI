@@ -9,7 +9,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/menu")]
     public class MenuController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4  db = new newRestdbEntities4();
 
         // GET: api/menu/all
         [HttpGet]
@@ -25,6 +25,7 @@ namespace BooknowAPI.Controllers
                 d.RestaurantId,
                 d.MenuCategoryId,
                 d.DishImageUrl
+                
             }).ToList();
 
             return Ok(dishes);
@@ -34,19 +35,43 @@ namespace BooknowAPI.Controllers
         [Route("restaurant/{restaurantId:int}")]
         public IHttpActionResult GetDishesByRestaurant(int restaurantId)
         {
-            var dishes = db.Dishes
-                .Where(d => d.RestaurantId == restaurantId)
-                .Select(d => new
-                {
-                    d.DishId,
-                    d.Name,
-                    d.Price,
-                    d.PrepTimeMinutes,
-                    d.DishImageUrl
-                })
-                .ToList();
+            //var dishes = db.Dishes
+            //    .Where(d => d.RestaurantId == restaurantId)
+            //    .Select(d => new
+            //    {
+            //        d.DishId,
+            //        d.Name,
+            //        d.Price,
+            //        d.PrepTimeMinutes,
+            //        d.DishImageUrl
+            //    })
+            //    .ToList();
 
-            return Ok(dishes);
+            //return Ok(dishes);public IHttpActionResult GetDishesByRestaurant(int restaurantId)
+            {
+                var dishes = db.Dishes
+                    .Where(d => d.RestaurantId == restaurantId)
+                    .Select(d => new
+                    {
+                        d.DishId,
+                        d.Name,
+                        d.Price,
+                        d.PrepTimeMinutes,
+                        d.DishImageUrl,
+
+                        // 👇 Add ingredients list
+                        Ingredients = d.DishRecipes
+                            .Select(dr => new
+                            {
+                                dr.Ingredient.IngredientId,
+                                dr.Ingredient.Name,
+                            }).ToList()
+                    })
+                    .ToList();
+
+                return Ok(dishes);
+            }
+
         }
 
         // GET: api/menu/filter?restaurantId=1&menuCategoryId=2&search=chicken

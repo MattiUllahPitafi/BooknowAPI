@@ -10,7 +10,7 @@ namespace RestWAdvBook.Controllers
     [RoutePrefix("api/OrderAndStock")]
     public class OrderAndStockController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
         // =================== INGREDIENTS ===================
 

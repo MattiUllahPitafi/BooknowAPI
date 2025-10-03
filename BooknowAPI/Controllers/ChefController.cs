@@ -12,15 +12,47 @@ namespace BooknowAPI.Controllers
 
     public class ChefController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
-        // GET: api/cheforder/byid?userid=5
+        //// GET: api/cheforder/byid?userid=5
+        //[HttpGet]
+        //[Route("byid/{userId:int}")]
+        //public IHttpActionResult GetOrdersByChefId(int userid)
+        //{
+        //    var chefOrders = db.OrderChefAssignments
+        //        .Where(c => c.ChefUserId == userid)
+        //        .Select(c => new
+        //        {
+        //            c.OrderId,
+
+        //            Order = new
+        //            {
+        //                OrderDate = c.Order != null ? c.Order.OrderDate : (DateTime?)null,
+        //                Status = c.Order != null ? c.Order.Status : null,
+
+
+        //                Dishes = c.Order.OrderItems
+        //                    .Select(oi => new
+        //                    {
+        //                        DishId= oi.DishId,
+        //                        DishName = oi.Dish != null ? oi.Dish.Name : null,
+        //                        Quantity = oi.Quantity,
+        //                    })
+        //            }
+        //        })
+        //        .ToList();
+
+        //    return Ok(chefOrders);
+        //}
+        // GET: api/cheforder/byid/{userId}
         [HttpGet]
         [Route("byid/{userId:int}")]
-        public IHttpActionResult GetOrdersByChefId(int userid)
+        public IHttpActionResult GetOrdersByChefId(int userId)
         {
             var chefOrders = db.OrderChefAssignments
-                .Where(c => c.ChefUserId == userid)
+                .Where(c => c.ChefUserId == userId
+                         && c.Order.Status != "Completed"
+                         && c.Order.Status != "Cancelled")
                 .Select(c => new
                 {
                     c.OrderId,
@@ -29,21 +61,24 @@ namespace BooknowAPI.Controllers
                     {
                         OrderDate = c.Order != null ? c.Order.OrderDate : (DateTime?)null,
                         Status = c.Order != null ? c.Order.Status : null,
-                       
 
-                        Dishes = c.Order.OrderItems
-                            .Select(oi => new
-                            {
-                                DishId= oi.DishId,
-                                DishName = oi.Dish != null ? oi.Dish.Name : null,
-                                Quantity = oi.Quantity,
-                            })
+                        // ✅ include booking datetime
+                        BookingDateTime = c.Order.Booking != null ? c.Order.Booking.BookingDateTime : (DateTime?)null,
+
+                        Dishes = c.Order.OrderItems.Select(oi => new
+                        {
+                            DishId = oi.DishId,
+                            DishName = oi.Dish != null ? oi.Dish.Name : null,
+                            Quantity = oi.Quantity,
+                            PrepTimeMinutes = oi.Dish != null ? oi.Dish.PrepTimeMinutes : (int?)null
+                        })
                     }
                 })
                 .ToList();
 
             return Ok(chefOrders);
         }
+
 
         [HttpPut]
 [Route("status/{id}")]

@@ -7,7 +7,7 @@ namespace RestWAdvBook.Controllers
     [RoutePrefix("api/ratings")]
     public class RatingsController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
         // GET: api/ratings/all
         [HttpGet]

@@ -10,6 +10,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RestaurantId" Type="int" />
         </EntityType>
         <EntityType Name="BookingDecore">
           <Key>
@@ -181,6 +182,7 @@
           <Property Name="Quantity" Type="int" />
           <Property Name="QuantityOrdered" Type="decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="UnitPrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="SkippedIngredientIds" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -722,6 +724,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Admins_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bookings_CoinCategories">
           <End Role="CoinCategories" Type="Self.CoinCategories" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
@@ -978,6 +992,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
+          <AssociationSet Name="FK_Admins_Restaurants" Association="Self.FK_Admins_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bookings_CoinCategories" Association="Self.FK_Bookings_CoinCategories">
             <End Role="CoinCategories" EntitySet="CoinCategories" />
             <End Role="Bookings" EntitySet="Bookings" />
@@ -1012,7 +1030,9 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantId" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK__Admins__UserId__5629CD9C" FromRole="Admins" ToRole="Users" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Admins_Restaurants" FromRole="Admins" ToRole="Restaurants" />
         </EntityType>
         <EntityType Name="BookingDecore">
           <Key>
@@ -1119,13 +1139,13 @@
           <Property Name="MenuCategoryId" Type="Int32" />
           <Property Name="BaseQuantity" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="Unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DishImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__DishI__72C60C4A" FromRole="Dishes" ToRole="ChefDishSpecialities" />
           <NavigationProperty Name="MenuCategory" Relationship="Self.FK__Dishes__MenuCate__59FA5E80" FromRole="Dishes" ToRole="MenuCategories" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Dishes" ToRole="Restaurants" />
           <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__DishI__693CA210" FromRole="Dishes" ToRole="DishRecipes" />
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__DishI__0D7A0286" FromRole="Dishes" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="Dishes" ToRole="OrderItems" />
-          <Property Name="DishImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DishRecipe">
           <Key>
@@ -1146,10 +1166,10 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="QuantityInStock" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="restaurant_id" Type="Int32" />
           <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__Ingre__6A30C649" FromRole="Ingredients" ToRole="DishRecipes" />
           <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="Ingredients" ToRole="StockConsumptions" />
-          <Property Name="restaurant_id" Type="Int32" />
-          <NavigationProperty Name="Restaurant" Relationship="newRestdbModel.FK_Ingredients_Restaurant" FromRole="Ingredient" ToRole="Restaurant" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Ingredients_Restaurant" FromRole="Ingredients" ToRole="Restaurants" />
         </EntityType>
         <EntityType Name="Jukebox">
           <Key>
@@ -1197,6 +1217,17 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Musics" Relationship="Self.FK__Music__GenreId__4316F928" FromRole="MusicGenres" ToRole="Music" />
         </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationId" />
+          </Key>
+          <Property Name="NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsRead" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Notificat__UserI__45BE5BA9" FromRole="Notifications" ToRole="Users" />
+        </EntityType>
         <EntityType Name="OrderChefAssignment">
           <Key>
             <PropertyRef Name="AssignmentId" />
@@ -1222,6 +1253,7 @@
           <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <NavigationProperty Name="Dish" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="OrderItems" ToRole="Dishes" />
           <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="OrderItems" ToRole="Orders" />
+          <Property Name="SkippedIngredientIds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1238,7 +1270,7 @@
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__Order__0C85DE4D" FromRole="Orders" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="Orders" ToRole="OrderItems" />
           <NavigationProperty Name="User" Relationship="Self.FK__Orders__UserId__619B8048" FromRole="Orders" ToRole="Users" />
-          <NavigationProperty Name="StockConsumptions" Relationship="newRestdbModel.FK_StockConsumptions_Orders" FromRole="Order" ToRole="StockConsumption" />
+          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK_StockConsumptions_Orders" FromRole="Orders" ToRole="StockConsumptions" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -1261,14 +1293,15 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Restaurants" FromRole="Restaurants" ToRole="Admins" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK__Bookings__Restau__5DCAEF64" FromRole="Restaurants" ToRole="Bookings" />
           <NavigationProperty Name="Chefs" Relationship="Self.FK__Chefs__Restauran__4F7CD00D" FromRole="Restaurants" ToRole="Chefs" />
           <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Restaurants" ToRole="Dishes" />
+          <NavigationProperty Name="Ingredients" Relationship="Self.FK_Ingredients_Restaurant" FromRole="Restaurants" ToRole="Ingredients" />
           <NavigationProperty Name="Tables" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Restaurants" ToRole="Tables" />
           <NavigationProperty Name="Waiters" Relationship="Self.FK__Waiters__Restaur__534D60F1" FromRole="Restaurants" ToRole="Waiters" />
-          <NavigationProperty Name="Ingredients" Relationship="newRestdbModel.FK_Ingredients_Restaurant" FromRole="Restaurant" ToRole="Ingredient" />
-          <NavigationProperty Name="StockConsumptions" Relationship="newRestdbModel.FK_StockConsumptions_Restaurant" FromRole="Restaurant" ToRole="StockConsumption" />
-          <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK_StockConsumptions_Restaurant" FromRole="Restaurants" ToRole="StockConsumptions" />
         </EntityType>
         <EntityType Name="StockConsumption">
           <Key>
@@ -1279,12 +1312,12 @@
           <Property Name="IngredientId" Type="Int32" />
           <Property Name="QuantityUsed" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="UsedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Ingredient" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="StockConsumptions" ToRole="Ingredients" />
-          <NavigationProperty Name="User" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="StockConsumptions" ToRole="Users" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="restaurant_id" Type="Int32" />
-          <NavigationProperty Name="Order" Relationship="newRestdbModel.FK_StockConsumptions_Orders" FromRole="StockConsumption" ToRole="Order" />
-          <NavigationProperty Name="Restaurant" Relationship="newRestdbModel.FK_StockConsumptions_Restaurant" FromRole="StockConsumption" ToRole="Restaurant" />
+          <NavigationProperty Name="Ingredient" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="StockConsumptions" ToRole="Ingredients" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_StockConsumptions_Orders" FromRole="StockConsumptions" ToRole="Orders" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_StockConsumptions_Restaurant" FromRole="StockConsumptions" ToRole="Restaurants" />
+          <NavigationProperty Name="User" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="StockConsumptions" ToRole="Users" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -1297,9 +1330,9 @@
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Capacity" Type="Int32" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_Tables" FromRole="Tables" ToRole="Bookings" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Tables" ToRole="Restaurants" />
-          <Property Name="Capacity" Type="Int32" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1317,13 +1350,13 @@
           <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__UserI__4AB81AF0" FromRole="Users" ToRole="CustomerCoins" />
           <NavigationProperty Name="Customer" Relationship="Self.FK__Customers__UserI__46E78A0C" FromRole="Users" ToRole="Customers" />
           <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__UserId__7C4F7684" FromRole="Users" ToRole="Jukebox" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__45BE5BA9" FromRole="Users" ToRole="Notifications" />
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__ChefU__0E6E26BF" FromRole="Users" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__UserId__619B8048" FromRole="Users" ToRole="Orders" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__UserId__03F0984C" FromRole="Users" ToRole="Ratings" />
           <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="Users" ToRole="StockConsumptions" />
           <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Waite__1332DBDC" FromRole="Users" ToRole="WaiterAssignments" />
           <NavigationProperty Name="Waiter" Relationship="Self.FK__Waiters__UserId__52593CB8" FromRole="Users" ToRole="Waiters" />
-          <NavigationProperty Name="Notifications" Relationship="newRestdbModel.FK__Notificat__UserI__45BE5BA9" FromRole="User" ToRole="Notification" />
         </EntityType>
         <EntityType Name="WaiterAssignment">
           <Key>
@@ -1354,6 +1387,18 @@
             </Principal>
             <Dependent Role="Admins">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Admins_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Admins" Type="Self.Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="RestaurantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1669,6 +1714,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Ingredients_Restaurant">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="Ingredients">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Jukebox__MusicId__7E37BEF6">
           <End Role="Music" Type="Self.Music" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
@@ -1702,6 +1759,18 @@
             </Principal>
             <Dependent Role="Music">
               <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__UserI__45BE5BA9">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1753,6 +1822,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StockConsumptions_Orders">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockConsumptions" Type="Self.StockConsumption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="StockConsumptions">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Ratings__UserId__03F0984C">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Ratings" Type="Self.Rating" Multiplicity="*" />
@@ -1786,6 +1869,20 @@
             </Principal>
             <Dependent Role="Waiters">
               <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockConsumptions_Restaurant">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockConsumptions" Type="Self.StockConsumption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="RestaurantId" />
+            </Principal>
+            <Dependent Role="StockConsumptions">
+              <PropertyRef Name="restaurant_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1825,7 +1922,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="newRestdbEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="newRestdbEntities4" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="BookingDecores" EntityType="Self.BookingDecore" />
           <EntitySet Name="Bookings" EntityType="Self.Booking" />
@@ -1842,6 +1939,7 @@
           <EntitySet Name="MenuCategories" EntityType="Self.MenuCategory" />
           <EntitySet Name="Musics" EntityType="Self.Music" />
           <EntitySet Name="MusicGenres" EntityType="Self.MusicGenre" />
+          <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="OrderChefAssignments" EntityType="Self.OrderChefAssignment" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
@@ -1854,6 +1952,10 @@
           <EntitySet Name="Waiters" EntityType="Self.Waiter" />
           <AssociationSet Name="FK__Admins__UserId__5629CD9C" Association="Self.FK__Admins__UserId__5629CD9C">
             <End Role="Users" EntitySet="Users" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Admins_Restaurants" Association="Self.FK_Admins_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Admins" EntitySet="Admins" />
           </AssociationSet>
           <AssociationSet Name="FK__BookingDe__Booki__778AC167" Association="Self.FK__BookingDe__Booki__778AC167">
@@ -1960,6 +2062,10 @@
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Ingredients_Restaurant" Association="Self.FK_Ingredients_Restaurant">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Ingredients" EntitySet="Ingredients" />
+          </AssociationSet>
           <AssociationSet Name="FK__Jukebox__MusicId__7E37BEF6" Association="Self.FK__Jukebox__MusicId__7E37BEF6">
             <End Role="Music" EntitySet="Musics" />
             <End Role="Jukebox" EntitySet="Jukeboxes" />
@@ -1971,6 +2077,10 @@
           <AssociationSet Name="FK__Music__GenreId__4316F928" Association="Self.FK__Music__GenreId__4316F928">
             <End Role="MusicGenres" EntitySet="MusicGenres" />
             <End Role="Music" EntitySet="Musics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__UserI__45BE5BA9" Association="Self.FK__Notificat__UserI__45BE5BA9">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK__OrderChef__ChefU__0E6E26BF" Association="Self.FK__OrderChef__ChefU__0E6E26BF">
             <End Role="Users" EntitySet="Users" />
@@ -1988,6 +2098,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Orders" Association="Self.FK_StockConsumptions_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="StockConsumptions" EntitySet="StockConsumptions" />
+          </AssociationSet>
           <AssociationSet Name="FK__Ratings__UserId__03F0984C" Association="Self.FK__Ratings__UserId__03F0984C">
             <End Role="Users" EntitySet="Users" />
             <End Role="Ratings" EntitySet="Ratings" />
@@ -1999,6 +2113,10 @@
           <AssociationSet Name="FK__Waiters__Restaur__534D60F1" Association="Self.FK__Waiters__Restaur__534D60F1">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Waiters" EntitySet="Waiters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockConsumptions_Restaurant" Association="Self.FK_StockConsumptions_Restaurant">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
           <AssociationSet Name="FK__StockCons__UserI__6E01572D" Association="Self.FK__StockCons__UserI__6E01572D">
             <End Role="Users" EntitySet="Users" />
@@ -2012,97 +2130,18 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
-          <AssociationSet Name="FK_Ingredients_Restaurant" Association="newRestdbModel.FK_Ingredients_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="Ingredient" EntitySet="Ingredients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockConsumptions_Orders" Association="newRestdbModel.FK_StockConsumptions_Orders">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="StockConsumption" EntitySet="StockConsumptions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StockConsumptions_Restaurant" Association="newRestdbModel.FK_StockConsumptions_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="StockConsumption" EntitySet="StockConsumptions" />
-          </AssociationSet>
-          <EntitySet Name="Notifications" EntityType="newRestdbModel.Notification" />
-          <AssociationSet Name="FK__Notificat__UserI__45BE5BA9" Association="newRestdbModel.FK__Notificat__UserI__45BE5BA9">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Ingredients_Restaurant">
-          <End Type="newRestdbModel.Restaurant" Role="Restaurant" Multiplicity="0..1" />
-          <End Type="newRestdbModel.Ingredient" Role="Ingredient" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="RestaurantId" />
-            </Principal>
-            <Dependent Role="Ingredient">
-              <PropertyRef Name="restaurant_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockConsumptions_Orders">
-          <End Type="newRestdbModel.Order" Role="Order" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="newRestdbModel.StockConsumption" Role="StockConsumption" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="StockConsumption">
-              <PropertyRef Name="order_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StockConsumptions_Restaurant">
-          <End Type="newRestdbModel.Restaurant" Role="Restaurant" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="newRestdbModel.StockConsumption" Role="StockConsumption" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="RestaurantId" />
-            </Principal>
-            <Dependent Role="StockConsumption">
-              <PropertyRef Name="restaurant_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Notification">
-          <Key>
-            <PropertyRef Name="NotificationId" />
-          </Key>
-          <Property Name="NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsRead" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="User" Relationship="newRestdbModel.FK__Notificat__UserI__45BE5BA9" FromRole="Notification" ToRole="User" />
-        </EntityType>
-        <Association Name="FK__Notificat__UserI__45BE5BA9">
-          <End Type="newRestdbModel.User" Role="User" Multiplicity="1" />
-          <End Type="newRestdbModel.Notification" Role="Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities2">
+        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities4">
           <EntitySetMapping Name="Admins">
             <EntityTypeMapping TypeName="newRestdbModel.Admin">
               <MappingFragment StoreEntitySet="Admins">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2187,7 +2226,6 @@
           <EntitySetMapping Name="Dishes">
             <EntityTypeMapping TypeName="newRestdbModel.Dish">
               <MappingFragment StoreEntitySet="Dishes">
-                <ScalarProperty Name="DishImageUrl" ColumnName="DishImageUrl" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -2196,6 +2234,7 @@
                 <ScalarProperty Name="MenuCategoryId" ColumnName="MenuCategoryId" />
                 <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="DishImageUrl" ColumnName="DishImageUrl" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2212,11 +2251,11 @@
           <EntitySetMapping Name="Ingredients">
             <EntityTypeMapping TypeName="newRestdbModel.Ingredient">
               <MappingFragment StoreEntitySet="Ingredients">
-                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
                 <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2261,6 +2300,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="newRestdbModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="NotificationId" ColumnName="NotificationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OrderChefAssignments">
             <EntityTypeMapping TypeName="newRestdbModel.OrderChefAssignment">
               <MappingFragment StoreEntitySet="OrderChefAssignments">
@@ -2275,6 +2325,7 @@
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="newRestdbModel.OrderItem">
               <MappingFragment StoreEntitySet="OrderItems">
+                <ScalarProperty Name="SkippedIngredientIds" ColumnName="SkippedIngredientIds" />
                 <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
@@ -2312,31 +2363,30 @@
           <EntitySetMapping Name="Restaurants">
             <EntityTypeMapping TypeName="newRestdbModel.Restaurant">
               <MappingFragment StoreEntitySet="Restaurants">
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StockConsumptions">
             <EntityTypeMapping TypeName="newRestdbModel.StockConsumption">
               <MappingFragment StoreEntitySet="StockConsumptions">
-                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
-                <ScalarProperty Name="order_id" ColumnName="order_id" />
                 <ScalarProperty Name="ConsumptionId" ColumnName="ConsumptionId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
                 <ScalarProperty Name="QuantityUsed" ColumnName="QuantityUsed" />
                 <ScalarProperty Name="UsedAt" ColumnName="UsedAt" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tables">
             <EntityTypeMapping TypeName="newRestdbModel.Table">
               <MappingFragment StoreEntitySet="Tables">
-                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="TableId" ColumnName="TableId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
@@ -2344,6 +2394,7 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2373,17 +2424,6 @@
               <MappingFragment StoreEntitySet="Waiters">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Notifications">
-            <EntityTypeMapping TypeName="newRestdbModel.Notification">
-              <MappingFragment StoreEntitySet="Notifications">
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="NotificationId" ColumnName="NotificationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

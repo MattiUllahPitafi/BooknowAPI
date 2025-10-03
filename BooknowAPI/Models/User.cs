@@ -21,12 +21,12 @@ namespace BooknowAPI.Models
             this.ChefDishSpecialities = new HashSet<ChefDishSpeciality>();
             this.CustomerCoins = new HashSet<CustomerCoin>();
             this.Jukeboxes = new HashSet<Jukebox>();
+            this.Notifications = new HashSet<Notification>();
             this.OrderChefAssignments = new HashSet<OrderChefAssignment>();
             this.Orders = new HashSet<Order>();
             this.Ratings = new HashSet<Rating>();
             this.StockConsumptions = new HashSet<StockConsumption>();
             this.WaiterAssignments = new HashSet<WaiterAssignment>();
-            this.Notifications = new HashSet<Notification>();
         }
     
         public int UserId { get; set; }
@@ -47,6 +47,8 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Jukebox> Jukeboxes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderChefAssignment> OrderChefAssignments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
@@ -57,7 +59,5 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual Waiter Waiter { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace BooknowAPI.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class newRestdbEntities2 : DbContext
+    public partial class newRestdbEntities4 : DbContext
     {
-        public newRestdbEntities2()
-            : base("name=newRestdbEntities2")
+        public newRestdbEntities4()
+            : base("name=newRestdbEntities4")
         {
         }
     
@@ -41,6 +41,7 @@ namespace BooknowAPI.Models
         public virtual DbSet<MenuCategory> MenuCategories { get; set; }
         public virtual DbSet<Music> Musics { get; set; }
         public virtual DbSet<MusicGenre> MusicGenres { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OrderChefAssignment> OrderChefAssignments { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
@@ -51,6 +52,5 @@ namespace BooknowAPI.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual DbSet<Waiter> Waiters { get; set; }
-        public virtual DbSet<Notification> Notifications { get; set; }
     }
 }

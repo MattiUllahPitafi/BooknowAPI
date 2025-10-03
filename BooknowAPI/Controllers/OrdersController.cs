@@ -4,13 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using BooknowAPI.Models;
+using Newtonsoft.Json;
 
 namespace BooknowAPI.Controllers
 {
     [RoutePrefix("api/order")]
     public class OrderController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
         // GET: api/order/all
         [HttpGet]
@@ -42,7 +43,6 @@ namespace BooknowAPI.Controllers
 
             return Ok(orders);
         }
-
         // POST: api/order/add
         [HttpPost]
         [Route("add")]
@@ -59,39 +59,77 @@ namespace BooknowAPI.Controllers
             order.Status = "Placed";
             order.TotalPrice = 0;
 
-            // Temporarily store order items and clear to avoid EF issues
             var orderItems = order.OrderItems.ToList();
             order.OrderItems = new List<OrderItem>();
 
             db.Orders.Add(order);
-            db.SaveChanges(); // Save to generate OrderId
+            db.SaveChanges(); // generate OrderId
 
             foreach (var item in orderItems)
             {
-                var dish = db.Dishes.FirstOrDefault(d => d.DishId== item.DishId);
+                var dish = db.Dishes.FirstOrDefault(d => d.DishId == item.DishId);
                 if (dish == null)
                     return BadRequest($"Dish not found (ID: {item.DishId})");
 
-                item.OrderId = order.OrderId;
-                item.UnitPrice = (decimal)(dish.Price * item.Quantity);
-
-                db.OrderItems.Add(item);
-                order.TotalPrice += item.UnitPrice;
-
-                // Assign chef based on dish speciality
-                var chef = db.Users
-                    .FirstOrDefault(u => u.Role == "chef" &&
-                                         u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
-
-                if (chef != null)
+                // Case 1: Quantity > 1 and skipped ingredients provided → split
+                if (item.Quantity > 1 && item.SkippedIngredients != null && item.SkippedIngredients.Any())
                 {
-                    db.OrderChefAssignments.Add(new OrderChefAssignment
+                    for (int i = 0; i < item.Quantity; i++)
                     {
-                        OrderId = order.OrderId,
-                        DishId = dish.DishId,
-                        ChefUserId = chef.UserId,
-                        AssignedAt=DateTime.Now,
-                    });
+                        var splitItem = new OrderItem
+                        {
+                            OrderId = order.OrderId,
+                            DishId = item.DishId,
+                            Quantity = 1,
+                            UnitPrice = (decimal)dish.Price,
+                            SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients)
+                        };
+
+                        db.OrderItems.Add(splitItem);
+                        order.TotalPrice += splitItem.UnitPrice;
+
+                        // Assign chef here
+                        var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
+                                    u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+                        if (chef != null)
+                        {
+                            db.OrderChefAssignments.Add(new OrderChefAssignment
+                            {
+                                OrderId = order.OrderId,
+                                DishId = dish.DishId,
+                                ChefUserId = chef.UserId,
+                                AssignedAt = DateTime.Now
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    // Case 2: Normal (no skipped or same skipped for all)
+                    item.OrderId = order.OrderId;
+                    item.UnitPrice = (decimal)(dish.Price * item.Quantity);
+
+                    if (item.SkippedIngredients != null && item.SkippedIngredients.Any())
+                        item.SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients);
+                    else
+                        item.SkippedIngredientIds = null;
+
+                    db.OrderItems.Add(item);
+                    order.TotalPrice += item.UnitPrice;
+
+                    // Assign chef here
+                    var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
+                                u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+                    if (chef != null)
+                    {
+                        db.OrderChefAssignments.Add(new OrderChefAssignment
+                        {
+                            OrderId = order.OrderId,
+                            DishId = dish.DishId,
+                            ChefUserId = chef.UserId,
+                            AssignedAt = DateTime.Now
+                        });
+                    }
                 }
             }
 
@@ -106,6 +144,145 @@ namespace BooknowAPI.Controllers
                 order.Status
             });
         }
+
+        //// POST: api/order/add
+        //[HttpPost]
+        //[Route("add")]
+        //public IHttpActionResult AddOrder(Order order)
+        //{
+        //    if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
+        //        return BadRequest("Invalid order payload.");
+
+        //    var booking = db.Bookings.Find(order.BookingId);
+        //    if (booking == null)
+        //        return BadRequest("Booking not found.");
+
+        //    order.OrderDate = DateTime.Now;
+        //    order.Status = "Placed";
+        //    order.TotalPrice = 0;
+
+        //    // Temporarily store order items and clear to avoid EF issues
+        //    var orderItems = order.OrderItems.ToList();
+        //    order.OrderItems = new List<OrderItem>();
+
+        //    db.Orders.Add(order);
+        //    db.SaveChanges(); // Generate OrderId
+
+        //    foreach (var item in orderItems)
+        //    {
+        //        var dish = db.Dishes.FirstOrDefault(d => d.DishId == item.DishId);
+        //        if (dish == null)
+        //            return BadRequest($"Dish not found (ID: {item.DishId})");
+
+        //        item.OrderId = order.OrderId;
+        //        item.UnitPrice = (decimal)(dish.Price * item.Quantity);
+
+        //        // ✅ Save skipped ingredients if present
+        //        if (item.SkippedIngredients != null && item.SkippedIngredients.Any())
+        //        {
+        //            item.SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients);
+        //        }
+        //        else
+        //        {
+        //            item.SkippedIngredientIds = null;
+        //        }
+
+        //        db.OrderItems.Add(item);
+        //        order.TotalPrice += item.UnitPrice;
+
+        //        // ✅ Assign chef based on dish speciality
+        //        var chef = db.Users
+        //            .FirstOrDefault(u => u.Role == "chef" &&
+        //                                 u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+
+        //        if (chef != null)
+        //        {
+        //            db.OrderChefAssignments.Add(new OrderChefAssignment
+        //            {
+        //                OrderId = order.OrderId,
+        //                DishId = dish.DishId,
+        //                ChefUserId = chef.UserId,
+        //                AssignedAt = DateTime.Now
+        //            });
+        //        }
+        //    }
+
+        //    db.SaveChanges();
+
+        //    return Ok(new
+        //    {
+        //        order.OrderId,
+        //        order.BookingId,
+        //        order.UserId,
+        //        order.TotalPrice,
+        //        order.Status
+        //    });
+        //}
+
+
+        //// POST: api/order/add
+        //[HttpPost]
+        //[Route("add")]
+        //public IHttpActionResult AddOrder(Order order)
+        //{
+        //    if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
+        //        return BadRequest("Invalid order payload.");
+
+        //    var booking = db.Bookings.Find(order.BookingId);
+        //    if (booking == null)
+        //        return BadRequest("Booking not found.");
+
+        //    order.OrderDate = DateTime.Now;
+        //    order.Status = "Placed";
+        //    order.TotalPrice = 0;
+
+        //    // Temporarily store order items and clear to avoid EF issues
+        //    var orderItems = order.OrderItems.ToList();
+        //    order.OrderItems = new List<OrderItem>();
+
+        //    db.Orders.Add(order);
+        //    db.SaveChanges(); // Save to generate OrderId
+
+        //    foreach (var item in orderItems)
+        //    {
+        //        var dish = db.Dishes.FirstOrDefault(d => d.DishId== item.DishId);
+        //        if (dish == null)
+        //            return BadRequest($"Dish not found (ID: {item.DishId})");
+
+        //        item.OrderId = order.OrderId;
+        //        item.UnitPrice = (decimal)(dish.Price * item.Quantity);
+
+        //        db.OrderItems.Add(item);
+        //        order.TotalPrice += item.UnitPrice;
+
+        //        // Assign chef based on dish speciality
+        //        var chef = db.Users
+        //            .FirstOrDefault(u => u.Role == "chef" &&
+        //                                 u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+
+        //        if (chef != null)
+        //        {
+        //            db.OrderChefAssignments.Add(new OrderChefAssignment
+        //            {
+        //                OrderId = order.OrderId,
+        //                DishId = dish.DishId,
+        //                ChefUserId = chef.UserId,
+        //                AssignedAt=DateTime.Now,
+        //            });
+        //        }
+        //    }
+
+        //    db.SaveChanges();
+
+        //    return Ok(new
+        //    {
+        //        order.OrderId,
+        //        order.BookingId,
+        //        order.UserId,
+        //        order.TotalPrice,
+        //        order.Status
+        //    });
+        //}
 
         // PUT: api/order/cancel/{id}
         [HttpPut]
@@ -176,7 +353,7 @@ namespace BooknowAPI.Controllers
             }).ToList();
 
             return Ok(orders);
-        }
+        } 
 
         // DELETE: api/order/delete/{id}
         [HttpDelete]

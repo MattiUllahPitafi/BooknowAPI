@@ -11,7 +11,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
-        private newRestdbEntities2 db = new newRestdbEntities2();
+        private newRestdbEntities4 db = new newRestdbEntities4();
 
         // GET: api/Users/GetAll
         [HttpGet]
@@ -221,6 +221,24 @@ namespace BooknowAPI.Controllers
             if (user == null)
                 return Unauthorized();
 
+            // If role = Admin → fetch restaurantId
+            if (user.Role == "Admin")
+            {
+                var admin = db.Admins.FirstOrDefault(a => a.UserId == user.UserId);
+                if (admin != null)
+                {
+                    return Ok(new
+                    {
+                        user.UserId,
+                        user.Name,
+                        user.Email,
+                        user.Role,
+                        admin.RestaurantId   // 👈 Include restaurant id
+                    });
+                }
+            }
+
+            // Normal response for other roles
             return Ok(new
             {
                 user.UserId,
@@ -229,6 +247,28 @@ namespace BooknowAPI.Controllers
                 user.Role
             });
         }
+
+        //[HttpPost]
+        //[Route("Login")]
+        //public IHttpActionResult Login([FromBody] User login)
+        //{
+        //    if (string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.PasswordHash))
+        //        return BadRequest("Email and password required");
+
+        //    var user = db.Users.FirstOrDefault(u => u.Email == login.Email && u.PasswordHash == login.PasswordHash);
+
+        //    if (user == null)
+        //        return Unauthorized();
+
+
+        //    return Ok(new
+        //    {
+        //        user.UserId,
+        //        user.Name,
+        //        user.Email,
+        //        user.Role
+        //    });
+        //}
 
         // PUT: api/Users/Update/5
         [HttpPut]
