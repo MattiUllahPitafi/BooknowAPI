@@ -13,7 +13,7 @@ namespace BooknowAPI.Controllers
 
     public class TablesController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/tables
         [HttpGet]

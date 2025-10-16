@@ -9,7 +9,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/music")]
     public class MusicController : ApiController
     {
-        private readonly newRestdbEntities4 db = new newRestdbEntities4();
+        private readonly newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/music/getall
         [HttpGet]

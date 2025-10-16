@@ -11,7 +11,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/order")]
     public class OrderController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/order/all
         [HttpGet]

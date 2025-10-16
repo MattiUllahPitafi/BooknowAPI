@@ -10,7 +10,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/restaurants")]
     public class RestaurantsController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/restaurants
         [HttpGet]

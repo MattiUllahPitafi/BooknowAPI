@@ -11,7 +11,7 @@ namespace BooknowAPI.Controllers
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/Users/GetAll
         [HttpGet]
@@ -29,7 +29,6 @@ namespace BooknowAPI.Controllers
             return Ok(users);
         }
 
-        // GET: api/Users/Get/5
         [HttpGet]
         [Route("Get/{id}")]
         public IHttpActionResult Get(int id)
@@ -81,6 +80,7 @@ namespace BooknowAPI.Controllers
 
             return Ok(response);
         }
+
 
 
         // POST: api/Users/Register (Only for customers)

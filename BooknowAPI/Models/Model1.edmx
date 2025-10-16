@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admins">
           <Key>
             <PropertyRef Name="UserId" />
@@ -268,7 +268,7 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RestaurantId" Type="int" />
         </EntityType>
-        <Association Name="FK__Admins__UserId__5629CD9C">
+        <Association Name="FK__Admins__UserId__09A971A2">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Admins" Type="Self.Admins" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -280,7 +280,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BookingDe__Booki__778AC167">
+        <Association Name="FK__BookingDe__Booki__0B91BA14">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="0..1" />
           <End Role="BookingDecore" Type="Self.BookingDecore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -292,7 +292,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BookingDe__Decor__787EE5A0">
+        <Association Name="FK__BookingDe__Decor__0C85DE4D">
           <End Role="DecoreOptions" Type="Self.DecoreOptions" Multiplicity="0..1" />
           <End Role="BookingDecore" Type="Self.BookingDecore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -304,7 +304,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bookings__Restau__5DCAEF64">
+        <Association Name="FK__Bookings__Restau__0E6E26BF">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
           <ReferentialConstraint>
@@ -316,7 +316,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bookings__UserId__5CD6CB2B">
+        <Association Name="FK__Bookings__UserId__0D7A0286">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
           <ReferentialConstraint>
@@ -328,7 +328,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChefDishS__DishI__72C60C4A">
+        <Association Name="FK__ChefDishS__DishI__1332DBDC">
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="0..1" />
           <End Role="ChefDishSpecialities" Type="Self.ChefDishSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
@@ -340,7 +340,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChefDishS__UserI__71D1E811">
+        <Association Name="FK__ChefDishS__UserI__123EB7A3">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="ChefDishSpecialities" Type="Self.ChefDishSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
@@ -352,7 +352,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chefs__Restauran__4F7CD00D">
+        <Association Name="FK__Chefs__Restauran__151B244E">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
           <End Role="Chefs" Type="Self.Chefs" Multiplicity="*" />
           <ReferentialConstraint>
@@ -364,7 +364,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chefs__UserId__4E88ABD4">
+        <Association Name="FK__Chefs__UserId__14270015">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Chefs" Type="Self.Chefs" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -376,7 +376,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CustomerC__CoinC__4BAC3F29">
+        <Association Name="FK__CustomerC__CoinC__17036CC0">
           <End Role="CoinCategories" Type="Self.CoinCategories" Multiplicity="0..1" />
           <End Role="CustomerCoins" Type="Self.CustomerCoins" Multiplicity="*" />
           <ReferentialConstraint>
@@ -388,7 +388,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CustomerC__UserI__4AB81AF0">
+        <Association Name="FK__CustomerC__UserI__160F4887">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="CustomerCoins" Type="Self.CustomerCoins" Multiplicity="*" />
           <ReferentialConstraint>
@@ -400,7 +400,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Customers__UserI__46E78A0C">
+        <Association Name="FK__Customers__UserI__17F790F9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -412,7 +412,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Dishes__MenuCate__59FA5E80">
+        <Association Name="FK__Dishes__MenuCate__19DFD96B">
           <End Role="MenuCategories" Type="Self.MenuCategories" Multiplicity="0..1" />
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -424,7 +424,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Dishes__Restaura__59063A47">
+        <Association Name="FK__Dishes__Restaura__18EBB532">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -436,7 +436,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DishRecip__DishI__693CA210">
+        <Association Name="FK__DishRecip__DishI__1AD3FDA4">
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="0..1" />
           <End Role="DishRecipes" Type="Self.DishRecipes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -448,7 +448,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DishRecip__Ingre__6A30C649">
+        <Association Name="FK__DishRecip__Ingre__1BC821DD">
           <End Role="Ingredients" Type="Self.Ingredients" Multiplicity="0..1" />
           <End Role="DishRecipes" Type="Self.DishRecipes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -460,7 +460,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__Booking__7D439ABD">
+        <Association Name="FK__Jukebox__Booking__1EA48E88">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -472,7 +472,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__CoinCat__7F2BE32F">
+        <Association Name="FK__Jukebox__CoinCat__208CD6FA">
           <End Role="CoinCategories" Type="Self.CoinCategories" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -484,7 +484,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__MusicId__7E37BEF6">
+        <Association Name="FK__Jukebox__MusicId__1F98B2C1">
           <End Role="Music" Type="Self.Music" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -496,7 +496,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__UserId__7C4F7684">
+        <Association Name="FK__Jukebox__UserId__1DB06A4F">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -508,7 +508,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Music__GenreId__4316F928">
+        <Association Name="FK__Music__GenreId__2180FB33">
           <End Role="MusicGenres" Type="Self.MusicGenres" Multiplicity="0..1" />
           <End Role="Music" Type="Self.Music" Multiplicity="*" />
           <ReferentialConstraint>
@@ -520,7 +520,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificat__UserI__45BE5BA9">
+        <Association Name="FK__Notificat__UserI__22751F6C">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
           <ReferentialConstraint>
@@ -532,7 +532,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__ChefU__0E6E26BF">
+        <Association Name="FK__OrderChef__ChefU__25518C17">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignments" Multiplicity="*" />
           <ReferentialConstraint>
@@ -544,7 +544,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__DishI__0D7A0286">
+        <Association Name="FK__OrderChef__DishI__245D67DE">
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignments" Multiplicity="*" />
           <ReferentialConstraint>
@@ -556,7 +556,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__Order__0C85DE4D">
+        <Association Name="FK__OrderChef__Order__236943A5">
           <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignments" Multiplicity="*" />
           <ReferentialConstraint>
@@ -568,7 +568,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderItem__DishI__66603565">
+        <Association Name="FK__OrderItem__DishI__2739D489">
           <End Role="Dishes" Type="Self.Dishes" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
@@ -580,7 +580,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderItem__Order__656C112C">
+        <Association Name="FK__OrderItem__Order__2645B050">
           <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
@@ -592,7 +592,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Orders__BookingI__628FA481">
+        <Association Name="FK__Orders__BookingI__29221CFB">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="0..1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
@@ -604,7 +604,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Orders__UserId__619B8048">
+        <Association Name="FK__Orders__UserId__282DF8C2">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
@@ -616,7 +616,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ratings__Booking__04E4BC85">
+        <Association Name="FK__Ratings__Booking__2B0A656D">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="0..1" />
           <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
           <ReferentialConstraint>
@@ -628,7 +628,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ratings__UserId__03F0984C">
+        <Association Name="FK__Ratings__UserId__2A164134">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
           <ReferentialConstraint>
@@ -640,7 +640,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockCons__Ingre__6EF57B66">
+        <Association Name="FK__StockCons__Ingre__2CF2ADDF">
           <End Role="Ingredients" Type="Self.Ingredients" Multiplicity="0..1" />
           <End Role="StockConsumptions" Type="Self.StockConsumptions" Multiplicity="*" />
           <ReferentialConstraint>
@@ -652,7 +652,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockCons__UserI__6E01572D">
+        <Association Name="FK__StockCons__UserI__2BFE89A6">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="StockConsumptions" Type="Self.StockConsumptions" Multiplicity="*" />
           <ReferentialConstraint>
@@ -664,7 +664,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tables__Restaura__07C12930">
+        <Association Name="FK__Tables__Restaura__2FCF1A8A">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
           <End Role="Tables" Type="Self.Tables" Multiplicity="*" />
           <ReferentialConstraint>
@@ -676,7 +676,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WaiterAss__Booki__123EB7A3">
+        <Association Name="FK__WaiterAss__Booki__30C33EC3">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="0..1" />
           <End Role="WaiterAssignments" Type="Self.WaiterAssignments" Multiplicity="*" />
           <ReferentialConstraint>
@@ -688,7 +688,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WaiterAss__Waite__1332DBDC">
+        <Association Name="FK__WaiterAss__Waite__31B762FC">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="WaiterAssignments" Type="Self.WaiterAssignments" Multiplicity="*" />
           <ReferentialConstraint>
@@ -700,7 +700,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Waiters__Restaur__534D60F1">
+        <Association Name="FK__Waiters__Restaur__339FAB6E">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
           <End Role="Waiters" Type="Self.Waiters" Multiplicity="*" />
           <ReferentialConstraint>
@@ -712,7 +712,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Waiters__UserId__52593CB8">
+        <Association Name="FK__Waiters__UserId__32AB8735">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Waiters" Type="Self.Waiters" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -840,155 +840,155 @@
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WaiterAssignments" EntityType="Self.WaiterAssignments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Waiters" EntityType="Self.Waiters" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Admins__UserId__5629CD9C" Association="Self.FK__Admins__UserId__5629CD9C">
+          <AssociationSet Name="FK__Admins__UserId__09A971A2" Association="Self.FK__Admins__UserId__09A971A2">
             <End Role="Users" EntitySet="Users" />
             <End Role="Admins" EntitySet="Admins" />
           </AssociationSet>
-          <AssociationSet Name="FK__BookingDe__Booki__778AC167" Association="Self.FK__BookingDe__Booki__778AC167">
+          <AssociationSet Name="FK__BookingDe__Booki__0B91BA14" Association="Self.FK__BookingDe__Booki__0B91BA14">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="BookingDecore" EntitySet="BookingDecore" />
           </AssociationSet>
-          <AssociationSet Name="FK__BookingDe__Decor__787EE5A0" Association="Self.FK__BookingDe__Decor__787EE5A0">
+          <AssociationSet Name="FK__BookingDe__Decor__0C85DE4D" Association="Self.FK__BookingDe__Decor__0C85DE4D">
             <End Role="DecoreOptions" EntitySet="DecoreOptions" />
             <End Role="BookingDecore" EntitySet="BookingDecore" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bookings__Restau__5DCAEF64" Association="Self.FK__Bookings__Restau__5DCAEF64">
+          <AssociationSet Name="FK__Bookings__Restau__0E6E26BF" Association="Self.FK__Bookings__Restau__0E6E26BF">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bookings__UserId__5CD6CB2B" Association="Self.FK__Bookings__UserId__5CD6CB2B">
+          <AssociationSet Name="FK__Bookings__UserId__0D7A0286" Association="Self.FK__Bookings__UserId__0D7A0286">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChefDishS__DishI__72C60C4A" Association="Self.FK__ChefDishS__DishI__72C60C4A">
+          <AssociationSet Name="FK__ChefDishS__DishI__1332DBDC" Association="Self.FK__ChefDishS__DishI__1332DBDC">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="ChefDishSpecialities" EntitySet="ChefDishSpecialities" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChefDishS__UserI__71D1E811" Association="Self.FK__ChefDishS__UserI__71D1E811">
+          <AssociationSet Name="FK__ChefDishS__UserI__123EB7A3" Association="Self.FK__ChefDishS__UserI__123EB7A3">
             <End Role="Users" EntitySet="Users" />
             <End Role="ChefDishSpecialities" EntitySet="ChefDishSpecialities" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chefs__Restauran__4F7CD00D" Association="Self.FK__Chefs__Restauran__4F7CD00D">
+          <AssociationSet Name="FK__Chefs__Restauran__151B244E" Association="Self.FK__Chefs__Restauran__151B244E">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Chefs" EntitySet="Chefs" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chefs__UserId__4E88ABD4" Association="Self.FK__Chefs__UserId__4E88ABD4">
+          <AssociationSet Name="FK__Chefs__UserId__14270015" Association="Self.FK__Chefs__UserId__14270015">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chefs" EntitySet="Chefs" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomerC__CoinC__4BAC3F29" Association="Self.FK__CustomerC__CoinC__4BAC3F29">
+          <AssociationSet Name="FK__CustomerC__CoinC__17036CC0" Association="Self.FK__CustomerC__CoinC__17036CC0">
             <End Role="CoinCategories" EntitySet="CoinCategories" />
             <End Role="CustomerCoins" EntitySet="CustomerCoins" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomerC__UserI__4AB81AF0" Association="Self.FK__CustomerC__UserI__4AB81AF0">
+          <AssociationSet Name="FK__CustomerC__UserI__160F4887" Association="Self.FK__CustomerC__UserI__160F4887">
             <End Role="Users" EntitySet="Users" />
             <End Role="CustomerCoins" EntitySet="CustomerCoins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Customers__UserI__46E78A0C" Association="Self.FK__Customers__UserI__46E78A0C">
+          <AssociationSet Name="FK__Customers__UserI__17F790F9" Association="Self.FK__Customers__UserI__17F790F9">
             <End Role="Users" EntitySet="Users" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
-          <AssociationSet Name="FK__Dishes__MenuCate__59FA5E80" Association="Self.FK__Dishes__MenuCate__59FA5E80">
+          <AssociationSet Name="FK__Dishes__MenuCate__19DFD96B" Association="Self.FK__Dishes__MenuCate__19DFD96B">
             <End Role="MenuCategories" EntitySet="MenuCategories" />
             <End Role="Dishes" EntitySet="Dishes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Dishes__Restaura__59063A47" Association="Self.FK__Dishes__Restaura__59063A47">
+          <AssociationSet Name="FK__Dishes__Restaura__18EBB532" Association="Self.FK__Dishes__Restaura__18EBB532">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Dishes" EntitySet="Dishes" />
           </AssociationSet>
-          <AssociationSet Name="FK__DishRecip__DishI__693CA210" Association="Self.FK__DishRecip__DishI__693CA210">
+          <AssociationSet Name="FK__DishRecip__DishI__1AD3FDA4" Association="Self.FK__DishRecip__DishI__1AD3FDA4">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="DishRecipes" EntitySet="DishRecipes" />
           </AssociationSet>
-          <AssociationSet Name="FK__DishRecip__Ingre__6A30C649" Association="Self.FK__DishRecip__Ingre__6A30C649">
+          <AssociationSet Name="FK__DishRecip__Ingre__1BC821DD" Association="Self.FK__DishRecip__Ingre__1BC821DD">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="DishRecipes" EntitySet="DishRecipes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__Booking__7D439ABD" Association="Self.FK__Jukebox__Booking__7D439ABD">
+          <AssociationSet Name="FK__Jukebox__Booking__1EA48E88" Association="Self.FK__Jukebox__Booking__1EA48E88">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Jukebox" EntitySet="Jukebox" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__CoinCat__7F2BE32F" Association="Self.FK__Jukebox__CoinCat__7F2BE32F">
+          <AssociationSet Name="FK__Jukebox__CoinCat__208CD6FA" Association="Self.FK__Jukebox__CoinCat__208CD6FA">
             <End Role="CoinCategories" EntitySet="CoinCategories" />
             <End Role="Jukebox" EntitySet="Jukebox" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__MusicId__7E37BEF6" Association="Self.FK__Jukebox__MusicId__7E37BEF6">
+          <AssociationSet Name="FK__Jukebox__MusicId__1F98B2C1" Association="Self.FK__Jukebox__MusicId__1F98B2C1">
             <End Role="Music" EntitySet="Music" />
             <End Role="Jukebox" EntitySet="Jukebox" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__UserId__7C4F7684" Association="Self.FK__Jukebox__UserId__7C4F7684">
+          <AssociationSet Name="FK__Jukebox__UserId__1DB06A4F" Association="Self.FK__Jukebox__UserId__1DB06A4F">
             <End Role="Users" EntitySet="Users" />
             <End Role="Jukebox" EntitySet="Jukebox" />
           </AssociationSet>
-          <AssociationSet Name="FK__Music__GenreId__4316F928" Association="Self.FK__Music__GenreId__4316F928">
+          <AssociationSet Name="FK__Music__GenreId__2180FB33" Association="Self.FK__Music__GenreId__2180FB33">
             <End Role="MusicGenres" EntitySet="MusicGenres" />
             <End Role="Music" EntitySet="Music" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificat__UserI__45BE5BA9" Association="Self.FK__Notificat__UserI__45BE5BA9">
+          <AssociationSet Name="FK__Notificat__UserI__22751F6C" Association="Self.FK__Notificat__UserI__22751F6C">
             <End Role="Users" EntitySet="Users" />
             <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__ChefU__0E6E26BF" Association="Self.FK__OrderChef__ChefU__0E6E26BF">
+          <AssociationSet Name="FK__OrderChef__ChefU__25518C17" Association="Self.FK__OrderChef__ChefU__25518C17">
             <End Role="Users" EntitySet="Users" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__DishI__0D7A0286" Association="Self.FK__OrderChef__DishI__0D7A0286">
+          <AssociationSet Name="FK__OrderChef__DishI__245D67DE" Association="Self.FK__OrderChef__DishI__245D67DE">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__Order__0C85DE4D" Association="Self.FK__OrderChef__Order__0C85DE4D">
+          <AssociationSet Name="FK__OrderChef__Order__236943A5" Association="Self.FK__OrderChef__Order__236943A5">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__DishI__66603565" Association="Self.FK__OrderItem__DishI__66603565">
+          <AssociationSet Name="FK__OrderItem__DishI__2739D489" Association="Self.FK__OrderItem__DishI__2739D489">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__Order__656C112C" Association="Self.FK__OrderItem__Order__656C112C">
+          <AssociationSet Name="FK__OrderItem__Order__2645B050" Association="Self.FK__OrderItem__Order__2645B050">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Orders__BookingI__628FA481" Association="Self.FK__Orders__BookingI__628FA481">
+          <AssociationSet Name="FK__Orders__BookingI__29221CFB" Association="Self.FK__Orders__BookingI__29221CFB">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__Orders__UserId__619B8048" Association="Self.FK__Orders__UserId__619B8048">
+          <AssociationSet Name="FK__Orders__UserId__282DF8C2" Association="Self.FK__Orders__UserId__282DF8C2">
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ratings__Booking__04E4BC85" Association="Self.FK__Ratings__Booking__04E4BC85">
+          <AssociationSet Name="FK__Ratings__Booking__2B0A656D" Association="Self.FK__Ratings__Booking__2B0A656D">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ratings__UserId__03F0984C" Association="Self.FK__Ratings__UserId__03F0984C">
+          <AssociationSet Name="FK__Ratings__UserId__2A164134" Association="Self.FK__Ratings__UserId__2A164134">
             <End Role="Users" EntitySet="Users" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockCons__Ingre__6EF57B66" Association="Self.FK__StockCons__Ingre__6EF57B66">
+          <AssociationSet Name="FK__StockCons__Ingre__2CF2ADDF" Association="Self.FK__StockCons__Ingre__2CF2ADDF">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockCons__UserI__6E01572D" Association="Self.FK__StockCons__UserI__6E01572D">
+          <AssociationSet Name="FK__StockCons__UserI__2BFE89A6" Association="Self.FK__StockCons__UserI__2BFE89A6">
             <End Role="Users" EntitySet="Users" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tables__Restaura__07C12930" Association="Self.FK__Tables__Restaura__07C12930">
+          <AssociationSet Name="FK__Tables__Restaura__2FCF1A8A" Association="Self.FK__Tables__Restaura__2FCF1A8A">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Tables" EntitySet="Tables" />
           </AssociationSet>
-          <AssociationSet Name="FK__WaiterAss__Booki__123EB7A3" Association="Self.FK__WaiterAss__Booki__123EB7A3">
+          <AssociationSet Name="FK__WaiterAss__Booki__30C33EC3" Association="Self.FK__WaiterAss__Booki__30C33EC3">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="WaiterAssignments" EntitySet="WaiterAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__WaiterAss__Waite__1332DBDC" Association="Self.FK__WaiterAss__Waite__1332DBDC">
+          <AssociationSet Name="FK__WaiterAss__Waite__31B762FC" Association="Self.FK__WaiterAss__Waite__31B762FC">
             <End Role="Users" EntitySet="Users" />
             <End Role="WaiterAssignments" EntitySet="WaiterAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__Waiters__Restaur__534D60F1" Association="Self.FK__Waiters__Restaur__534D60F1">
+          <AssociationSet Name="FK__Waiters__Restaur__339FAB6E" Association="Self.FK__Waiters__Restaur__339FAB6E">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
-          <AssociationSet Name="FK__Waiters__UserId__52593CB8" Association="Self.FK__Waiters__UserId__52593CB8">
+          <AssociationSet Name="FK__Waiters__UserId__32AB8735" Association="Self.FK__Waiters__UserId__32AB8735">
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
@@ -1021,7 +1021,8 @@
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="newRestdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1031,7 +1032,7 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="RestaurantId" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Admins__UserId__5629CD9C" FromRole="Admins" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Admins__UserId__09A971A2" FromRole="Admins" ToRole="Users" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_Admins_Restaurants" FromRole="Admins" ToRole="Restaurants" />
         </EntityType>
         <EntityType Name="BookingDecore">
@@ -1041,8 +1042,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BookingId" Type="Int32" />
           <Property Name="DecoreOptionId" Type="Int32" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK__BookingDe__Booki__778AC167" FromRole="BookingDecore" ToRole="Bookings" />
-          <NavigationProperty Name="DecoreOption" Relationship="Self.FK__BookingDe__Decor__787EE5A0" FromRole="BookingDecore" ToRole="DecoreOptions" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__BookingDe__Booki__0B91BA14" FromRole="BookingDecore" ToRole="Bookings" />
+          <NavigationProperty Name="DecoreOption" Relationship="Self.FK__BookingDe__Decor__0C85DE4D" FromRole="BookingDecore" ToRole="DecoreOptions" />
         </EntityType>
         <EntityType Name="Booking">
           <Key>
@@ -1057,13 +1058,13 @@
           <Property Name="TableId" Type="Int32" />
           <Property Name="music_id" Type="Int32" />
           <Property Name="CoinCategoryIdUsedForMusic" Type="Int32" />
-          <NavigationProperty Name="BookingDecores" Relationship="Self.FK__BookingDe__Booki__778AC167" FromRole="Bookings" ToRole="BookingDecore" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Bookings__Restau__5DCAEF64" FromRole="Bookings" ToRole="Restaurants" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Bookings__UserId__5CD6CB2B" FromRole="Bookings" ToRole="Users" />
-          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__Booking__7D439ABD" FromRole="Bookings" ToRole="Jukebox" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__BookingI__628FA481" FromRole="Bookings" ToRole="Orders" />
-          <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__Booking__04E4BC85" FromRole="Bookings" ToRole="Ratings" />
-          <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Booki__123EB7A3" FromRole="Bookings" ToRole="WaiterAssignments" />
+          <NavigationProperty Name="BookingDecores" Relationship="Self.FK__BookingDe__Booki__0B91BA14" FromRole="Bookings" ToRole="BookingDecore" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Bookings__Restau__0E6E26BF" FromRole="Bookings" ToRole="Restaurants" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Bookings__UserId__0D7A0286" FromRole="Bookings" ToRole="Users" />
+          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__Booking__1EA48E88" FromRole="Bookings" ToRole="Jukebox" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__BookingI__29221CFB" FromRole="Bookings" ToRole="Orders" />
+          <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__Booking__2B0A656D" FromRole="Bookings" ToRole="Ratings" />
+          <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Booki__30C33EC3" FromRole="Bookings" ToRole="WaiterAssignments" />
           <NavigationProperty Name="CoinCategory" Relationship="Self.FK_Bookings_CoinCategories" FromRole="Bookings" ToRole="CoinCategories" />
           <NavigationProperty Name="Music" Relationship="Self.FK_Bookings_Music" FromRole="Bookings" ToRole="Music" />
           <NavigationProperty Name="Table" Relationship="Self.FK_Bookings_Tables" FromRole="Bookings" ToRole="Tables" />
@@ -1075,8 +1076,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="DishId" Type="Int32" />
-          <NavigationProperty Name="Dish" Relationship="Self.FK__ChefDishS__DishI__72C60C4A" FromRole="ChefDishSpecialities" ToRole="Dishes" />
-          <NavigationProperty Name="User" Relationship="Self.FK__ChefDishS__UserI__71D1E811" FromRole="ChefDishSpecialities" ToRole="Users" />
+          <NavigationProperty Name="Dish" Relationship="Self.FK__ChefDishS__DishI__1332DBDC" FromRole="ChefDishSpecialities" ToRole="Dishes" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ChefDishS__UserI__123EB7A3" FromRole="ChefDishSpecialities" ToRole="Users" />
         </EntityType>
         <EntityType Name="Chef">
           <Key>
@@ -1084,8 +1085,8 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="RestaurantId" Type="Int32" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Chefs__Restauran__4F7CD00D" FromRole="Chefs" ToRole="Restaurants" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Chefs__UserId__4E88ABD4" FromRole="Chefs" ToRole="Users" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Chefs__Restauran__151B244E" FromRole="Chefs" ToRole="Restaurants" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Chefs__UserId__14270015" FromRole="Chefs" ToRole="Users" />
         </EntityType>
         <EntityType Name="CoinCategory">
           <Key>
@@ -1094,8 +1095,8 @@
           <Property Name="CoinCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_CoinCategories" FromRole="CoinCategories" ToRole="Bookings" />
-          <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__CoinC__4BAC3F29" FromRole="CoinCategories" ToRole="CustomerCoins" />
-          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__CoinCat__7F2BE32F" FromRole="CoinCategories" ToRole="Jukebox" />
+          <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__CoinC__17036CC0" FromRole="CoinCategories" ToRole="CustomerCoins" />
+          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__CoinCat__208CD6FA" FromRole="CoinCategories" ToRole="Jukebox" />
         </EntityType>
         <EntityType Name="CustomerCoin">
           <Key>
@@ -1105,8 +1106,8 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="CoinCategoryId" Type="Int32" />
           <Property Name="Balance" Type="Int32" />
-          <NavigationProperty Name="CoinCategory" Relationship="Self.FK__CustomerC__CoinC__4BAC3F29" FromRole="CustomerCoins" ToRole="CoinCategories" />
-          <NavigationProperty Name="User" Relationship="Self.FK__CustomerC__UserI__4AB81AF0" FromRole="CustomerCoins" ToRole="Users" />
+          <NavigationProperty Name="CoinCategory" Relationship="Self.FK__CustomerC__CoinC__17036CC0" FromRole="CustomerCoins" ToRole="CoinCategories" />
+          <NavigationProperty Name="User" Relationship="Self.FK__CustomerC__UserI__160F4887" FromRole="CustomerCoins" ToRole="Users" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -1115,7 +1116,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PendingBill" Type="Decimal" Precision="10" Scale="2" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Customers__UserI__46E78A0C" FromRole="Customers" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Customers__UserI__17F790F9" FromRole="Customers" ToRole="Users" />
         </EntityType>
         <EntityType Name="DecoreOption">
           <Key>
@@ -1125,7 +1126,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
-          <NavigationProperty Name="BookingDecores" Relationship="Self.FK__BookingDe__Decor__787EE5A0" FromRole="DecoreOptions" ToRole="BookingDecore" />
+          <NavigationProperty Name="BookingDecores" Relationship="Self.FK__BookingDe__Decor__0C85DE4D" FromRole="DecoreOptions" ToRole="BookingDecore" />
         </EntityType>
         <EntityType Name="Dish">
           <Key>
@@ -1140,12 +1141,12 @@
           <Property Name="BaseQuantity" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="Unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DishImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__DishI__72C60C4A" FromRole="Dishes" ToRole="ChefDishSpecialities" />
-          <NavigationProperty Name="MenuCategory" Relationship="Self.FK__Dishes__MenuCate__59FA5E80" FromRole="Dishes" ToRole="MenuCategories" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Dishes" ToRole="Restaurants" />
-          <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__DishI__693CA210" FromRole="Dishes" ToRole="DishRecipes" />
-          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__DishI__0D7A0286" FromRole="Dishes" ToRole="OrderChefAssignments" />
-          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="Dishes" ToRole="OrderItems" />
+          <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__DishI__1332DBDC" FromRole="Dishes" ToRole="ChefDishSpecialities" />
+          <NavigationProperty Name="MenuCategory" Relationship="Self.FK__Dishes__MenuCate__19DFD96B" FromRole="Dishes" ToRole="MenuCategories" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Dishes__Restaura__18EBB532" FromRole="Dishes" ToRole="Restaurants" />
+          <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__DishI__1AD3FDA4" FromRole="Dishes" ToRole="DishRecipes" />
+          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__DishI__245D67DE" FromRole="Dishes" ToRole="OrderChefAssignments" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__DishI__2739D489" FromRole="Dishes" ToRole="OrderItems" />
         </EntityType>
         <EntityType Name="DishRecipe">
           <Key>
@@ -1155,8 +1156,8 @@
           <Property Name="DishId" Type="Int32" />
           <Property Name="IngredientId" Type="Int32" />
           <Property Name="QuantityRequired" Type="Decimal" Precision="10" Scale="2" />
-          <NavigationProperty Name="Dish" Relationship="Self.FK__DishRecip__DishI__693CA210" FromRole="DishRecipes" ToRole="Dishes" />
-          <NavigationProperty Name="Ingredient" Relationship="Self.FK__DishRecip__Ingre__6A30C649" FromRole="DishRecipes" ToRole="Ingredients" />
+          <NavigationProperty Name="Dish" Relationship="Self.FK__DishRecip__DishI__1AD3FDA4" FromRole="DishRecipes" ToRole="Dishes" />
+          <NavigationProperty Name="Ingredient" Relationship="Self.FK__DishRecip__Ingre__1BC821DD" FromRole="DishRecipes" ToRole="Ingredients" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -1167,8 +1168,8 @@
           <Property Name="Unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="QuantityInStock" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="restaurant_id" Type="Int32" />
-          <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__Ingre__6A30C649" FromRole="Ingredients" ToRole="DishRecipes" />
-          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="Ingredients" ToRole="StockConsumptions" />
+          <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__Ingre__1BC821DD" FromRole="Ingredients" ToRole="DishRecipes" />
+          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__Ingre__2CF2ADDF" FromRole="Ingredients" ToRole="StockConsumptions" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_Ingredients_Restaurant" FromRole="Ingredients" ToRole="Restaurants" />
         </EntityType>
         <EntityType Name="Jukebox">
@@ -1183,10 +1184,10 @@
           <Property Name="CoinsSpent" Type="Int32" />
           <Property Name="DedicationNote" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RequestedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK__Jukebox__Booking__7D439ABD" FromRole="Jukebox" ToRole="Bookings" />
-          <NavigationProperty Name="CoinCategory" Relationship="Self.FK__Jukebox__CoinCat__7F2BE32F" FromRole="Jukebox" ToRole="CoinCategories" />
-          <NavigationProperty Name="Music" Relationship="Self.FK__Jukebox__MusicId__7E37BEF6" FromRole="Jukebox" ToRole="Music" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Jukebox__UserId__7C4F7684" FromRole="Jukebox" ToRole="Users" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__Jukebox__Booking__1EA48E88" FromRole="Jukebox" ToRole="Bookings" />
+          <NavigationProperty Name="CoinCategory" Relationship="Self.FK__Jukebox__CoinCat__208CD6FA" FromRole="Jukebox" ToRole="CoinCategories" />
+          <NavigationProperty Name="Music" Relationship="Self.FK__Jukebox__MusicId__1F98B2C1" FromRole="Jukebox" ToRole="Music" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Jukebox__UserId__1DB06A4F" FromRole="Jukebox" ToRole="Users" />
         </EntityType>
         <EntityType Name="MenuCategory">
           <Key>
@@ -1194,7 +1195,7 @@
           </Key>
           <Property Name="MenuCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__MenuCate__59FA5E80" FromRole="MenuCategories" ToRole="Dishes" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__MenuCate__19DFD96B" FromRole="MenuCategories" ToRole="Dishes" />
         </EntityType>
         <EntityType Name="Music">
           <Key>
@@ -1206,8 +1207,8 @@
           <Property Name="GenreId" Type="Int32" />
           <Property Name="DurationInSeconds" Type="Int32" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_Music" FromRole="Music" ToRole="Bookings" />
-          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__MusicId__7E37BEF6" FromRole="Music" ToRole="Jukebox" />
-          <NavigationProperty Name="MusicGenre" Relationship="Self.FK__Music__GenreId__4316F928" FromRole="Music" ToRole="MusicGenres" />
+          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__MusicId__1F98B2C1" FromRole="Music" ToRole="Jukebox" />
+          <NavigationProperty Name="MusicGenre" Relationship="Self.FK__Music__GenreId__2180FB33" FromRole="Music" ToRole="MusicGenres" />
         </EntityType>
         <EntityType Name="MusicGenre">
           <Key>
@@ -1215,7 +1216,7 @@
           </Key>
           <Property Name="GenreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Musics" Relationship="Self.FK__Music__GenreId__4316F928" FromRole="MusicGenres" ToRole="Music" />
+          <NavigationProperty Name="Musics" Relationship="Self.FK__Music__GenreId__2180FB33" FromRole="MusicGenres" ToRole="Music" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -1226,7 +1227,7 @@
           <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsRead" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Notificat__UserI__45BE5BA9" FromRole="Notifications" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Notificat__UserI__22751F6C" FromRole="Notifications" ToRole="Users" />
         </EntityType>
         <EntityType Name="OrderChefAssignment">
           <Key>
@@ -1237,9 +1238,9 @@
           <Property Name="DishId" Type="Int32" />
           <Property Name="ChefUserId" Type="Int32" />
           <Property Name="AssignedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Dish" Relationship="Self.FK__OrderChef__DishI__0D7A0286" FromRole="OrderChefAssignments" ToRole="Dishes" />
-          <NavigationProperty Name="User" Relationship="Self.FK__OrderChef__ChefU__0E6E26BF" FromRole="OrderChefAssignments" ToRole="Users" />
-          <NavigationProperty Name="Order" Relationship="Self.FK__OrderChef__Order__0C85DE4D" FromRole="OrderChefAssignments" ToRole="Orders" />
+          <NavigationProperty Name="Dish" Relationship="Self.FK__OrderChef__DishI__245D67DE" FromRole="OrderChefAssignments" ToRole="Dishes" />
+          <NavigationProperty Name="User" Relationship="Self.FK__OrderChef__ChefU__25518C17" FromRole="OrderChefAssignments" ToRole="Users" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__OrderChef__Order__236943A5" FromRole="OrderChefAssignments" ToRole="Orders" />
         </EntityType>
         <EntityType Name="OrderItem">
           <Key>
@@ -1251,9 +1252,9 @@
           <Property Name="Quantity" Type="Int32" />
           <Property Name="QuantityOrdered" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="UnitPrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Dish" Relationship="Self.FK__OrderItem__DishI__66603565" FromRole="OrderItems" ToRole="Dishes" />
-          <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="OrderItems" ToRole="Orders" />
           <Property Name="SkippedIngredientIds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dish" Relationship="Self.FK__OrderItem__DishI__2739D489" FromRole="OrderItems" ToRole="Dishes" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__2645B050" FromRole="OrderItems" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1266,10 +1267,10 @@
           <Property Name="TotalPrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DedicationNote" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK__Orders__BookingI__628FA481" FromRole="Orders" ToRole="Bookings" />
-          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__Order__0C85DE4D" FromRole="Orders" ToRole="OrderChefAssignments" />
-          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__656C112C" FromRole="Orders" ToRole="OrderItems" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Orders__UserId__619B8048" FromRole="Orders" ToRole="Users" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__Orders__BookingI__29221CFB" FromRole="Orders" ToRole="Bookings" />
+          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__Order__236943A5" FromRole="Orders" ToRole="OrderChefAssignments" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__2645B050" FromRole="Orders" ToRole="OrderItems" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Orders__UserId__282DF8C2" FromRole="Orders" ToRole="Users" />
           <NavigationProperty Name="StockConsumptions" Relationship="Self.FK_StockConsumptions_Orders" FromRole="Orders" ToRole="StockConsumptions" />
         </EntityType>
         <EntityType Name="Rating">
@@ -1282,8 +1283,8 @@
           <Property Name="Stars" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK__Ratings__Booking__04E4BC85" FromRole="Ratings" ToRole="Bookings" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Ratings__UserId__03F0984C" FromRole="Ratings" ToRole="Users" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__Ratings__Booking__2B0A656D" FromRole="Ratings" ToRole="Bookings" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Ratings__UserId__2A164134" FromRole="Ratings" ToRole="Users" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -1295,12 +1296,12 @@
           <Property Name="Category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Restaurants" FromRole="Restaurants" ToRole="Admins" />
-          <NavigationProperty Name="Bookings" Relationship="Self.FK__Bookings__Restau__5DCAEF64" FromRole="Restaurants" ToRole="Bookings" />
-          <NavigationProperty Name="Chefs" Relationship="Self.FK__Chefs__Restauran__4F7CD00D" FromRole="Restaurants" ToRole="Chefs" />
-          <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__Restaura__59063A47" FromRole="Restaurants" ToRole="Dishes" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK__Bookings__Restau__0E6E26BF" FromRole="Restaurants" ToRole="Bookings" />
+          <NavigationProperty Name="Chefs" Relationship="Self.FK__Chefs__Restauran__151B244E" FromRole="Restaurants" ToRole="Chefs" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK__Dishes__Restaura__18EBB532" FromRole="Restaurants" ToRole="Dishes" />
           <NavigationProperty Name="Ingredients" Relationship="Self.FK_Ingredients_Restaurant" FromRole="Restaurants" ToRole="Ingredients" />
-          <NavigationProperty Name="Tables" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Restaurants" ToRole="Tables" />
-          <NavigationProperty Name="Waiters" Relationship="Self.FK__Waiters__Restaur__534D60F1" FromRole="Restaurants" ToRole="Waiters" />
+          <NavigationProperty Name="Tables" Relationship="Self.FK__Tables__Restaura__2FCF1A8A" FromRole="Restaurants" ToRole="Tables" />
+          <NavigationProperty Name="Waiters" Relationship="Self.FK__Waiters__Restaur__339FAB6E" FromRole="Restaurants" ToRole="Waiters" />
           <NavigationProperty Name="StockConsumptions" Relationship="Self.FK_StockConsumptions_Restaurant" FromRole="Restaurants" ToRole="StockConsumptions" />
         </EntityType>
         <EntityType Name="StockConsumption">
@@ -1314,10 +1315,10 @@
           <Property Name="UsedAt" Type="DateTime" Precision="3" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="restaurant_id" Type="Int32" />
-          <NavigationProperty Name="Ingredient" Relationship="Self.FK__StockCons__Ingre__6EF57B66" FromRole="StockConsumptions" ToRole="Ingredients" />
+          <NavigationProperty Name="Ingredient" Relationship="Self.FK__StockCons__Ingre__2CF2ADDF" FromRole="StockConsumptions" ToRole="Ingredients" />
           <NavigationProperty Name="Order" Relationship="Self.FK_StockConsumptions_Orders" FromRole="StockConsumptions" ToRole="Orders" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_StockConsumptions_Restaurant" FromRole="StockConsumptions" ToRole="Restaurants" />
-          <NavigationProperty Name="User" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="StockConsumptions" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__StockCons__UserI__2BFE89A6" FromRole="StockConsumptions" ToRole="Users" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -1332,7 +1333,7 @@
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Capacity" Type="Int32" />
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Bookings_Tables" FromRole="Tables" ToRole="Bookings" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Tables__Restaura__07C12930" FromRole="Tables" ToRole="Restaurants" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Tables__Restaura__2FCF1A8A" FromRole="Tables" ToRole="Restaurants" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1343,20 +1344,20 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Admin" Relationship="Self.FK__Admins__UserId__5629CD9C" FromRole="Users" ToRole="Admins" />
-          <NavigationProperty Name="Bookings" Relationship="Self.FK__Bookings__UserId__5CD6CB2B" FromRole="Users" ToRole="Bookings" />
-          <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__UserI__71D1E811" FromRole="Users" ToRole="ChefDishSpecialities" />
-          <NavigationProperty Name="Chef" Relationship="Self.FK__Chefs__UserId__4E88ABD4" FromRole="Users" ToRole="Chefs" />
-          <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__UserI__4AB81AF0" FromRole="Users" ToRole="CustomerCoins" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Customers__UserI__46E78A0C" FromRole="Users" ToRole="Customers" />
-          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__UserId__7C4F7684" FromRole="Users" ToRole="Jukebox" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__45BE5BA9" FromRole="Users" ToRole="Notifications" />
-          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__ChefU__0E6E26BF" FromRole="Users" ToRole="OrderChefAssignments" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__UserId__619B8048" FromRole="Users" ToRole="Orders" />
-          <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__UserId__03F0984C" FromRole="Users" ToRole="Ratings" />
-          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__UserI__6E01572D" FromRole="Users" ToRole="StockConsumptions" />
-          <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Waite__1332DBDC" FromRole="Users" ToRole="WaiterAssignments" />
-          <NavigationProperty Name="Waiter" Relationship="Self.FK__Waiters__UserId__52593CB8" FromRole="Users" ToRole="Waiters" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK__Admins__UserId__09A971A2" FromRole="Users" ToRole="Admins" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK__Bookings__UserId__0D7A0286" FromRole="Users" ToRole="Bookings" />
+          <NavigationProperty Name="ChefDishSpecialities" Relationship="Self.FK__ChefDishS__UserI__123EB7A3" FromRole="Users" ToRole="ChefDishSpecialities" />
+          <NavigationProperty Name="Chef" Relationship="Self.FK__Chefs__UserId__14270015" FromRole="Users" ToRole="Chefs" />
+          <NavigationProperty Name="CustomerCoins" Relationship="Self.FK__CustomerC__UserI__160F4887" FromRole="Users" ToRole="CustomerCoins" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Customers__UserI__17F790F9" FromRole="Users" ToRole="Customers" />
+          <NavigationProperty Name="Jukeboxes" Relationship="Self.FK__Jukebox__UserId__1DB06A4F" FromRole="Users" ToRole="Jukebox" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__22751F6C" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__ChefU__25518C17" FromRole="Users" ToRole="OrderChefAssignments" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__UserId__282DF8C2" FromRole="Users" ToRole="Orders" />
+          <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__UserId__2A164134" FromRole="Users" ToRole="Ratings" />
+          <NavigationProperty Name="StockConsumptions" Relationship="Self.FK__StockCons__UserI__2BFE89A6" FromRole="Users" ToRole="StockConsumptions" />
+          <NavigationProperty Name="WaiterAssignments" Relationship="Self.FK__WaiterAss__Waite__31B762FC" FromRole="Users" ToRole="WaiterAssignments" />
+          <NavigationProperty Name="Waiter" Relationship="Self.FK__Waiters__UserId__32AB8735" FromRole="Users" ToRole="Waiters" />
         </EntityType>
         <EntityType Name="WaiterAssignment">
           <Key>
@@ -1366,8 +1367,8 @@
           <Property Name="BookingId" Type="Int32" />
           <Property Name="WaiterUserId" Type="Int32" />
           <Property Name="AssignedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK__WaiterAss__Booki__123EB7A3" FromRole="WaiterAssignments" ToRole="Bookings" />
-          <NavigationProperty Name="User" Relationship="Self.FK__WaiterAss__Waite__1332DBDC" FromRole="WaiterAssignments" ToRole="Users" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__WaiterAss__Booki__30C33EC3" FromRole="WaiterAssignments" ToRole="Bookings" />
+          <NavigationProperty Name="User" Relationship="Self.FK__WaiterAss__Waite__31B762FC" FromRole="WaiterAssignments" ToRole="Users" />
         </EntityType>
         <EntityType Name="Waiter">
           <Key>
@@ -1375,10 +1376,10 @@
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="RestaurantId" Type="Int32" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Waiters__Restaur__534D60F1" FromRole="Waiters" ToRole="Restaurants" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Waiters__UserId__52593CB8" FromRole="Waiters" ToRole="Users" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK__Waiters__Restaur__339FAB6E" FromRole="Waiters" ToRole="Restaurants" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Waiters__UserId__32AB8735" FromRole="Waiters" ToRole="Users" />
         </EntityType>
-        <Association Name="FK__Admins__UserId__5629CD9C">
+        <Association Name="FK__Admins__UserId__09A971A2">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Admins" Type="Self.Admin" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1402,7 +1403,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BookingDe__Booki__778AC167">
+        <Association Name="FK__BookingDe__Booki__0B91BA14">
           <End Role="Bookings" Type="Self.Booking" Multiplicity="0..1" />
           <End Role="BookingDecore" Type="Self.BookingDecore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1414,7 +1415,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BookingDe__Decor__787EE5A0">
+        <Association Name="FK__BookingDe__Decor__0C85DE4D">
           <End Role="DecoreOptions" Type="Self.DecoreOption" Multiplicity="0..1" />
           <End Role="BookingDecore" Type="Self.BookingDecore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1426,7 +1427,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bookings__Restau__5DCAEF64">
+        <Association Name="FK__Bookings__Restau__0E6E26BF">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1438,7 +1439,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bookings__UserId__5CD6CB2B">
+        <Association Name="FK__Bookings__UserId__0D7A0286">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Bookings" Type="Self.Booking" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1450,7 +1451,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__Booking__7D439ABD">
+        <Association Name="FK__Jukebox__Booking__1EA48E88">
           <End Role="Bookings" Type="Self.Booking" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1462,7 +1463,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Orders__BookingI__628FA481">
+        <Association Name="FK__Orders__BookingI__29221CFB">
           <End Role="Bookings" Type="Self.Booking" Multiplicity="0..1" />
           <End Role="Orders" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1474,7 +1475,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ratings__Booking__04E4BC85">
+        <Association Name="FK__Ratings__Booking__2B0A656D">
           <End Role="Bookings" Type="Self.Booking" Multiplicity="0..1" />
           <End Role="Ratings" Type="Self.Rating" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1486,7 +1487,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WaiterAss__Booki__123EB7A3">
+        <Association Name="FK__WaiterAss__Booki__30C33EC3">
           <End Role="Bookings" Type="Self.Booking" Multiplicity="0..1" />
           <End Role="WaiterAssignments" Type="Self.WaiterAssignment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1534,7 +1535,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChefDishS__DishI__72C60C4A">
+        <Association Name="FK__ChefDishS__DishI__1332DBDC">
           <End Role="Dishes" Type="Self.Dish" Multiplicity="0..1" />
           <End Role="ChefDishSpecialities" Type="Self.ChefDishSpeciality" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1546,7 +1547,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChefDishS__UserI__71D1E811">
+        <Association Name="FK__ChefDishS__UserI__123EB7A3">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChefDishSpecialities" Type="Self.ChefDishSpeciality" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1558,7 +1559,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chefs__Restauran__4F7CD00D">
+        <Association Name="FK__Chefs__Restauran__151B244E">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Chefs" Type="Self.Chef" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1570,7 +1571,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chefs__UserId__4E88ABD4">
+        <Association Name="FK__Chefs__UserId__14270015">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Chefs" Type="Self.Chef" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1582,7 +1583,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CustomerC__CoinC__4BAC3F29">
+        <Association Name="FK__CustomerC__CoinC__17036CC0">
           <End Role="CoinCategories" Type="Self.CoinCategory" Multiplicity="0..1" />
           <End Role="CustomerCoins" Type="Self.CustomerCoin" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1594,7 +1595,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__CoinCat__7F2BE32F">
+        <Association Name="FK__Jukebox__CoinCat__208CD6FA">
           <End Role="CoinCategories" Type="Self.CoinCategory" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1606,7 +1607,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CustomerC__UserI__4AB81AF0">
+        <Association Name="FK__CustomerC__UserI__160F4887">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="CustomerCoins" Type="Self.CustomerCoin" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1618,7 +1619,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Customers__UserI__46E78A0C">
+        <Association Name="FK__Customers__UserI__17F790F9">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1630,7 +1631,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Dishes__MenuCate__59FA5E80">
+        <Association Name="FK__Dishes__MenuCate__19DFD96B">
           <End Role="MenuCategories" Type="Self.MenuCategory" Multiplicity="0..1" />
           <End Role="Dishes" Type="Self.Dish" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1642,7 +1643,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Dishes__Restaura__59063A47">
+        <Association Name="FK__Dishes__Restaura__18EBB532">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Dishes" Type="Self.Dish" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1654,7 +1655,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DishRecip__DishI__693CA210">
+        <Association Name="FK__DishRecip__DishI__1AD3FDA4">
           <End Role="Dishes" Type="Self.Dish" Multiplicity="0..1" />
           <End Role="DishRecipes" Type="Self.DishRecipe" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1666,7 +1667,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__DishI__0D7A0286">
+        <Association Name="FK__OrderChef__DishI__245D67DE">
           <End Role="Dishes" Type="Self.Dish" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1678,7 +1679,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderItem__DishI__66603565">
+        <Association Name="FK__OrderItem__DishI__2739D489">
           <End Role="Dishes" Type="Self.Dish" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1690,7 +1691,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DishRecip__Ingre__6A30C649">
+        <Association Name="FK__DishRecip__Ingre__1BC821DD">
           <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="0..1" />
           <End Role="DishRecipes" Type="Self.DishRecipe" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1702,7 +1703,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockCons__Ingre__6EF57B66">
+        <Association Name="FK__StockCons__Ingre__2CF2ADDF">
           <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="0..1" />
           <End Role="StockConsumptions" Type="Self.StockConsumption" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1726,7 +1727,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__MusicId__7E37BEF6">
+        <Association Name="FK__Jukebox__MusicId__1F98B2C1">
           <End Role="Music" Type="Self.Music" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1738,7 +1739,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Jukebox__UserId__7C4F7684">
+        <Association Name="FK__Jukebox__UserId__1DB06A4F">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Jukebox" Type="Self.Jukebox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1750,7 +1751,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Music__GenreId__4316F928">
+        <Association Name="FK__Music__GenreId__2180FB33">
           <End Role="MusicGenres" Type="Self.MusicGenre" Multiplicity="0..1" />
           <End Role="Music" Type="Self.Music" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1762,7 +1763,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificat__UserI__45BE5BA9">
+        <Association Name="FK__Notificat__UserI__22751F6C">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1774,7 +1775,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__ChefU__0E6E26BF">
+        <Association Name="FK__OrderChef__ChefU__25518C17">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1786,7 +1787,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderChef__Order__0C85DE4D">
+        <Association Name="FK__OrderChef__Order__236943A5">
           <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
           <End Role="OrderChefAssignments" Type="Self.OrderChefAssignment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1798,7 +1799,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderItem__Order__656C112C">
+        <Association Name="FK__OrderItem__Order__2645B050">
           <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1810,7 +1811,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Orders__UserId__619B8048">
+        <Association Name="FK__Orders__UserId__282DF8C2">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Orders" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1836,7 +1837,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ratings__UserId__03F0984C">
+        <Association Name="FK__Ratings__UserId__2A164134">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Ratings" Type="Self.Rating" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1848,7 +1849,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tables__Restaura__07C12930">
+        <Association Name="FK__Tables__Restaura__2FCF1A8A">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Tables" Type="Self.Table" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1860,7 +1861,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Waiters__Restaur__534D60F1">
+        <Association Name="FK__Waiters__Restaur__339FAB6E">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
           <End Role="Waiters" Type="Self.Waiter" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1886,7 +1887,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockCons__UserI__6E01572D">
+        <Association Name="FK__StockCons__UserI__2BFE89A6">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="StockConsumptions" Type="Self.StockConsumption" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1898,7 +1899,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WaiterAss__Waite__1332DBDC">
+        <Association Name="FK__WaiterAss__Waite__31B762FC">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="WaiterAssignments" Type="Self.WaiterAssignment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1910,7 +1911,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Waiters__UserId__52593CB8">
+        <Association Name="FK__Waiters__UserId__32AB8735">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Waiters" Type="Self.Waiter" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1922,7 +1923,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="newRestdbEntities4" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="newRestdbEntities7" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="BookingDecores" EntityType="Self.BookingDecore" />
           <EntitySet Name="Bookings" EntityType="Self.Booking" />
@@ -1950,7 +1951,7 @@
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="WaiterAssignments" EntityType="Self.WaiterAssignment" />
           <EntitySet Name="Waiters" EntityType="Self.Waiter" />
-          <AssociationSet Name="FK__Admins__UserId__5629CD9C" Association="Self.FK__Admins__UserId__5629CD9C">
+          <AssociationSet Name="FK__Admins__UserId__09A971A2" Association="Self.FK__Admins__UserId__09A971A2">
             <End Role="Users" EntitySet="Users" />
             <End Role="Admins" EntitySet="Admins" />
           </AssociationSet>
@@ -1958,35 +1959,35 @@
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Admins" EntitySet="Admins" />
           </AssociationSet>
-          <AssociationSet Name="FK__BookingDe__Booki__778AC167" Association="Self.FK__BookingDe__Booki__778AC167">
+          <AssociationSet Name="FK__BookingDe__Booki__0B91BA14" Association="Self.FK__BookingDe__Booki__0B91BA14">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="BookingDecore" EntitySet="BookingDecores" />
           </AssociationSet>
-          <AssociationSet Name="FK__BookingDe__Decor__787EE5A0" Association="Self.FK__BookingDe__Decor__787EE5A0">
+          <AssociationSet Name="FK__BookingDe__Decor__0C85DE4D" Association="Self.FK__BookingDe__Decor__0C85DE4D">
             <End Role="DecoreOptions" EntitySet="DecoreOptions" />
             <End Role="BookingDecore" EntitySet="BookingDecores" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bookings__Restau__5DCAEF64" Association="Self.FK__Bookings__Restau__5DCAEF64">
+          <AssociationSet Name="FK__Bookings__Restau__0E6E26BF" Association="Self.FK__Bookings__Restau__0E6E26BF">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bookings__UserId__5CD6CB2B" Association="Self.FK__Bookings__UserId__5CD6CB2B">
+          <AssociationSet Name="FK__Bookings__UserId__0D7A0286" Association="Self.FK__Bookings__UserId__0D7A0286">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__Booking__7D439ABD" Association="Self.FK__Jukebox__Booking__7D439ABD">
+          <AssociationSet Name="FK__Jukebox__Booking__1EA48E88" Association="Self.FK__Jukebox__Booking__1EA48E88">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Jukebox" EntitySet="Jukeboxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Orders__BookingI__628FA481" Association="Self.FK__Orders__BookingI__628FA481">
+          <AssociationSet Name="FK__Orders__BookingI__29221CFB" Association="Self.FK__Orders__BookingI__29221CFB">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ratings__Booking__04E4BC85" Association="Self.FK__Ratings__Booking__04E4BC85">
+          <AssociationSet Name="FK__Ratings__Booking__2B0A656D" Association="Self.FK__Ratings__Booking__2B0A656D">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK__WaiterAss__Booki__123EB7A3" Association="Self.FK__WaiterAss__Booki__123EB7A3">
+          <AssociationSet Name="FK__WaiterAss__Booki__30C33EC3" Association="Self.FK__WaiterAss__Booki__30C33EC3">
             <End Role="Bookings" EntitySet="Bookings" />
             <End Role="WaiterAssignments" EntitySet="WaiterAssignments" />
           </AssociationSet>
@@ -2002,63 +2003,63 @@
             <End Role="Tables" EntitySet="Tables" />
             <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChefDishS__DishI__72C60C4A" Association="Self.FK__ChefDishS__DishI__72C60C4A">
+          <AssociationSet Name="FK__ChefDishS__DishI__1332DBDC" Association="Self.FK__ChefDishS__DishI__1332DBDC">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="ChefDishSpecialities" EntitySet="ChefDishSpecialities" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChefDishS__UserI__71D1E811" Association="Self.FK__ChefDishS__UserI__71D1E811">
+          <AssociationSet Name="FK__ChefDishS__UserI__123EB7A3" Association="Self.FK__ChefDishS__UserI__123EB7A3">
             <End Role="Users" EntitySet="Users" />
             <End Role="ChefDishSpecialities" EntitySet="ChefDishSpecialities" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chefs__Restauran__4F7CD00D" Association="Self.FK__Chefs__Restauran__4F7CD00D">
+          <AssociationSet Name="FK__Chefs__Restauran__151B244E" Association="Self.FK__Chefs__Restauran__151B244E">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Chefs" EntitySet="Chefs" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chefs__UserId__4E88ABD4" Association="Self.FK__Chefs__UserId__4E88ABD4">
+          <AssociationSet Name="FK__Chefs__UserId__14270015" Association="Self.FK__Chefs__UserId__14270015">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chefs" EntitySet="Chefs" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomerC__CoinC__4BAC3F29" Association="Self.FK__CustomerC__CoinC__4BAC3F29">
+          <AssociationSet Name="FK__CustomerC__CoinC__17036CC0" Association="Self.FK__CustomerC__CoinC__17036CC0">
             <End Role="CoinCategories" EntitySet="CoinCategories" />
             <End Role="CustomerCoins" EntitySet="CustomerCoins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__CoinCat__7F2BE32F" Association="Self.FK__Jukebox__CoinCat__7F2BE32F">
+          <AssociationSet Name="FK__Jukebox__CoinCat__208CD6FA" Association="Self.FK__Jukebox__CoinCat__208CD6FA">
             <End Role="CoinCategories" EntitySet="CoinCategories" />
             <End Role="Jukebox" EntitySet="Jukeboxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomerC__UserI__4AB81AF0" Association="Self.FK__CustomerC__UserI__4AB81AF0">
+          <AssociationSet Name="FK__CustomerC__UserI__160F4887" Association="Self.FK__CustomerC__UserI__160F4887">
             <End Role="Users" EntitySet="Users" />
             <End Role="CustomerCoins" EntitySet="CustomerCoins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Customers__UserI__46E78A0C" Association="Self.FK__Customers__UserI__46E78A0C">
+          <AssociationSet Name="FK__Customers__UserI__17F790F9" Association="Self.FK__Customers__UserI__17F790F9">
             <End Role="Users" EntitySet="Users" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
-          <AssociationSet Name="FK__Dishes__MenuCate__59FA5E80" Association="Self.FK__Dishes__MenuCate__59FA5E80">
+          <AssociationSet Name="FK__Dishes__MenuCate__19DFD96B" Association="Self.FK__Dishes__MenuCate__19DFD96B">
             <End Role="MenuCategories" EntitySet="MenuCategories" />
             <End Role="Dishes" EntitySet="Dishes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Dishes__Restaura__59063A47" Association="Self.FK__Dishes__Restaura__59063A47">
+          <AssociationSet Name="FK__Dishes__Restaura__18EBB532" Association="Self.FK__Dishes__Restaura__18EBB532">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Dishes" EntitySet="Dishes" />
           </AssociationSet>
-          <AssociationSet Name="FK__DishRecip__DishI__693CA210" Association="Self.FK__DishRecip__DishI__693CA210">
+          <AssociationSet Name="FK__DishRecip__DishI__1AD3FDA4" Association="Self.FK__DishRecip__DishI__1AD3FDA4">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="DishRecipes" EntitySet="DishRecipes" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__DishI__0D7A0286" Association="Self.FK__OrderChef__DishI__0D7A0286">
+          <AssociationSet Name="FK__OrderChef__DishI__245D67DE" Association="Self.FK__OrderChef__DishI__245D67DE">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__DishI__66603565" Association="Self.FK__OrderItem__DishI__66603565">
+          <AssociationSet Name="FK__OrderItem__DishI__2739D489" Association="Self.FK__OrderItem__DishI__2739D489">
             <End Role="Dishes" EntitySet="Dishes" />
             <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__DishRecip__Ingre__6A30C649" Association="Self.FK__DishRecip__Ingre__6A30C649">
+          <AssociationSet Name="FK__DishRecip__Ingre__1BC821DD" Association="Self.FK__DishRecip__Ingre__1BC821DD">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="DishRecipes" EntitySet="DishRecipes" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockCons__Ingre__6EF57B66" Association="Self.FK__StockCons__Ingre__6EF57B66">
+          <AssociationSet Name="FK__StockCons__Ingre__2CF2ADDF" Association="Self.FK__StockCons__Ingre__2CF2ADDF">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
@@ -2066,35 +2067,35 @@
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Ingredients" EntitySet="Ingredients" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__MusicId__7E37BEF6" Association="Self.FK__Jukebox__MusicId__7E37BEF6">
+          <AssociationSet Name="FK__Jukebox__MusicId__1F98B2C1" Association="Self.FK__Jukebox__MusicId__1F98B2C1">
             <End Role="Music" EntitySet="Musics" />
             <End Role="Jukebox" EntitySet="Jukeboxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Jukebox__UserId__7C4F7684" Association="Self.FK__Jukebox__UserId__7C4F7684">
+          <AssociationSet Name="FK__Jukebox__UserId__1DB06A4F" Association="Self.FK__Jukebox__UserId__1DB06A4F">
             <End Role="Users" EntitySet="Users" />
             <End Role="Jukebox" EntitySet="Jukeboxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Music__GenreId__4316F928" Association="Self.FK__Music__GenreId__4316F928">
+          <AssociationSet Name="FK__Music__GenreId__2180FB33" Association="Self.FK__Music__GenreId__2180FB33">
             <End Role="MusicGenres" EntitySet="MusicGenres" />
             <End Role="Music" EntitySet="Musics" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificat__UserI__45BE5BA9" Association="Self.FK__Notificat__UserI__45BE5BA9">
+          <AssociationSet Name="FK__Notificat__UserI__22751F6C" Association="Self.FK__Notificat__UserI__22751F6C">
             <End Role="Users" EntitySet="Users" />
             <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__ChefU__0E6E26BF" Association="Self.FK__OrderChef__ChefU__0E6E26BF">
+          <AssociationSet Name="FK__OrderChef__ChefU__25518C17" Association="Self.FK__OrderChef__ChefU__25518C17">
             <End Role="Users" EntitySet="Users" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderChef__Order__0C85DE4D" Association="Self.FK__OrderChef__Order__0C85DE4D">
+          <AssociationSet Name="FK__OrderChef__Order__236943A5" Association="Self.FK__OrderChef__Order__236943A5">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderChefAssignments" EntitySet="OrderChefAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__Order__656C112C" Association="Self.FK__OrderItem__Order__656C112C">
+          <AssociationSet Name="FK__OrderItem__Order__2645B050" Association="Self.FK__OrderItem__Order__2645B050">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Orders__UserId__619B8048" Association="Self.FK__Orders__UserId__619B8048">
+          <AssociationSet Name="FK__Orders__UserId__282DF8C2" Association="Self.FK__Orders__UserId__282DF8C2">
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
@@ -2102,15 +2103,15 @@
             <End Role="Orders" EntitySet="Orders" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ratings__UserId__03F0984C" Association="Self.FK__Ratings__UserId__03F0984C">
+          <AssociationSet Name="FK__Ratings__UserId__2A164134" Association="Self.FK__Ratings__UserId__2A164134">
             <End Role="Users" EntitySet="Users" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tables__Restaura__07C12930" Association="Self.FK__Tables__Restaura__07C12930">
+          <AssociationSet Name="FK__Tables__Restaura__2FCF1A8A" Association="Self.FK__Tables__Restaura__2FCF1A8A">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Tables" EntitySet="Tables" />
           </AssociationSet>
-          <AssociationSet Name="FK__Waiters__Restaur__534D60F1" Association="Self.FK__Waiters__Restaur__534D60F1">
+          <AssociationSet Name="FK__Waiters__Restaur__339FAB6E" Association="Self.FK__Waiters__Restaur__339FAB6E">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
@@ -2118,15 +2119,15 @@
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockCons__UserI__6E01572D" Association="Self.FK__StockCons__UserI__6E01572D">
+          <AssociationSet Name="FK__StockCons__UserI__2BFE89A6" Association="Self.FK__StockCons__UserI__2BFE89A6">
             <End Role="Users" EntitySet="Users" />
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__WaiterAss__Waite__1332DBDC" Association="Self.FK__WaiterAss__Waite__1332DBDC">
+          <AssociationSet Name="FK__WaiterAss__Waite__31B762FC" Association="Self.FK__WaiterAss__Waite__31B762FC">
             <End Role="Users" EntitySet="Users" />
             <End Role="WaiterAssignments" EntitySet="WaiterAssignments" />
           </AssociationSet>
-          <AssociationSet Name="FK__Waiters__UserId__52593CB8" Association="Self.FK__Waiters__UserId__52593CB8">
+          <AssociationSet Name="FK__Waiters__UserId__32AB8735" Association="Self.FK__Waiters__UserId__32AB8735">
             <End Role="Users" EntitySet="Users" />
             <End Role="Waiters" EntitySet="Waiters" />
           </AssociationSet>
@@ -2136,7 +2137,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities4">
+        <EntityContainerMapping StorageEntityContainer="newRestdbModelStoreContainer" CdmEntityContainer="newRestdbEntities7">
           <EntitySetMapping Name="Admins">
             <EntityTypeMapping TypeName="newRestdbModel.Admin">
               <MappingFragment StoreEntitySet="Admins">
@@ -2325,13 +2326,13 @@
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="newRestdbModel.OrderItem">
               <MappingFragment StoreEntitySet="OrderItems">
-                <ScalarProperty Name="SkippedIngredientIds" ColumnName="SkippedIngredientIds" />
                 <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="QuantityOrdered" ColumnName="QuantityOrdered" />
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="SkippedIngredientIds" ColumnName="SkippedIngredientIds" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

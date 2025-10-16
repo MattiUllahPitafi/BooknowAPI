@@ -10,7 +10,7 @@ namespace RestWAdvBook.Controllers
     [RoutePrefix("api/bookings")]
     public class BookingsController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         // GET: api/bookings/getall
         [HttpGet]
