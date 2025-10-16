@@ -163,6 +163,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\ChefController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Models\Booking.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Booking.partial.cs" />
     <Compile Include="Models\BookingDecore.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -473,6 +475,7 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <Import Project="$(VSToolsPath)\Scaffolders\Microsoft.VisualStudio.Web.CodeGeneration.Design.targets" Condition="Exists('$(VSToolsPath)\Scaffolders\Microsoft.VisualStudio.Web.CodeGeneration.Design.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

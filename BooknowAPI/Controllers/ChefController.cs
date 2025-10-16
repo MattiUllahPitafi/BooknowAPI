@@ -12,7 +12,7 @@ namespace BooknowAPI.Controllers
 
     public class ChefController : ApiController
     {
-        private newRestdbEntities4 db = new newRestdbEntities4();
+        private newRestdbEntities7 db = new newRestdbEntities7();
 
         //// GET: api/cheforder/byid?userid=5
         //[HttpGet]

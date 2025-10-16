@@ -13,10 +13,10 @@ namespace BooknowAPI.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class newRestdbEntities4 : DbContext
+    public partial class newRestdbEntities7 : DbContext
     {
-        public newRestdbEntities4()
-            : base("name=newRestdbEntities4")
+        public newRestdbEntities7()
+            : base("name=newRestdbEntities7")
         {
         }
     

@@ -59,5 +59,6 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual Waiter Waiter { get; set; }
+        public string Speciality { get; internal set; }
     }
 }
