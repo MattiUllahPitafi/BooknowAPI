@@ -34,7 +34,7 @@ namespace BooknowAPI.Models
         public string Email { get; set; }
         public string Role { get; set; }
         public string PasswordHash { get; set; }
-    
+        public string Speciality { get; set; }
         public virtual Admin Admin { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Bookings { get; set; }
@@ -59,6 +59,5 @@ namespace BooknowAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WaiterAssignment> WaiterAssignments { get; set; }
         public virtual Waiter Waiter { get; set; }
-        public string Speciality { get; internal set; }
     }
 }
