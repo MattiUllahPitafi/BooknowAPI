@@ -709,6 +709,89 @@ namespace BooknowAPI.Controllers
                 return InternalServerError(ex);
             }
         }
+        // ✅ Get prioritized Jukebox requests (sorted by booking time + coin category)
+        [HttpGet]
+        [Route("GetJukeboxQueue/{adminUserId}")]
+        public IHttpActionResult GetJukeboxQueue(int adminUserId)
+        {
+            try
+            {
+                // 1️⃣ Validate Admin
+                var admin = db.Admins.FirstOrDefault(a => a.UserId == adminUserId);
+                if (admin == null)
+                    return BadRequest("Admin not found.");
+
+                if (admin.RestaurantId == null)
+                    return BadRequest("Admin not linked with any restaurant.");
+
+                int restaurantId = admin.RestaurantId.Value;
+
+                // 2️⃣ Get all jukebox requests linked to this restaurant’s bookings
+                var jukeboxRequests = (from j in db.Jukeboxes
+                                       join b in db.Bookings on j.BookingId equals b.BookingId
+                                       join t in db.Tables on b.TableId equals t.TableId
+                                       join m in db.Musics on j.MusicId equals m.MusicId
+                                       join u in db.Users on j.UserId equals u.UserId
+                                       where t.RestaurantId == restaurantId
+                                       select new
+                                       {
+                                           j.JukeboxId,
+                                           j.UserId,
+                                           UserName = u.Name,
+                                           j.BookingId,
+                                           b.BookingDateTime,
+                                           t.TableId,
+                                           TableName = t.Name,
+                                           m.MusicId,
+                                           MusicTitle = m.Title,
+                                           j.CoinCategoryId,
+                                           j.CoinsSpent,
+                                           j.DedicationNote,
+                                           j.RequestedAt
+                                       })
+                                       .ToList();
+
+                if (!jukeboxRequests.Any())
+                    return Ok(new { message = "No jukebox requests found for this restaurant." });
+
+                // 3️⃣ Sort the queue:
+                //    a) By BookingDateTime (earliest first)
+                //    b) Then by CoinCategoryId descending (3 = Platinum highest)
+                //    c) Then by RequestedAt (earliest request first)
+                var prioritizedQueue = jukeboxRequests
+                    .OrderBy(r => r.BookingDateTime)
+                    .ThenByDescending(r => r.CoinCategoryId) // Platinum > Diamond > Gold
+                    .ThenBy(r => r.RequestedAt)
+                    .ToList();
+
+                // 4️⃣ Return sorted list with readable priority info
+                return Ok(prioritizedQueue.Select(r => new
+                {
+                    r.JukeboxId,
+                    r.UserId,
+                    r.UserName,
+                    r.TableName,
+                    r.MusicTitle,
+                    r.BookingDateTime,
+                    r.RequestedAt,
+                    r.CoinsSpent,
+                    r.DedicationNote,
+                    CoinCategory = r.CoinCategoryId == 3 ? "Platinum" :
+                                   r.CoinCategoryId == 2 ? "Diamond" :
+                                   r.CoinCategoryId == 1 ? "Gold" : "Unknown"
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, new
+                {
+                    message = "Error fetching jukebox queue",
+                    error = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
+        }
+
     }
 }
 
