@@ -305,6 +305,8 @@ namespace BooknowAPI.Controllers
                 string unit = string.IsNullOrWhiteSpace(httpRequest["Unit"]) ? "plate" : httpRequest["Unit"];
                 string ingredientsJson = httpRequest["Ingredients"]; // optional JSON string
 
+                int EstimatedMinutesToDine = 0;
+                int.TryParse(httpRequest["EstimatedMinutesToDine"], out EstimatedMinutesToDine);
                 // ------------------------------
                 // 2️⃣ Validate Admin & Restaurant
                 // ------------------------------
@@ -365,6 +367,7 @@ namespace BooknowAPI.Controllers
                     MenuCategoryId = category.MenuCategoryId,
                     BaseQuantity = baseQuantity,
                     Unit = unit,
+                    EstimatedMinutesToDine=EstimatedMinutesToDine,
                     DishImageUrl = dishImageUrl
                 };
 
@@ -570,6 +573,7 @@ namespace BooknowAPI.Controllers
                         d.PrepTimeMinutes,
                         d.Unit,
                         d.BaseQuantity,
+                        d.EstimatedMinutesToDine,
                         d.DishImageUrl,
                         MenuCategory = d.MenuCategory.Name,
                         Ingredients = d.DishRecipes.Select(dr => new
@@ -791,7 +795,131 @@ namespace BooknowAPI.Controllers
                 });
             }
         }
+        // POST: api/admin/CreateWaiter/{adminUserId}
+        [HttpPost]
+        [Route("CreateWaiter/{adminUserId}")]
+        public IHttpActionResult CreateWaiter(int adminUserId, [FromBody] User newWaiter)
+        {
+            if (newWaiter == null)
+                return BadRequest("Invalid waiter data.");
 
+            // 🔹 Validate admin
+            var admin = db.Admins.FirstOrDefault(a => a.UserId == adminUserId);
+            if (admin == null)
+                return BadRequest("Admin not found.");
+
+            if (admin.RestaurantId == null)
+                return BadRequest("Admin is not linked to any restaurant.");
+
+            // 🔹 Validate password
+            if (string.IsNullOrEmpty(newWaiter.PasswordHash))
+                return BadRequest("Password is required.");
+
+            // 🔹 Check for duplicate email
+            if (db.Users.Any(u => u.Email == newWaiter.Email))
+                return BadRequest("Email already exists.");
+
+            // 🔹 Create the user (waiter)
+            newWaiter.Role = "Waiter";
+            db.Users.Add(newWaiter);
+            db.SaveChanges();
+
+            // 🔹 Link waiter to restaurant
+            var waiter = new Waiter
+            {
+                UserId = newWaiter.UserId,
+                RestaurantId = admin.RestaurantId
+            };
+            db.Waiters.Add(waiter);
+            db.SaveChanges();
+
+            return Ok(new
+            {
+                Message = "Waiter created successfully.",
+                WaiterId = newWaiter.UserId,
+                RestaurantId = admin.RestaurantId,
+                newWaiter.Name,
+                newWaiter.Email
+            });
+        }
+
+
+        // GET: api/admin/GetWaitersForAdmin/{adminUserId}
+        [HttpGet]
+        [Route("GetWaitersForAdmin/{adminUserId}")]
+        public IHttpActionResult GetWaitersForAdmin(int adminUserId)
+        {
+            // Find admin
+            var admin = db.Admins.FirstOrDefault(a => a.UserId == adminUserId);
+            if (admin == null)
+                return BadRequest("Admin not found.");
+
+            if (admin.RestaurantId == null)
+                return BadRequest("Admin is not linked to any restaurant.");
+
+            int restaurantId = admin.RestaurantId.Value;
+
+            // Fetch waiters linked to admin's restaurant
+            var waiters = db.Waiters
+                .Where(w => w.RestaurantId == restaurantId)
+                .Select(w => new
+                {
+                    w.UserId,
+                    Name = w.User.Name,
+                    Email = w.User.Email,
+                })
+                .ToList();
+
+            return Ok(waiters);
+        }
+        // DELETE: api/admin/DeleteWaiter/{adminUserId}/{waiterUserId}
+        [HttpDelete]
+        [Route("DeleteWaiter/{adminUserId}/{waiterUserId}")]
+        public IHttpActionResult DeleteWaiter(int adminUserId, int waiterUserId)
+        {
+            // Validate admin
+            var admin = db.Admins.FirstOrDefault(a => a.UserId == adminUserId);
+            if (admin == null)
+                return BadRequest("Admin not found.");
+
+            if (admin.RestaurantId == null)
+                return BadRequest("Admin is not linked to any restaurant.");
+
+            int restaurantId = admin.RestaurantId.Value;
+
+            // Find waiter in admin's restaurant
+            var waiter = db.Waiters
+                .FirstOrDefault(w => w.UserId == waiterUserId && w.RestaurantId == restaurantId);
+
+            if (waiter == null)
+                return BadRequest("Waiter not found in your restaurant.");
+
+            try
+            {
+                // Find and delete the user
+                var user = db.Users.FirstOrDefault(u => u.UserId == waiterUserId);
+                if (user == null)
+                    return BadRequest("User not found.");
+
+                // Remove waiter entry first
+                db.Waiters.Remove(waiter);
+                db.SaveChanges();
+
+                // Remove user entry
+                db.Users.Remove(user);
+                db.SaveChanges();
+
+                return Ok(new
+                {
+                    Message = "Waiter deleted successfully.",
+                    DeletedWaiterId = waiterUserId
+                });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }
 

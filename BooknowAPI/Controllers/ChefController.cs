@@ -204,7 +204,7 @@ namespace BooknowAPI.Controllers
 
 
         [HttpPut]
-[Route("status/{id}")]
+        [Route("status/{id}")]
 public IHttpActionResult UpdateStatus(int id, [FromBody] string status)
 {
     if (string.IsNullOrWhiteSpace(status))

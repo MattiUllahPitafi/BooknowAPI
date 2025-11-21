@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BooknowAPI.Models;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Http;
-using BooknowAPI.Models;
-using Newtonsoft.Json.Linq;
 
 namespace BooknowAPI.Controllers
 {
@@ -93,9 +94,12 @@ namespace BooknowAPI.Controllers
 
             if (db.Users.Any(u => u.Email == user.Email))
                 return BadRequest("Email already exists");
+            if (string.IsNullOrWhiteSpace(user.PasswordHash))
+                return BadRequest("Password is required.");
+
 
             user.Role = "Customer";
-            user.PasswordHash = user.PasswordHash ?? "123456"; // Default password if null (or handle as needed)
+           
             db.Users.Add(user);
             db.SaveChanges();
 
@@ -215,6 +219,7 @@ namespace BooknowAPI.Controllers
         {
             if (string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.PasswordHash))
                 return BadRequest("Email and password required");
+            string hashedPassword = HashPassword(login.PasswordHash);
 
             var user = db.Users.FirstOrDefault(u => u.Email == login.Email && u.PasswordHash == login.PasswordHash);
 
@@ -328,5 +333,41 @@ namespace BooknowAPI.Controllers
 
             db.SaveChanges();
         }
+
+        // GET: api/Users/GetCoins/5
+        [HttpGet]
+        [Route("GetCoins/{userId}")]
+        public IHttpActionResult GetCoins(int userId)
+        {
+            var user = db.Users.Find(userId);
+            if (user == null)
+                return NotFound();
+
+            if (user.Role != "Customer")
+                return BadRequest("Only customers have coins.");
+
+            var coins = db.CustomerCoins
+                          .Where(c => c.UserId == userId)
+                          .Select(c => new
+                          {
+                              c.CoinCategoryId,
+                              CategoryName = c.CoinCategory.Name,
+                              c.Balance
+                          })
+                          .ToList();
+
+            return Ok(coins);
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hashBytes = sha.ComputeHash(bytes);
+                return Convert.ToBase64String(hashBytes);
+            }
+        }
+
     }
 }

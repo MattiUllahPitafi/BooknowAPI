@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="newRestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admins">
           <Key>
             <PropertyRef Name="UserId" />
@@ -33,6 +33,7 @@
           <Property Name="TableId" Type="int" />
           <Property Name="music_id" Type="int" />
           <Property Name="CoinCategoryIdUsedForMusic" Type="int" />
+          <Property Name="MaxEstimatedMinutes" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ChefDishSpecialities">
           <Key>
@@ -95,6 +96,7 @@
           <Property Name="BaseQuantity" Type="decimal" Precision="5" Scale="2" Nullable="false" />
           <Property Name="Unit" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="DishImageUrl" Type="varchar" MaxLength="255" />
+          <Property Name="EstimatedMinutesToDine" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DishRecipes">
           <Key>
@@ -1021,8 +1023,7 @@
             <End Role="StockConsumptions" EntitySet="StockConsumptions" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="newRestdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1068,6 +1069,7 @@
           <NavigationProperty Name="CoinCategory" Relationship="Self.FK_Bookings_CoinCategories" FromRole="Bookings" ToRole="CoinCategories" />
           <NavigationProperty Name="Music" Relationship="Self.FK_Bookings_Music" FromRole="Bookings" ToRole="Music" />
           <NavigationProperty Name="Table" Relationship="Self.FK_Bookings_Tables" FromRole="Bookings" ToRole="Tables" />
+          <Property Name="MaxEstimatedMinutes" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ChefDishSpeciality">
           <Key>
@@ -1147,6 +1149,7 @@
           <NavigationProperty Name="DishRecipes" Relationship="Self.FK__DishRecip__DishI__1AD3FDA4" FromRole="Dishes" ToRole="DishRecipes" />
           <NavigationProperty Name="OrderChefAssignments" Relationship="Self.FK__OrderChef__DishI__245D67DE" FromRole="Dishes" ToRole="OrderChefAssignments" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__DishI__2739D489" FromRole="Dishes" ToRole="OrderItems" />
+          <Property Name="EstimatedMinutesToDine" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="DishRecipe">
           <Key>
@@ -2158,6 +2161,7 @@
           <EntitySetMapping Name="Bookings">
             <EntityTypeMapping TypeName="newRestdbModel.Booking">
               <MappingFragment StoreEntitySet="Bookings">
+                <ScalarProperty Name="MaxEstimatedMinutes" ColumnName="MaxEstimatedMinutes" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
@@ -2227,6 +2231,7 @@
           <EntitySetMapping Name="Dishes">
             <EntityTypeMapping TypeName="newRestdbModel.Dish">
               <MappingFragment StoreEntitySet="Dishes">
+                <ScalarProperty Name="EstimatedMinutesToDine" ColumnName="EstimatedMinutesToDine" />
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
