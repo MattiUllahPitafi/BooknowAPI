@@ -11,7 +11,7 @@ namespace BooknowAPI.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -28,7 +28,7 @@ namespace BooknowAPI.Models
             this.StockConsumptions = new HashSet<StockConsumption>();
             this.WaiterAssignments = new HashSet<WaiterAssignment>();
         }
-
+    
         public int UserId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

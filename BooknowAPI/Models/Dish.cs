@@ -32,6 +32,7 @@ namespace BooknowAPI.Models
         public decimal BaseQuantity { get; set; }
         public string Unit { get; set; }
         public string DishImageUrl { get; set; }
+        public int EstimatedMinutesToDine { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChefDishSpeciality> ChefDishSpecialities { get; set; }

@@ -9,6 +9,7 @@ namespace BooknowAPI.Models
         // Used to pass dedication text from frontend but NOT stored in the Booking table
         [NotMapped]
         public string DedicationNote { get; set; }
+        public int MaxEstimatedMinutes { get; internal set; }
         //public DateTime RequestedAt { get; internal set; }
     }
 }

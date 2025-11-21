@@ -249,128 +249,129 @@ namespace RestWAdvBook.Controllers
         //        Message = "Booking created, music saved, and waiter assigned successfully."
         //    });
         //}
-        [HttpPost]
-        [Route("create")]
-        public IHttpActionResult Create(Booking booking)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
-            // === Validate Table ===
-            var table = db.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
-            if (table == null)
-                return BadRequest("Invalid table.");
+        //[HttpPost]yahan tak sb thek h estimate time chkr kr rha hn
+        //[Route("create")]
+        //public IHttpActionResult Create(Booking booking)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            // === Validate User ===
-            var user = db.Users.FirstOrDefault(u => u.UserId == booking.UserId);
-            if (user == null)
-                return BadRequest("Invalid user.");
+        //    // === Validate Table ===
+        //    var table = db.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
+        //    if (table == null)
+        //        return BadRequest("Invalid table.");
 
-            // === Try auto-detect alternate JSON keys (musicId, dedicationNote etc.) ===
-            var httpRequest = HttpContext.Current?.Request;
-            if (booking.music_id == null && int.TryParse(httpRequest?["musicId"], out int parsedMusic))
-                booking.music_id = parsedMusic;
+        //    // === Validate User ===
+        //    var user = db.Users.FirstOrDefault(u => u.UserId == booking.UserId);
+        //    if (user == null)
+        //        return BadRequest("Invalid user.");
 
-            if (booking.CoinCategoryIdUsedForMusic == null && int.TryParse(httpRequest?["coinCategoryIdUsedForMusic"], out int parsedCoin))
-                booking.CoinCategoryIdUsedForMusic = parsedCoin;
+        //    // === Try auto-detect alternate JSON keys (musicId, dedicationNote etc.) ===
+        //    var httpRequest = HttpContext.Current?.Request;
+        //    if (booking.music_id == null && int.TryParse(httpRequest?["musicId"], out int parsedMusic))
+        //        booking.music_id = parsedMusic;
 
-            if (string.IsNullOrEmpty(booking.DedicationNote) && !string.IsNullOrEmpty(httpRequest?["dedicationNote"]))
-                booking.DedicationNote = httpRequest["dedicationNote"];
+        //    if (booking.CoinCategoryIdUsedForMusic == null && int.TryParse(httpRequest?["coinCategoryIdUsedForMusic"], out int parsedCoin))
+        //        booking.CoinCategoryIdUsedForMusic = parsedCoin;
 
-            // === Optional Music Handling (requires coins) ===
-            if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
-            {
-                var userCoin = db.CustomerCoins.FirstOrDefault(c =>
-                    c.UserId == booking.UserId &&
-                    c.CoinCategoryId == booking.CoinCategoryIdUsedForMusic);
+        //    if (string.IsNullOrEmpty(booking.DedicationNote) && !string.IsNullOrEmpty(httpRequest?["dedicationNote"]))
+        //        booking.DedicationNote = httpRequest["dedicationNote"];
 
-                if (userCoin == null || userCoin.Balance < 10)
-                    return BadRequest("Insufficient coins of selected category for music.");
+        //    // === Optional Music Handling (requires coins) ===
+        //    if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
+        //    {
+        //        var userCoin = db.CustomerCoins.FirstOrDefault(c =>
+        //            c.UserId == booking.UserId &&
+        //            c.CoinCategoryId == booking.CoinCategoryIdUsedForMusic);
 
-                // Deduct 10 coins
-                userCoin.Balance -= 10;
-            }
+        //        if (userCoin == null || userCoin.Balance < 10)
+        //            return BadRequest("Insufficient coins of selected category for music.");
 
-            // === Check booking conflicts ===
-            var requestedStart = booking.BookingDateTime ?? DateTime.MinValue;
-            var requestedEnd = requestedStart.AddHours(2);
+        //        // Deduct 10 coins
+        //        userCoin.Balance -= 10;
+        //    }
 
-            var bookingsForTable = db.Bookings
-                .Where(b => b.TableId == table.TableId && b.Status == "Booked")
-                .ToList();
+        //    // === Check booking conflicts ===
+        //    var requestedStart = booking.BookingDateTime ?? DateTime.MinValue;
+        //    var requestedEnd = requestedStart.AddHours(2);
 
-            var overlappingBooking = bookingsForTable.FirstOrDefault(b =>
-                requestedStart < b.BookingDateTime.Value.AddHours(2) &&
-                requestedEnd > b.BookingDateTime.Value);
+        //    var bookingsForTable = db.Bookings
+        //        .Where(b => b.TableId == table.TableId && b.Status == "Booked")
+        //        .ToList();
 
-            if (overlappingBooking != null)
-            {
-                return BadRequest("This table is already booked during the selected time. " +
-                                  $"Available after {overlappingBooking.BookingDateTime.Value.AddHours(2):hh:mm tt}.");
-            }
+        //    var overlappingBooking = bookingsForTable.FirstOrDefault(b =>
+        //        requestedStart < b.BookingDateTime.Value.AddHours(2) &&
+        //        requestedEnd > b.BookingDateTime.Value);
 
-            // === Final booking setup ===
-            booking.Status = "Booked";
-            table.Status = "Booked";
+        //    if (overlappingBooking != null)
+        //    {
+        //        return BadRequest("This table is already booked during the selected time. " +
+        //                          $"Available after {overlappingBooking.BookingDateTime.Value.AddHours(2):hh:mm tt}.");
+        //    }
 
-            try
-            {
-                db.Bookings.Add(booking);
-                db.SaveChanges(); // ✅ BookingId generated here with music_id included
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error saving booking: " + ex.Message +
-                                  (ex.InnerException != null ? " | Inner: " + ex.InnerException.Message : ""));
-            }
+        //    // === Final booking setup ===
+        //    booking.Status = "Booked";
+        //    table.Status = "Booked";
 
-            // === Save to Jukebox if music is selected ===
-            if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
-            {
-                var jukebox = new Jukebox
-                {
-                    UserId = booking.UserId,
-                    BookingId = booking.BookingId,
-                    MusicId = booking.music_id.Value,
-                    CoinCategoryId = booking.CoinCategoryIdUsedForMusic,
-                    CoinsSpent = 10,
-                    DedicationNote = booking.DedicationNote,
-                    RequestedAt = DateTime.Now
-                };
+        //    try
+        //    {
+        //        db.Bookings.Add(booking);
+        //        db.SaveChanges(); // ✅ BookingId generated here with music_id included
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest("Error saving booking: " + ex.Message +
+        //                          (ex.InnerException != null ? " | Inner: " + ex.InnerException.Message : ""));
+        //    }
 
-                db.Jukeboxes.Add(jukebox);
-                db.SaveChanges();
-            }
+        //    // === Save to Jukebox if music is selected ===
+        //    if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
+        //    {
+        //        var jukebox = new Jukebox
+        //        {
+        //            UserId = booking.UserId,
+        //            BookingId = booking.BookingId,
+        //            MusicId = booking.music_id.Value,
+        //            CoinCategoryId = booking.CoinCategoryIdUsedForMusic,
+        //            CoinsSpent = 10,
+        //            DedicationNote = booking.DedicationNote,
+        //            RequestedAt = DateTime.Now
+        //        };
 
-            // === Waiter Assignment ===
-            var restaurantId = table.RestaurantId;
+        //        db.Jukeboxes.Add(jukebox);
+        //        db.SaveChanges();
+        //    }
 
-            var availableWaiters = db.Users
-                .Where(u => u.Role == "Waiter" && u.Waiter.RestaurantId == restaurantId)
-                .ToList();
+        //    // === Waiter Assignment ===
+        //    var restaurantId = table.RestaurantId;
 
-            if (!availableWaiters.Any())
-                return BadRequest("No waiters available for this restaurant.");
+        //    var availableWaiters = db.Users
+        //        .Where(u => u.Role == "Waiter" && u.Waiter.RestaurantId == restaurantId)
+        //        .ToList();
 
-            var random = new Random();
-            var selectedWaiter = availableWaiters[random.Next(availableWaiters.Count)];
+        //    if (!availableWaiters.Any())
+        //        return BadRequest("No waiters available for this restaurant.");
 
-            var waiterAssignment = new WaiterAssignment
-            {
-                BookingId = booking.BookingId,
-                WaiterUserId = selectedWaiter.UserId,
-                AssignedAt = DateTime.Now
-            };
+        //    var random = new Random();
+        //    var selectedWaiter = availableWaiters[random.Next(availableWaiters.Count)];
 
-            db.WaiterAssignments.Add(waiterAssignment);
-            db.SaveChanges();
+        //    var waiterAssignment = new WaiterAssignment
+        //    {
+        //        BookingId = booking.BookingId,
+        //        WaiterUserId = selectedWaiter.UserId,
+        //        AssignedAt = DateTime.Now
+        //    };
 
-            return Ok(new
-            {
-                booking.BookingId,
-                Message = "Booking created successfully with optional music and waiter assigned."
-            });
-        }
+        //    db.WaiterAssignments.Add(waiterAssignment);
+        //    db.SaveChanges();
+
+        //    return Ok(new
+        //    {
+        //        booking.BookingId,
+        //        Message = "Booking created successfully with optional music and waiter assigned."
+        //    });
+        //}
 
         //[HttpPost]
         //[Route("create")]
@@ -479,7 +480,128 @@ namespace RestWAdvBook.Controllers
         //    });
         //}
 
+        [HttpPost]
+        [Route("create")]
+        public IHttpActionResult Create(Booking booking)
+        {
+            // Constant for the initial safe booking duration (1.5 hours)
+            const int DefaultDiningMinutes = 90;
 
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // === Validate Table ===
+            var table = db.Tables.FirstOrDefault(t => t.TableId == booking.TableId);
+            if (table == null)
+                return BadRequest("Invalid table.");
+
+            // === Validate User ===
+            var user = db.Users.FirstOrDefault(u => u.UserId == booking.UserId);
+            if (user == null)
+                return BadRequest("Invalid user.");
+
+            // ... (Existing Music, Coin, and Dedication Note Handling) ...
+
+            // === Optional Music Handling (requires coins) ===
+            if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
+            {
+                var userCoin = db.CustomerCoins.FirstOrDefault(c =>
+                     c.UserId == booking.UserId &&
+                     c.CoinCategoryId == booking.CoinCategoryIdUsedForMusic);
+
+                if (userCoin == null || userCoin.Balance < 10)
+                    return BadRequest("Insufficient coins of selected category for music.");
+
+                // Deduct 10 coins
+                userCoin.Balance -= 10;
+            }
+
+            // === Check booking conflicts (Using Dynamic Logic) ===
+            var requestedStart = booking.BookingDateTime ?? DateTime.MinValue;
+            // Define the NEW booking window using the default duration
+            var requestedEnd = requestedStart.AddMinutes(DefaultDiningMinutes);
+
+            var bookingsForTable = db.Bookings
+                .Where(b => b.TableId == table.TableId && b.Status == "Booked")
+                .ToList();
+
+            var overlappingBooking = bookingsForTable.FirstOrDefault(b =>
+                // Check against EXISTING dynamic duration (b.MaxEstimatedMinutes)
+                requestedStart < b.BookingDateTime.Value.AddMinutes(b.MaxEstimatedMinutes) &&
+                requestedEnd > b.BookingDateTime.Value);
+
+            if (overlappingBooking != null)
+            {
+                // Show available time using EXISTING dynamic duration
+                var availableTime = overlappingBooking.BookingDateTime.Value.AddMinutes(overlappingBooking.MaxEstimatedMinutes);
+                return BadRequest("This table is already booked during the selected time. " +
+                                    $"Available after {availableTime:hh:mm tt}.");
+            }
+
+            // === Final booking setup ===
+            booking.Status = "Booked";
+            table.Status = "Booked";
+            // *** Set the initial default duration on the NEW booking ***
+            booking.MaxEstimatedMinutes = DefaultDiningMinutes;
+
+            try
+            {
+                db.Bookings.Add(booking);
+                db.SaveChanges(); // ✅ BookingId generated here
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error saving booking: " + ex.Message +
+                                    (ex.InnerException != null ? " | Inner: " + ex.InnerException.Message : ""));
+            }
+
+            // ... (Rest of the method: Jukebox and Waiter Assignment logic) ...
+            if (booking.music_id.HasValue && booking.CoinCategoryIdUsedForMusic.HasValue)
+            {
+                var jukebox = new Jukebox
+                {
+                    UserId = booking.UserId,
+                    BookingId = booking.BookingId,
+                    MusicId = booking.music_id.Value,
+                    CoinCategoryId = booking.CoinCategoryIdUsedForMusic,
+                    CoinsSpent = 10,
+                    DedicationNote = booking.DedicationNote,
+                    RequestedAt = DateTime.Now
+                };
+
+                db.Jukeboxes.Add(jukebox);
+                db.SaveChanges();
+            }
+
+            // === Waiter Assignment ===
+            var restaurantId = table.RestaurantId;
+
+            var availableWaiters = db.Users
+                .Where(u => u.Role == "Waiter" && u.Waiter.RestaurantId == restaurantId)
+                .ToList();
+
+            if (!availableWaiters.Any())
+                return BadRequest("No waiters available for this restaurant.");
+
+            var random = new Random();
+            var selectedWaiter = availableWaiters[random.Next(availableWaiters.Count)];
+
+            var waiterAssignment = new WaiterAssignment
+            {
+                BookingId = booking.BookingId,
+                WaiterUserId = selectedWaiter.UserId,
+                AssignedAt = DateTime.Now
+            };
+
+            db.WaiterAssignments.Add(waiterAssignment);
+            db.SaveChanges();
+
+            return Ok(new
+            {
+                booking.BookingId,
+                Message = "Booking created successfully with optional music and waiter assigned."
+            });
+        }
         // PUT: api/bookings/cancel/{id}
         [HttpPut]
         [Route("cancel/{id}")]

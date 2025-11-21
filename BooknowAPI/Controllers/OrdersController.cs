@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BooknowAPI.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using BooknowAPI.Models;
-using Newtonsoft.Json;
 
 namespace BooknowAPI.Controllers
 {
@@ -46,6 +47,107 @@ namespace BooknowAPI.Controllers
         // POST: api/order/add
         [HttpPost]
         [Route("add")]
+        //public IHttpActionResult AddOrder(Order order)
+        //{
+        //    if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
+        //        return BadRequest("Invalid order payload.");
+
+        //    var booking = db.Bookings.Find(order.BookingId);
+        //    if (booking == null)
+        //        return BadRequest("Booking not found.");
+
+        //    order.OrderDate = DateTime.Now;
+        //    order.Status = "Placed";
+        //    order.TotalPrice = 0;
+
+        //    var orderItems = order.OrderItems.ToList();
+        //    order.OrderItems = new List<OrderItem>();
+
+        //    db.Orders.Add(order);
+        //    db.SaveChanges(); // generate OrderId
+
+        //    foreach (var item in orderItems)
+        //    {
+        //        var dish = db.Dishes.FirstOrDefault(d => d.DishId == item.DishId);
+        //        if (dish == null)
+        //            return BadRequest($"Dish not found (ID: {item.DishId})");
+
+        //        // Case 1: Quantity > 1 and skipped ingredients provided → split
+        //        if (item.Quantity > 1 && item.SkippedIngredients != null && item.SkippedIngredients.Any())
+        //        {
+        //            for (int i = 0; i < item.Quantity; i++)
+        //            {
+        //                var splitItem = new OrderItem
+        //                {
+        //                    OrderId = order.OrderId,
+        //                    DishId = item.DishId,
+        //                    Quantity = 1,
+        //                    UnitPrice = (decimal)dish.Price,
+        //                    SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients)
+        //                };
+
+        //                db.OrderItems.Add(splitItem);
+        //                order.TotalPrice += splitItem.UnitPrice;
+
+        //                // Assign chef here
+        //                var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
+        //                            u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+        //                if (chef != null)
+        //                {
+        //                    db.OrderChefAssignments.Add(new OrderChefAssignment
+        //                    {
+        //                        OrderId = order.OrderId,
+        //                        DishId = dish.DishId,
+        //                        ChefUserId = chef.UserId,
+        //                        AssignedAt = DateTime.Now
+        //                    });
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Case 2: Normal (no skipped or same skipped for all)
+        //            item.OrderId = order.OrderId;
+        //            item.UnitPrice = (decimal)(dish.Price * item.Quantity);
+
+        //            if (item.SkippedIngredients != null && item.SkippedIngredients.Any())
+        //                item.SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients);
+        //            else
+        //                item.SkippedIngredientIds = null;
+
+        //            db.OrderItems.Add(item);
+        //            order.TotalPrice += item.UnitPrice;
+
+        //            // Assign chef here
+        //            var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
+        //                        u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+        //            if (chef != null)
+        //            {
+        //                db.OrderChefAssignments.Add(new OrderChefAssignment
+        //                {
+        //                    OrderId = order.OrderId,
+        //                    DishId = dish.DishId,
+        //                    ChefUserId = chef.UserId,
+        //                    AssignedAt = DateTime.Now
+        //                });
+        //            }
+        //        }
+        //    }
+
+        //    db.SaveChanges();
+
+        //    return Ok(new
+        //    {
+        //        order.OrderId,
+        //        order.BookingId,
+        //        order.UserId,
+        //        order.TotalPrice,
+        //        order.Status
+        //    });
+        //}
+
+
+    
         public IHttpActionResult AddOrder(Order order)
         {
             if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
@@ -62,14 +164,30 @@ namespace BooknowAPI.Controllers
             var orderItems = order.OrderItems.ToList();
             order.OrderItems = new List<OrderItem>();
 
+            // Fetch all dish data including the new EstimatedMinutesToDine
+            var allDishIds = orderItems.Select(oi => oi.DishId).Distinct().ToList();
+            var dishesData = db.Dishes
+                .Where(d => allDishIds.Contains(d.DishId))
+                .Select(d => new { d.DishId, d.Price, d.EstimatedMinutesToDine })
+                .ToList();
+
             db.Orders.Add(order);
             db.SaveChanges(); // generate OrderId
 
+            int maxCalculatedMinutes = 0; // Tracks the longest dining time from the order
+
             foreach (var item in orderItems)
             {
-                var dish = db.Dishes.FirstOrDefault(d => d.DishId == item.DishId);
+                var dish = dishesData.FirstOrDefault(d => d.DishId == item.DishId);
                 if (dish == null)
                     return BadRequest($"Dish not found (ID: {item.DishId})");
+
+                // *** Calculate Max Duration ***
+                // No casting needed as dish.EstimatedMinutesToDine is an int
+                if (dish.EstimatedMinutesToDine > maxCalculatedMinutes)
+                {
+                    maxCalculatedMinutes = dish.EstimatedMinutesToDine;
+                }
 
                 // Case 1: Quantity > 1 and skipped ingredients provided → split
                 if (item.Quantity > 1 && item.SkippedIngredients != null && item.SkippedIngredients.Any())
@@ -90,7 +208,7 @@ namespace BooknowAPI.Controllers
 
                         // Assign chef here
                         var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
-                                    u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+                                             u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
                         if (chef != null)
                         {
                             db.OrderChefAssignments.Add(new OrderChefAssignment
@@ -119,7 +237,7 @@ namespace BooknowAPI.Controllers
 
                     // Assign chef here
                     var chef = db.Users.FirstOrDefault(u => u.Role == "chef" &&
-                                u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
+                                             u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
                     if (chef != null)
                     {
                         db.OrderChefAssignments.Add(new OrderChefAssignment
@@ -133,157 +251,29 @@ namespace BooknowAPI.Controllers
                 }
             }
 
-            db.SaveChanges();
+            db.SaveChanges(); // Save OrderItems and Assignments
 
-            return Ok(new
+            // *** CRITICAL UPDATE: Adjust Booking Duration ***
+            // This logic unconditionally updates the booking duration to the calculated maximum time.
+            if (maxCalculatedMinutes > 0) // Only update if dishes were actually found
             {
-                order.OrderId,
-                order.BookingId,
-                order.UserId,
-                order.TotalPrice,
-                order.Status
-            });
+                // 🚨 UPDATE: We remove the 'greater than' check to allow the block time to shrink.
+                booking.MaxEstimatedMinutes = maxCalculatedMinutes;
+
+                db.Entry(booking).State = EntityState.Modified;
+                db.SaveChanges(); // Persist the new, calculated duration to the database
+            }
+
+            return Ok(new     
+               {
+                   OrderId = order.OrderId,
+                   BookingId = order.BookingId,
+                   UserId = order.UserId,
+                   // CRITICAL FIX: Use Convert.ToDouble() to guarantee standard number format for Swift.
+                   TotalPrice = Convert.ToDouble(order.TotalPrice),
+                   Status = order.Status
+               });
         }
-
-        //// POST: api/order/add
-        //[HttpPost]
-        //[Route("add")]
-        //public IHttpActionResult AddOrder(Order order)
-        //{
-        //    if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
-        //        return BadRequest("Invalid order payload.");
-
-        //    var booking = db.Bookings.Find(order.BookingId);
-        //    if (booking == null)
-        //        return BadRequest("Booking not found.");
-
-        //    order.OrderDate = DateTime.Now;
-        //    order.Status = "Placed";
-        //    order.TotalPrice = 0;
-
-        //    // Temporarily store order items and clear to avoid EF issues
-        //    var orderItems = order.OrderItems.ToList();
-        //    order.OrderItems = new List<OrderItem>();
-
-        //    db.Orders.Add(order);
-        //    db.SaveChanges(); // Generate OrderId
-
-        //    foreach (var item in orderItems)
-        //    {
-        //        var dish = db.Dishes.FirstOrDefault(d => d.DishId == item.DishId);
-        //        if (dish == null)
-        //            return BadRequest($"Dish not found (ID: {item.DishId})");
-
-        //        item.OrderId = order.OrderId;
-        //        item.UnitPrice = (decimal)(dish.Price * item.Quantity);
-
-        //        // ✅ Save skipped ingredients if present
-        //        if (item.SkippedIngredients != null && item.SkippedIngredients.Any())
-        //        {
-        //            item.SkippedIngredientIds = JsonConvert.SerializeObject(item.SkippedIngredients);
-        //        }
-        //        else
-        //        {
-        //            item.SkippedIngredientIds = null;
-        //        }
-
-        //        db.OrderItems.Add(item);
-        //        order.TotalPrice += item.UnitPrice;
-
-        //        // ✅ Assign chef based on dish speciality
-        //        var chef = db.Users
-        //            .FirstOrDefault(u => u.Role == "chef" &&
-        //                                 u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
-
-        //        if (chef != null)
-        //        {
-        //            db.OrderChefAssignments.Add(new OrderChefAssignment
-        //            {
-        //                OrderId = order.OrderId,
-        //                DishId = dish.DishId,
-        //                ChefUserId = chef.UserId,
-        //                AssignedAt = DateTime.Now
-        //            });
-        //        }
-        //    }
-
-        //    db.SaveChanges();
-
-        //    return Ok(new
-        //    {
-        //        order.OrderId,
-        //        order.BookingId,
-        //        order.UserId,
-        //        order.TotalPrice,
-        //        order.Status
-        //    });
-        //}
-
-
-        //// POST: api/order/add
-        //[HttpPost]
-        //[Route("add")]
-        //public IHttpActionResult AddOrder(Order order)
-        //{
-        //    if (!ModelState.IsValid || order.OrderItems == null || !order.OrderItems.Any())
-        //        return BadRequest("Invalid order payload.");
-
-        //    var booking = db.Bookings.Find(order.BookingId);
-        //    if (booking == null)
-        //        return BadRequest("Booking not found.");
-
-        //    order.OrderDate = DateTime.Now;
-        //    order.Status = "Placed";
-        //    order.TotalPrice = 0;
-
-        //    // Temporarily store order items and clear to avoid EF issues
-        //    var orderItems = order.OrderItems.ToList();
-        //    order.OrderItems = new List<OrderItem>();
-
-        //    db.Orders.Add(order);
-        //    db.SaveChanges(); // Save to generate OrderId
-
-        //    foreach (var item in orderItems)
-        //    {
-        //        var dish = db.Dishes.FirstOrDefault(d => d.DishId== item.DishId);
-        //        if (dish == null)
-        //            return BadRequest($"Dish not found (ID: {item.DishId})");
-
-        //        item.OrderId = order.OrderId;
-        //        item.UnitPrice = (decimal)(dish.Price * item.Quantity);
-
-        //        db.OrderItems.Add(item);
-        //        order.TotalPrice += item.UnitPrice;
-
-        //        // Assign chef based on dish speciality
-        //        var chef = db.Users
-        //            .FirstOrDefault(u => u.Role == "chef" &&
-        //                                 u.ChefDishSpecialities.Any(s => s.DishId == dish.DishId));
-
-        //        if (chef != null)
-        //        {
-        //            db.OrderChefAssignments.Add(new OrderChefAssignment
-        //            {
-        //                OrderId = order.OrderId,
-        //                DishId = dish.DishId,
-        //                ChefUserId = chef.UserId,
-        //                AssignedAt=DateTime.Now,
-        //            });
-        //        }
-        //    }
-
-        //    db.SaveChanges();
-
-        //    return Ok(new
-        //    {
-        //        order.OrderId,
-        //        order.BookingId,
-        //        order.UserId,
-        //        order.TotalPrice,
-        //        order.Status
-        //    });
-        //}
-
         // PUT: api/order/cancel/{id}
         [HttpPut]
         [Route("cancel/{id:int}")]
@@ -353,7 +343,7 @@ namespace BooknowAPI.Controllers
             }).ToList();
 
             return Ok(orders);
-        } 
+        }
 
         // DELETE: api/order/delete/{id}
         [HttpDelete]
