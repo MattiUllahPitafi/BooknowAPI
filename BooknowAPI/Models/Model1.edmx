@@ -206,8 +206,7 @@
           <Property Name="UserId" Type="int" />
           <Property Name="BookingId" Type="int" />
           <Property Name="Stars" Type="int" />
-          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
-          <Property Name="RatedAt" Type="datetime" />
+          <Property Name="RestaurantId" Type="int" />
         </EntityType>
         <EntityType Name="Restaurants">
           <Key>
@@ -1284,10 +1283,9 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="BookingId" Type="Int32" />
           <Property Name="Stars" Type="Int32" />
-          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="RatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Booking" Relationship="Self.FK__Ratings__Booking__2B0A656D" FromRole="Ratings" ToRole="Bookings" />
           <NavigationProperty Name="User" Relationship="Self.FK__Ratings__UserId__2A164134" FromRole="Ratings" ToRole="Users" />
+          <Property Name="RestaurantId" Type="Int32" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -2357,13 +2355,12 @@
           <EntitySetMapping Name="Ratings">
             <EntityTypeMapping TypeName="newRestdbModel.Rating">
               <MappingFragment StoreEntitySet="Ratings">
+                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
                 <ScalarProperty Name="RatingId" ColumnName="RatingId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="Stars" ColumnName="Stars" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="RatedAt" ColumnName="RatedAt" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Restaurants">

@@ -14,15 +14,47 @@ namespace RestWAdvBook.Controllers
 
         // =================== INGREDIENTS ===================
 
+        //[HttpGet]
+        //[Route("ingredients/{restaurantId:int}")]
+        //public IHttpActionResult GetIngredients(int restaurantId, string name = null)
+        //{
+        //    var query = db.Ingredients.Where(i => i.restaurant_id == restaurantId);
+        //    if (!string.IsNullOrEmpty(name))
+        //        query = query.Where(i => i.Name.Contains(name));
+
+        //    return Ok(query.ToList());
+        //}
+
         [HttpGet]
         [Route("ingredients/{restaurantId:int}")]
-        public IHttpActionResult GetIngredients(int restaurantId, string name = null)
+        public IHttpActionResult GetIngredients(int restaurantId)
         {
-            var query = db.Ingredients.Where(i => i.restaurant_id == restaurantId);
-            if (!string.IsNullOrEmpty(name))
-                query = query.Where(i => i.Name.Contains(name));
+            try
+            {
+                // Validate restaurant exists
+                var restaurant = db.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+                if (restaurant == null)
+                    return BadRequest($"Restaurant with ID {restaurantId} not found.");
 
-            return Ok(query.ToList());
+                // Get all ingredients for the restaurant
+                var ingredients = db.Ingredients
+                    .Where(i => i.restaurant_id == restaurantId)
+                    .OrderBy(i => i.Name) // Optional: order by name
+                    .Select(i => new
+                    {
+                        i.IngredientId,
+                        i.Name,
+                        i.Unit,
+                        i.restaurant_id
+                    })
+                    .ToList();
+
+                return Ok(ingredients);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         [HttpPost]

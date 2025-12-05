@@ -519,6 +519,16 @@ namespace RestWAdvBook.Controllers
             var user = db.Users.FirstOrDefault(u => u.UserId == booking.UserId);
             if (user == null)
                 return BadRequest("Invalid user.");
+            if (booking.BookingDateTime.HasValue)
+            {
+                // If the client sends local time (3:46 PM) and you want to save as UTC
+                // First specify it as Local, then convert to UTC
+                var localTime = DateTime.SpecifyKind(booking.BookingDateTime.Value, DateTimeKind.Local);
+                booking.BookingDateTime = localTime.ToUniversalTime();
+
+                // Now when you read it back, convert from UTC to Local
+                // var displayTime = booking.BookingDateTime.Value.ToLocalTime();
+            }
 
             // ... (Existing Music, Coin, and Dedication Note Handling) ...
 

@@ -32,7 +32,9 @@ namespace BooknowAPI.Models
         public string Location { get; set; }
         public string Category { get; set; }
         public string ImageUrl { get; set; }
-    
+        public string ImageBase64 { get; set; }
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Admin> Admins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

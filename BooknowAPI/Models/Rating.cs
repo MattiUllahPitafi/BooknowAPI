@@ -18,8 +18,7 @@ namespace BooknowAPI.Models
         public Nullable<int> UserId { get; set; }
         public Nullable<int> BookingId { get; set; }
         public Nullable<int> Stars { get; set; }
-        public string Comment { get; set; }
-        public Nullable<System.DateTime> RatedAt { get; set; }
+        public Nullable<int> RestaurantId { get; set; }
     
         public virtual Booking Booking { get; set; }
         public virtual User User { get; set; }

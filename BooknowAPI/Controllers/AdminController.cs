@@ -920,6 +920,18 @@ namespace BooknowAPI.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        //fetch ingredients for add it in create chef
+        [HttpGet]
+        [Route("ingredients/{restaurantId:int}")]
+        public IHttpActionResult GetIngredients(int restaurantId, string name = null)
+        {
+            var query = db.Ingredients.Where(i => i.restaurant_id == restaurantId);
+            if (!string.IsNullOrEmpty(name))
+                query = query.Where(i => i.Name.Contains(name));
+
+            return Ok(query.ToList());
+        }
     }
 }
 
