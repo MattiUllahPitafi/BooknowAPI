@@ -128,9 +128,80 @@ namespace BooknowAPI.Controllers
             });
 
         }
+        //[HttpPost]
+        //[Route("create")]
+        //public IHttpActionResult CreateRestaurant()
+        //{
+        //    try
+        //    {
+        //        var httpRequest = HttpContext.Current.Request;
+
+        //        if (httpRequest == null || httpRequest.Form.Count == 0)
+        //            return BadRequest("No form data received.");
+
+        //        // ------------------------------
+        //        // 1️⃣ Parse and validate fields
+        //        // ------------------------------
+        //        string name = (httpRequest["Name"] ?? "").Trim();
+        //        if (string.IsNullOrWhiteSpace(name))
+        //            return BadRequest("Restaurant name is required.");
+
+        //        string location = (httpRequest["Location"] ?? "").Trim();
+        //        if (string.IsNullOrWhiteSpace(location))
+        //            return BadRequest("Location is required.");
+
+        //        string category = (httpRequest["Category"] ?? "").Trim();
+        //        if (string.IsNullOrWhiteSpace(category))
+        //            return BadRequest("Category is required.");
+
+        //        // ------------------------------
+        //        // 2️⃣ Handle optional image upload
+        //        // ------------------------------
+        //        string imageUrl = null;
+        //        if (httpRequest.Files.Count > 0)
+        //        {
+        //            var postedFile = httpRequest.Files["Image"] ?? httpRequest.Files[0];
+        //            if (postedFile != null && postedFile.ContentLength > 0)
+        //            {
+        //                string folderPath = @"C:\images";
+        //                if (!Directory.Exists(folderPath))
+        //                    Directory.CreateDirectory(folderPath);
+
+        //                string fileName = $"{Guid.NewGuid()}_{Path.GetFileName(postedFile.FileName)}";
+        //                string fullPath = Path.Combine(folderPath, fileName);
+        //                postedFile.SaveAs(fullPath);
+
+        //                imageUrl = $"images/{fileName}";
+        //            }
+        //        }
+
+        //        // ------------------------------
+        //        // 3️⃣ Create Restaurant
+        //        // ------------------------------
+        //        var restaurant = new Restaurant
+        //        {
+        //            Name = name,
+        //            Location = location,
+        //            Category = category,
+        //            ImageUrl = imageUrl,
+        //            ImageBase64 = null // Not used anymore
+        //        };
+
+        //        db.Restaurants.Add(restaurant);
+        //        db.SaveChanges();
+
+        //        return CreatedAtRoute("DefaultApi", new { id = restaurant.RestaurantId }, restaurant);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
+
+        // POST: api/restaurants/createwithadmin
         [HttpPost]
-        [Route("create")]
-        public IHttpActionResult CreateRestaurant()
+        [Route("createwithadmin")]
+        public IHttpActionResult CreateRestaurantWithAdmin()
         {
             try
             {
@@ -140,7 +211,7 @@ namespace BooknowAPI.Controllers
                     return BadRequest("No form data received.");
 
                 // ------------------------------
-                // 1️⃣ Parse and validate fields
+                // 1️⃣ Parse and validate restaurant fields
                 // ------------------------------
                 string name = (httpRequest["Name"] ?? "").Trim();
                 if (string.IsNullOrWhiteSpace(name))
@@ -155,7 +226,26 @@ namespace BooknowAPI.Controllers
                     return BadRequest("Category is required.");
 
                 // ------------------------------
-                // 2️⃣ Handle optional image upload
+                // 2️⃣ Parse and validate admin fields
+                // ------------------------------
+                string adminName = (httpRequest["AdminName"] ?? "").Trim();
+                if (string.IsNullOrWhiteSpace(adminName))
+                    return BadRequest("Admin name is required.");
+
+                string adminEmail = (httpRequest["AdminEmail"] ?? "").Trim();
+                if (string.IsNullOrWhiteSpace(adminEmail))
+                    return BadRequest("Admin email is required.");
+
+                string adminPassword = (httpRequest["AdminPassword"] ?? "").Trim();
+                if (string.IsNullOrWhiteSpace(adminPassword))
+                    return BadRequest("Admin password is required.");
+
+                // Check if admin email already exists
+                if (db.Users.Any(u => u.Email == adminEmail))
+                    return BadRequest("Admin email already exists.");
+
+                // ------------------------------
+                // 3️⃣ Handle optional restaurant image upload
                 // ------------------------------
                 string imageUrl = null;
                 if (httpRequest.Files.Count > 0)
@@ -176,29 +266,85 @@ namespace BooknowAPI.Controllers
                 }
 
                 // ------------------------------
-                // 3️⃣ Create Restaurant
+                // 4️⃣ Start transaction for atomic operation
                 // ------------------------------
-                var restaurant = new Restaurant
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    Name = name,
-                    Location = location,
-                    Category = category,
-                    ImageUrl = imageUrl,
-                    ImageBase64 = null // Not used anymore
-                };
+                    try
+                    {
+                        // Create Restaurant
+                        var restaurant = new Restaurant
+                        {
+                            Name = name,
+                            Location = location,
+                            Category = category,
+                            ImageUrl = imageUrl,
+                            ImageBase64 = null,
+                        };
 
-                db.Restaurants.Add(restaurant);
-                db.SaveChanges();
+                        db.Restaurants.Add(restaurant);
+                        db.SaveChanges();
 
-                return CreatedAtRoute("DefaultApi", new { id = restaurant.RestaurantId }, restaurant);
+                        // Create Admin User
+                        var adminUser = new User
+                        {
+                            Name = adminName,
+                            Email = adminEmail,
+                            PasswordHash = adminPassword,
+                            Role = "Admin"
+                        };
+
+                        db.Users.Add(adminUser);
+                        db.SaveChanges();
+
+                        // Assign Admin to Restaurant
+                        var admin = new Admin
+                        {
+                            UserId = adminUser.UserId,
+                            RestaurantId = restaurant.RestaurantId
+                        };
+
+                        db.Admins.Add(admin);
+                        db.SaveChanges();
+
+                        // Commit transaction
+                        transaction.Commit();
+
+                        return Ok(new
+                        {
+                            Success = true,
+                            Message = "Restaurant and admin created successfully",
+                            RestaurantId = restaurant.RestaurantId,
+                            AdminId = adminUser.UserId,
+                            Restaurant = new
+                            {
+                                restaurant.RestaurantId,
+                                restaurant.Name,
+                                restaurant.Location,
+                                restaurant.Category,
+                                restaurant.ImageUrl
+                            },
+                            Admin = new
+                            {
+                                adminUser.UserId,
+                                adminUser.Name,
+                                adminUser.Email,
+                                adminUser.Role
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return InternalServerError(ex);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
         }
-        
-
 
         //// POST: api/restaurants/create
         //[HttpPost]

@@ -22,7 +22,7 @@ namespace BooknowAPI.Models
         public decimal QuantityOrdered { get; set; }
         public decimal UnitPrice { get; set; }
         public string SkippedIngredientIds { get; set; }
-
+    
         public virtual Dish Dish { get; set; }
         public virtual Order Order { get; set; }
         [NotMapped]

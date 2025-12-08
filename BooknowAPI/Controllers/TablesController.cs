@@ -152,41 +152,90 @@ namespace BooknowAPI.Controllers
         //        .ToList();
 
         //    return Ok(tables);
-        //}correct tha but estimated foof k hisab sy nechy kr rha hon
+        //}correct tha but estimated food k hisab sy nechy kr rha hon
 
-        public IHttpActionResult GetAvailableTablesByRestaurantAndTime(int restaurantId, DateTime datetime, int? floor = null)
+        //public IHttpActionResult GetAvailableTablesByRestaurantAndTime(int restaurantId, DateTime datetime, int? floor = null)
+        //{
+        //    // The duration the NEW user is looking for (90 minutes) must match the initial 
+        //    // block duration set in the Create(Booking) function.
+        //    const int RequestedDurationMinutes = 90;
+
+        //    var requestedStart = datetime;
+        //    // Define the NEW requested window based on the 90-minute minimum commitment
+        //    var requestedEnd = datetime.AddMinutes(RequestedDurationMinutes);
+
+        //    // Find tables that overlap with the requested 90-minute slot
+        //    var bookedTableIds = db.Bookings
+        //        .Where(b =>
+        //            b.Table.RestaurantId == restaurantId &&
+        //            b.Status == "Booked" &&
+
+        //            // Overlap Check: Uses b.MaxEstimatedMinutes for all EXISTING bookings.
+        //            // This works because:
+        //            // 1. Old bookings/No Order: b.MaxEstimatedMinutes is 90 (DB default).
+        //            // 2. Bookings With Order: b.MaxEstimatedMinutes is the dynamic calculated time.
+
+        //            // Condition 1: Requested 90-min start must be before EXISTING booking end
+        //            requestedStart < DbFunctions.AddMinutes(b.BookingDateTime, b.MaxEstimatedMinutes) &&
+
+        //            // Condition 2: Requested 90-min end must be after EXISTING booking start
+        //            requestedEnd > b.BookingDateTime
+        //        )
+        //        .Select(b => b.TableId)
+        //        .ToList();
+
+        //    // ----------------------------------------------------------------------
+
+        //    // Filter tables
+        //    var query = db.Tables.Where(t => t.RestaurantId == restaurantId);
+
+        //    if (floor.HasValue)
+        //        query = query.Where(t => t.Floor == floor);
+
+        //    var tables = query
+        //        .Select(t => new
+        //        {
+        //            t.TableId,
+        //            t.Name,
+        //            t.Location,
+        //            t.Floor,
+        //            t.Price,
+        //            // Status is correctly set based on the calculated conflict list
+        //            Status = bookedTableIds.Contains(t.TableId) ? "Booked" : "Available",
+        //            t.Capacity,
+        //            t.RestaurantId
+        //        })
+        //        .ToList();
+
+        //    return Ok(tables);
+        //}kam kr rha h
+       
+    public IHttpActionResult GetAvailableTablesByRestaurantAndTime(
+    int restaurantId,
+    DateTime datetime,
+    int? floor = null)
         {
-            // The duration the NEW user is looking for (90 minutes) must match the initial 
-            // block duration set in the Create(Booking) function.
             const int RequestedDurationMinutes = 90;
 
-            var requestedStart = datetime;
-            // Define the NEW requested window based on the 90-minute minimum commitment
-            var requestedEnd = datetime.AddMinutes(RequestedDurationMinutes);
+            // === 🔒 FORCE UTC ===
+            var requestedStart =
+     datetime.Kind == DateTimeKind.Utc
+         ? datetime
+         : DateTime.SpecifyKind(datetime, DateTimeKind.Local).ToUniversalTime();
 
-            // Find tables that overlap with the requested 90-minute slot
+
+            var requestedEnd = requestedStart.AddMinutes(RequestedDurationMinutes);
+
             var bookedTableIds = db.Bookings
                 .Where(b =>
                     b.Table.RestaurantId == restaurantId &&
                     b.Status == "Booked" &&
-
-                    // Overlap Check: Uses b.MaxEstimatedMinutes for all EXISTING bookings.
-                    // This works because:
-                    // 1. Old bookings/No Order: b.MaxEstimatedMinutes is 90 (DB default).
-                    // 2. Bookings With Order: b.MaxEstimatedMinutes is the dynamic calculated time.
-
-                    // Condition 1: Requested 90-min start must be before EXISTING booking end
                     requestedStart < DbFunctions.AddMinutes(b.BookingDateTime, b.MaxEstimatedMinutes) &&
-
-                    // Condition 2: Requested 90-min end must be after EXISTING booking start
                     requestedEnd > b.BookingDateTime
                 )
                 .Select(b => b.TableId)
                 .ToList();
 
-            // ----------------------------------------------------------------------
-
-            // Filter tables
             var query = db.Tables.Where(t => t.RestaurantId == restaurantId);
 
             if (floor.HasValue)
@@ -200,7 +249,6 @@ namespace BooknowAPI.Controllers
                     t.Location,
                     t.Floor,
                     t.Price,
-                    // Status is correctly set based on the calculated conflict list
                     Status = bookedTableIds.Contains(t.TableId) ? "Booked" : "Available",
                     t.Capacity,
                     t.RestaurantId
@@ -209,6 +257,7 @@ namespace BooknowAPI.Controllers
 
             return Ok(tables);
         }
+
 
 
     }

@@ -11,6 +11,8 @@ namespace BooknowAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+
             // Remove XML formatter
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
 

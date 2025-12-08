@@ -160,7 +160,15 @@ namespace BooknowAPI.Controllers
             order.OrderDate = DateTime.Now;
             order.Status = "Placed";
             order.TotalPrice = 0;
-
+            //adding extranotes as dedication note table mn column tha nam update ni kia uska bs 
+            if (!string.IsNullOrWhiteSpace(order.DedicationNote))
+            {
+                order.DedicationNote = order.DedicationNote.Trim();
+            }
+            else
+            {
+                order.DedicationNote = null; // Set to null if empty
+            }
             var orderItems = order.OrderItems.ToList();
             order.OrderItems = new List<OrderItem>();
 
@@ -170,7 +178,7 @@ namespace BooknowAPI.Controllers
                 .Where(d => allDishIds.Contains(d.DishId))
                 .Select(d => new { d.DishId, d.Price, d.EstimatedMinutesToDine })
                 .ToList();
-
+            
             db.Orders.Add(order);
             db.SaveChanges(); // generate OrderId
 
@@ -271,8 +279,9 @@ namespace BooknowAPI.Controllers
                    UserId = order.UserId,
                    // CRITICAL FIX: Use Convert.ToDouble() to guarantee standard number format for Swift.
                    TotalPrice = Convert.ToDouble(order.TotalPrice),
-                   Status = order.Status
-               });
+                   Status = order.Status,
+                   DedicationNote = order.DedicationNote
+            });
         }
         // PUT: api/order/cancel/{id}
         [HttpPut]

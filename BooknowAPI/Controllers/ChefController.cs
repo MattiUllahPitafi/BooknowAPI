@@ -165,6 +165,7 @@ namespace BooknowAPI.Controllers
                     {
                         orderDate = c.Order.OrderDate,
                         status = c.Order.Status,
+                        dedicationNote=c.Order.DedicationNote,
                         bookingDateTime = c.Order.Booking != null
                             ? (DateTime?)c.Order.Booking.BookingDateTime
                             : null,

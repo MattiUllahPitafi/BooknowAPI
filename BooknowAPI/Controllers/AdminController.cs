@@ -932,6 +932,139 @@ namespace BooknowAPI.Controllers
 
             return Ok(query.ToList());
         }
+        [HttpGet]
+        [Route("GetBookingsAndOrderByRestaurant/{adminUserId}")]
+        public IHttpActionResult GetBookingsAndOrderByRestaurant(int adminUserId)
+        {
+            try
+            {
+                // 1️⃣ Validate Admin and get RestaurantId
+                var admin = db.Admins.FirstOrDefault(a => a.UserId == adminUserId);
+                if (admin == null)
+                    return BadRequest("Admin not found.");
+
+                if (admin.RestaurantId == null)
+                    return BadRequest("Admin is not linked to any restaurant.");
+
+                int restaurantId = admin.RestaurantId.Value;
+
+                // 2️⃣ Get all tables for this restaurant
+                var restaurantTableIds = db.Tables
+                    .Where(t => t.RestaurantId == restaurantId)
+                    .Select(t => t.TableId)
+                    .ToList();
+
+                if (!restaurantTableIds.Any())
+                    return Ok(new { message = "No tables found for this restaurant." });
+
+                // 3️⃣ Get bookings for this restaurant's tables (with user details)
+                var bookingsWithOrders = (from b in db.Bookings
+                                          join u in db.Users on b.UserId equals u.UserId into userJoin
+                                          from user in userJoin.DefaultIfEmpty()
+                                          join t in db.Tables on b.TableId equals t.TableId into tableJoin
+                                          from table in tableJoin.DefaultIfEmpty()
+                                          where restaurantTableIds.Contains(b.TableId ?? 0)
+                                          orderby b.BookingDateTime descending
+                                          select new
+                                          {
+                                              // Booking Details
+                                              Booking = new
+                                              {
+                                                  b.BookingId,
+                                                  b.BookingDateTime,
+                                                  b.SpecialRequest,
+                                                  BookingStatus = b.Status,
+                                                  b.MaxEstimatedMinutes,
+                                                  b.TableId,
+                                                  TableName = table != null ? table.Name : "N/A",
+                                                  TableLocation = table != null ? table.Location : "N/A",
+                                                  // User Details
+                                                  UserId = b.UserId,
+                                                  UserName = user != null ? user.Name : "Unknown",
+                                                  UserEmail = user != null ? user.Email : "Unknown",
+                                              },
+                                              // Orders for this booking
+                                              Orders = (from o in db.Orders
+                                                        where o.BookingId == b.BookingId
+                                                        orderby o.OrderDate descending
+                                                        select new
+                                                        {
+                                                            o.OrderId,
+                                                            o.OrderDate,
+                                                            o.TotalPrice,
+                                                            OrderStatus = o.Status,
+                                                            // Order Items
+                                                            OrderItems = (from oi in db.OrderItems
+                                                                          join d in db.Dishes on oi.DishId equals d.DishId
+                                                                          where oi.OrderId == o.OrderId
+                                                                          select new
+                                                                          {
+                                                                              oi.OrderItemId,
+                                                                              DishName = d.Name,
+                                                                              oi.Quantity,
+                                                                          }).ToList()
+                                                        }).ToList()
+                                          }).ToList();
+
+                if (!bookingsWithOrders.Any())
+                    return Ok(new { message = "No bookings found for this restaurant." });
+
+                // 4️⃣ Format the response
+                var result = new
+                {
+                    RestaurantId = restaurantId,
+                    TotalBookings = bookingsWithOrders.Count,
+                    Bookings = bookingsWithOrders.Select(b => new
+                    {
+                        b.Booking.BookingId,
+                        b.Booking.BookingDateTime,
+                        b.Booking.BookingStatus,
+                        b.Booking.SpecialRequest,
+                        b.Booking.MaxEstimatedMinutes,
+                        b.Booking.TableId,
+                        b.Booking.TableName,
+                        b.Booking.TableLocation,
+                        Customer = new
+                        {
+                            b.Booking.UserId,
+                            b.Booking.UserName,
+                            b.Booking.UserEmail,
+                        },
+                        Orders = b.Orders.Select(o => new
+                        {
+                            o.OrderId,
+                            o.OrderDate,
+                            o.TotalPrice,
+                            o.OrderStatus,
+                            ItemCount = o.OrderItems.Count,
+                            Items = o.OrderItems
+                        }),
+                        HasOrders = b.Orders.Any(),
+                        TotalOrders = b.Orders.Count,
+                        TotalOrderAmount = b.Orders.Sum(o => o.TotalPrice ?? 0)
+                    }).ToList(),
+                    Summary = new
+                    {
+                        TotalBookings = bookingsWithOrders.Count,
+                        TotalOrders = bookingsWithOrders.Sum(b => b.Orders.Count),
+                        TotalRevenue = bookingsWithOrders.Sum(b => b.Orders.Sum(o => o.TotalPrice ?? 0)),
+                        BookingsWithOrders = bookingsWithOrders.Count(b => b.Orders.Any()),
+                        BookingsWithoutOrders = bookingsWithOrders.Count(b => !b.Orders.Any())
+                    }
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, new
+                {
+                    message = "Error fetching bookings and orders",
+                    error = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
+        }
     }
 }
 

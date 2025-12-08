@@ -34,6 +34,7 @@
           <Property Name="music_id" Type="int" />
           <Property Name="CoinCategoryIdUsedForMusic" Type="int" />
           <Property Name="MaxEstimatedMinutes" Type="int" Nullable="false" />
+          <Property Name="MasterBookingId" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ChefDishSpecialities">
           <Key>
@@ -1069,6 +1070,7 @@
           <NavigationProperty Name="Music" Relationship="Self.FK_Bookings_Music" FromRole="Bookings" ToRole="Music" />
           <NavigationProperty Name="Table" Relationship="Self.FK_Bookings_Tables" FromRole="Bookings" ToRole="Tables" />
           <Property Name="MaxEstimatedMinutes" Type="Int32" Nullable="false" />
+          <Property Name="MasterBookingId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ChefDishSpeciality">
           <Key>
@@ -2159,6 +2161,7 @@
           <EntitySetMapping Name="Bookings">
             <EntityTypeMapping TypeName="newRestdbModel.Booking">
               <MappingFragment StoreEntitySet="Bookings">
+                <ScalarProperty Name="MasterBookingId" ColumnName="MasterBookingId" />
                 <ScalarProperty Name="MaxEstimatedMinutes" ColumnName="MaxEstimatedMinutes" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

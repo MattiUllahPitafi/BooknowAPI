@@ -27,12 +27,13 @@ namespace BooknowAPI.Models
         public int BookingId { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> RestaurantId { get; set; }
-        public Nullable<System.DateTime> BookingDateTime { get; set; }
+        public DateTime? BookingDateTime { get; set; }
         public string SpecialRequest { get; set; }
         public string Status { get; set; }
         public Nullable<int> TableId { get; set; }
         public Nullable<int> music_id { get; set; }
         public Nullable<int> CoinCategoryIdUsedForMusic { get; set; }
+        public string MasterBookingId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingDecore> BookingDecores { get; set; }
