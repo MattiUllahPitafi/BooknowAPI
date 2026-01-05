@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -283,7 +284,8 @@ namespace BooknowAPI.Controllers
                    DedicationNote = order.DedicationNote
             });
         }
-        // PUT: api/order/cancel/{id}
+
+
         [HttpPut]
         [Route("cancel/{id:int}")]
         public IHttpActionResult CancelOrder(int id)

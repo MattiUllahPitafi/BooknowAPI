@@ -206,25 +206,25 @@ namespace BooknowAPI.Controllers
 
         [HttpPut]
         [Route("status/{id}")]
-public IHttpActionResult UpdateStatus(int id, [FromBody] string status)
-{
-    if (string.IsNullOrWhiteSpace(status))
-        return BadRequest("Status is required.");
+       public IHttpActionResult UpdateStatus(int id, [FromBody] string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+                return BadRequest("Status is required.");
 
-    var order = db.Orders.FirstOrDefault(o => o.OrderId == id);
-    if (order == null)
-        return NotFound();
+            var order = db.Orders.FirstOrDefault(o => o.OrderId == id);
+            if (order == null)
+                return NotFound();
 
-    order.Status = status;
-    db.SaveChanges();
+            order.Status = status;
+            db.SaveChanges();
 
-    return Ok(new
-    {
-        orderId = order.OrderId,
-        status = order.Status,
-        message = "Order status updated successfully"
-    });
-}
+            return Ok(new
+            {
+                orderId = order.OrderId,
+                status = order.Status,
+                message = "Order status updated successfully"
+            });
+        }
 
 
 

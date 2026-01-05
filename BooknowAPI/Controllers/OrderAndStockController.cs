@@ -25,27 +25,61 @@ namespace RestWAdvBook.Controllers
         //    return Ok(query.ToList());
         //}
 
+        //[HttpGet]
+        //[Route("ingredients/{restaurantId:int}")]
+        //public IHttpActionResult GetIngredients(int restaurantId)
+        //{
+        //    try
+        //    {
+        //        // Validate restaurant exists
+        //        var restaurant = db.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+        //        if (restaurant == null)
+        //            return BadRequest($"Restaurant with ID {restaurantId} not found.");
+
+        //        // Get all ingredients for the restaurant
+        //        var ingredients = db.Ingredients
+        //            .Where(i => i.restaurant_id == restaurantId)
+        //            .OrderBy(i => i.Name) // Optional: order by name
+        //            .Select(i => new
+        //            {
+        //                i.IngredientId,
+        //                i.Name,
+        //                i.Unit,
+        //                i.restaurant_id
+        //            })
+        //            .ToList();
+
+        //        return Ok(ingredients);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
         [HttpGet]
-        [Route("ingredients/{restaurantId:int}")]
-        public IHttpActionResult GetIngredients(int restaurantId)
+        [Route("ingredients/{userId:int}")]
+        public IHttpActionResult GetIngredients(int userId)
         {
             try
             {
-                // Validate restaurant exists
-                var restaurant = db.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
-                if (restaurant == null)
-                    return BadRequest($"Restaurant with ID {restaurantId} not found.");
+                // Get restaurantId from Admin table using userId
+                var admin = db.Admins.FirstOrDefault(a => a.UserId == userId);
+                if (admin == null || admin.RestaurantId == null)
+                    return BadRequest($"No restaurant found for user ID {userId} or user is not an admin.");
+
+                int restaurantId = admin.RestaurantId.Value;
 
                 // Get all ingredients for the restaurant
                 var ingredients = db.Ingredients
                     .Where(i => i.restaurant_id == restaurantId)
-                    .OrderBy(i => i.Name) // Optional: order by name
+                    .OrderBy(i => i.Name)
                     .Select(i => new
                     {
                         i.IngredientId,
                         i.Name,
                         i.Unit,
-                        i.restaurant_id
+                        i.restaurant_id,
+                        i.QuantityInStock
                     })
                     .ToList();
 
@@ -56,18 +90,47 @@ namespace RestWAdvBook.Controllers
                 return InternalServerError(ex);
             }
         }
-
         [HttpPost]
-        [Route("ingredient/add")]
-        public IHttpActionResult AddIngredient(Ingredient ingredient)
+        [Route("ingredient/add/{userId:int}")]
+        public IHttpActionResult AddIngredient(int userId, Ingredient ingredient)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            db.Ingredients.Add(ingredient);
-            db.SaveChanges();
-            return Ok("Ingredient added successfully.");
+                // Get restaurantId from Admin table using userId
+                var admin = db.Admins.FirstOrDefault(a => a.UserId == userId);
+                if (admin == null || admin.RestaurantId == null)
+                    return BadRequest($"No restaurant found for user ID {userId} or user is not an admin.");
+
+                // Assign the restaurantId to the ingredient
+                ingredient.restaurant_id = admin.RestaurantId.Value;
+
+                db.Ingredients.Add(ingredient);
+                db.SaveChanges();
+                return Ok(new
+                {
+                    message = "Ingredient added successfully.",
+                    ingredientId = ingredient.IngredientId
+                });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
+        //[HttpPost]
+        //[Route("ingredient/add")]
+        //public IHttpActionResult AddIngredient(Ingredient ingredient)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    db.Ingredients.Add(ingredient);
+        //    db.SaveChanges();
+        //    return Ok("Ingredient added successfully.");
+        //}
 
         [HttpPut]
         [Route("ingredient/update/{id:int}")]
@@ -80,7 +143,7 @@ namespace RestWAdvBook.Controllers
             existing.Name = updatedIngredient.Name;
             existing.QuantityInStock = updatedIngredient.QuantityInStock;
             existing.Unit = updatedIngredient.Unit;
-            existing.restaurant_id = updatedIngredient.restaurant_id;
+         
 
             db.SaveChanges();
             return Ok("Ingredient updated.");
